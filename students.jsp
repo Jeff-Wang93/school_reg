@@ -234,7 +234,9 @@
         <%-- UNDERGRAD --%>
         <%-- UNDERGRAD --%>
         <tr>
-        <td valign="top">
+        <td valign="center">
+                <%-- -------- Include menu HTML code -------- --%>
+                Undergrad Entry
             </td>
             <td>
 
@@ -359,7 +361,7 @@
                             <th><input value="" name="COLLEGE" size="10"></th>
                             <th><input value="" name="MINOR" size="15"></th>
                             <th><input value="" name="MAJOR" size="15"></th>
-                            <th><input type="submit" value="under_insert"></th>
+                            <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
 
@@ -401,7 +403,7 @@
     
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="under_update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
                         <form action="students.jsp" method="get">
@@ -410,7 +412,7 @@
                                 value="<%= rs.getInt("undergrad_student_id") %>" name="UNDER_ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="under_delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
@@ -442,8 +444,11 @@
         <%-- MASTER --%>
         <%-- MASTER --%>
         <tr>
-            <td valign="top">
+            <td valign="center">
+                <%-- -------- Include menu HTML code -------- --%>
+                Master Entry
             </td>
+
             <td>
 
             <%-- Set the scripting language to Java and --%>
@@ -554,7 +559,7 @@
                         <form action="students.jsp" method="get">
                             <input type="hidden" value="master_insert" name="master_action">
                             <th><input value="" name="MASTER_ID" size="10"></th>
-                            <th><input type="submit" value="master_insert"></th>
+                            <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
 
@@ -578,7 +583,7 @@
     
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="master_update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
                         <form action="students.jsp" method="get">
@@ -587,7 +592,7 @@
                                 value="<%= rs.getInt("master_student_id") %>" name="MASTER_ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="master_delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
@@ -619,184 +624,187 @@
         <%-- PHD --%>
         <%-- PHD --%>
         <tr>
-            <td valign="top">
-                </td>
-                    <td>
+            <td valign="center">
+                <%-- -------- Include menu HTML code -------- --%>
+                PhD Entry
+            </td>
 
-                    <%-- Set the scripting language to Java and --%>
-                    <%-- Import the java.sql package --%>
-                    <%@ page language="java" import="java.sql.*" %>
-            
-                    <%-- -------- Open Connection Code -------- --%>
-                    <%
-                        try {
-                            // Load Oracle Driver class file
-                            DriverManager.registerDriver
-                                (new org.postgresql.Driver());
-            
-                            // Make a connection to the Oracle datasource "cse132b"
-                            Connection conn = DriverManager.getConnection
-                                ("jdbc:postgresql:cse132b", 
-                                    "jeff", "snowman2");
+                <td>
 
-                    %>
+                <%-- Set the scripting language to Java and --%>
+                <%-- Import the java.sql package --%>
+                <%@ page language="java" import="java.sql.*" %>
+        
+                <%-- -------- Open Connection Code -------- --%>
+                <%
+                    try {
+                        // Load Oracle Driver class file
+                        DriverManager.registerDriver
+                            (new org.postgresql.Driver());
+        
+                        // Make a connection to the Oracle datasource "cse132b"
+                        Connection conn = DriverManager.getConnection
+                            ("jdbc:postgresql:cse132b", 
+                                "jeff", "snowman2");
 
-                    <%-- -------- INSERT Code -------- --%>
-                    <%
-                            String phd_action = request.getParameter("phd_action");
-                            // Check if an insertion is requested
-                            if (phd_action != null && phd_action.equals("phd_insert")) {
+                %>
 
-                                // Begin transaction
-                                conn.setAutoCommit(false);
-                                
-                                // Create the prepared statement and use it to
-                                // INSERT the student attributes INTO the Student table.
-                                PreparedStatement pstmt = conn.prepareStatement(
-                                    "INSERT INTO phd_student VALUES (?, ?)");
+                <%-- -------- INSERT Code -------- --%>
+                <%
+                        String phd_action = request.getParameter("phd_action");
+                        // Check if an insertion is requested
+                        if (phd_action != null && phd_action.equals("phd_insert")) {
 
-                                pstmt.setInt(1, Integer.parseInt(request.getParameter("PHD ID")));
-                                pstmt.setString(2, request.getParameter("PHD TYPE"));
-                                int rowCount = pstmt.executeUpdate();
+                            // Begin transaction
+                            conn.setAutoCommit(false);
+                            
+                            // Create the prepared statement and use it to
+                            // INSERT the student attributes INTO the Student table.
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "INSERT INTO phd_student VALUES (?, ?)");
 
-                                // Commit transaction
-                                conn.commit();
-                                conn.setAutoCommit(true);
-                            }
-                    %>
+                            pstmt.setInt(1, Integer.parseInt(request.getParameter("PHD ID")));
+                            pstmt.setString(2, request.getParameter("PHD TYPE"));
+                            int rowCount = pstmt.executeUpdate();
 
-                    <%-- -------- UPDATE Code -------- --%>
-                    <%
-                            // Check if an update is requested
-                            if (phd_action != null && phd_action.equals("phd_update")) {
-
-                                // Begin transaction
-                                conn.setAutoCommit(false);
-                                
-                                // Create the prepared statement and use it to
-                                // UPDATE the student attributes in the Student table.
-                                PreparedStatement pstmt = conn.prepareStatement(
-                                    "UPDATE phd_student SET phd_student_type = ?" +
-                                    "WHERE phd_student_id= ?");
-
-                                pstmt.setString(1, request.getParameter("PHD TYPE"));
-                                pstmt.setInt(2, Integer.parseInt(request.getParameter("PHD ID")));
-                                int rowCount = pstmt.executeUpdate();
-
-                                // Commit transaction
-                                conn.commit();
-                                conn.setAutoCommit(true);
-                            }
-                    %>
-
-                    <%-- -------- DELETE Code -------- --%>
-                    <%
-                            // Check if a delete is requested
-                            if (phd_action != null && phd_action.equals("phd_delete")) {
-
-                                // Begin transaction
-                                conn.setAutoCommit(false);
-                                
-                                // Create the prepared statement and use it to
-                                // DELETE the student FROM the Student table.
-                                PreparedStatement pstmt = conn.prepareStatement(
-                                    "DELETE FROM phd_student WHERE phd_student_id = ?");
-
-                                pstmt.setInt(
-                                    1, Integer.parseInt(request.getParameter("PHD ID")));
-                                int rowCount = pstmt.executeUpdate();
-
-                                // Commit transaction
-                                 conn.commit();
-                                conn.setAutoCommit(true);
-                            }
-                    %>
-
-                    <%-- -------- SELECT Statement Code -------- --%>
-                    <%
-                            // Create the statement
-                            Statement phd_statement = conn.createStatement();
-
-                            // Use the created statement to SELECT
-                            // the student attributes FROM the Student table.
-                            ResultSet rs = phd_statement.executeQuery
-                                ("SELECT * FROM phd_student");
-                    %>
-
-                    <!-- Add an HTML table header row to format the results -->
-                        <table border="1">
-                            <tr>
-                                <th>Student ID</th>
-                                <th>Type</th>
-                            </tr>
-                            <tr>
-                                <form action="students.jsp" method="get">
-                                    <input type="hidden" value="phd_insert" name="phd_action">
-                                    <th><input value="" name="PHD ID" size="10"></th>
-                                    <th><input value="" name="PHD TYPE" size="10"></th>
-                                    <th><input type="submit" value="phd_insert"></th>
-                                </form>
-                            </tr>
-
-                    <%-- -------- Iteration Code -------- --%>
-                    <%
-                            // Iterate over the ResultSet
-                
-                            while ( rs.next() ) {
-                
-                    %>
-
-                            <tr>
-                                <form action="students.jsp" method="get">
-                                    <input type="hidden" value="phd_update" name="phd_action">
-
-                                    <%-- Get the SSN, which is a number --%>
-                                    <td>
-                                        <input value="<%= rs.getInt("phd_student_id") %>" 
-                                            name="PHD ID" size="10">
-                                    </td>
-            
-                                    <%-- Get the ID --%>
-                                    <td>
-                                        <input value="<%= rs.getString("phd_student_type") %>" 
-                                            name="PHD TYPE" size="10">
-                                    </td>
-            
-                                    <%-- Button --%>
-                                    <td>
-                                        <input type="submit" value="phd_update">
-                                    </td>
-                                </form>
-                                <form action="students.jsp" method="get">
-                                    <input type="hidden" value="phd_delete" name="phd_action">
-                                    <input type="hidden" 
-                                        value="<%= rs.getInt("phd_student_id") %>" name="PHD ID">
-                                    <%-- Button --%>
-                                    <td>
-                                        <input type="submit" value="phd_delete">
-                                    </td>
-                                </form>
-                            </tr>
-                    <%
-                            }
-                    %>
-                    
-                    <%-- -------- Close Connection Code -------- --%>
-                    <%
-                            // Close the ResultSet
-                            rs.close();
-
-                            // Close the Statement
-                            phd_statement.close();
-
-                            // Close the Connection
-                            conn.close();
-                        } catch (SQLException sqle) {
-                            out.println(sqle.getMessage());
-                        } catch (Exception e) {
-                            out.println(e.getMessage());
+                            // Commit transaction
+                            conn.commit();
+                            conn.setAutoCommit(true);
                         }
-                    %>
+                %>
+
+                <%-- -------- UPDATE Code -------- --%>
+                <%
+                        // Check if an update is requested
+                        if (phd_action != null && phd_action.equals("phd_update")) {
+
+                            // Begin transaction
+                            conn.setAutoCommit(false);
+                            
+                            // Create the prepared statement and use it to
+                            // UPDATE the student attributes in the Student table.
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "UPDATE phd_student SET phd_student_type = ?" +
+                                "WHERE phd_student_id= ?");
+
+                            pstmt.setString(1, request.getParameter("PHD TYPE"));
+                            pstmt.setInt(2, Integer.parseInt(request.getParameter("PHD ID")));
+                            int rowCount = pstmt.executeUpdate();
+
+                            // Commit transaction
+                            conn.commit();
+                            conn.setAutoCommit(true);
+                        }
+                %>
+
+                <%-- -------- DELETE Code -------- --%>
+                <%
+                        // Check if a delete is requested
+                        if (phd_action != null && phd_action.equals("phd_delete")) {
+
+                            // Begin transaction
+                            conn.setAutoCommit(false);
+                            
+                            // Create the prepared statement and use it to
+                            // DELETE the student FROM the Student table.
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "DELETE FROM phd_student WHERE phd_student_id = ?");
+
+                            pstmt.setInt(
+                                1, Integer.parseInt(request.getParameter("PHD ID")));
+                            int rowCount = pstmt.executeUpdate();
+
+                            // Commit transaction
+                             conn.commit();
+                            conn.setAutoCommit(true);
+                        }
+                %>
+
+                <%-- -------- SELECT Statement Code -------- --%>
+                <%
+                        // Create the statement
+                        Statement phd_statement = conn.createStatement();
+
+                        // Use the created statement to SELECT
+                        // the student attributes FROM the Student table.
+                        ResultSet rs = phd_statement.executeQuery
+                            ("SELECT * FROM phd_student");
+                %>
+
+                <!-- Add an HTML table header row to format the results -->
+                    <table border="1">
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr>
+                            <form action="students.jsp" method="get">
+                                <input type="hidden" value="phd_insert" name="phd_action">
+                                <th><input value="" name="PHD ID" size="10"></th>
+                                <th><input value="" name="PHD TYPE" size="10"></th>
+                                <th><input type="submit" value="Insert"></th>
+                            </form>
+                        </tr>
+
+                <%-- -------- Iteration Code -------- --%>
+                <%
+                        // Iterate over the ResultSet
+            
+                        while ( rs.next() ) {
+            
+                %>
+
+                        <tr>
+                            <form action="students.jsp" method="get">
+                                <input type="hidden" value="phd_update" name="phd_action">
+
+                                <%-- Get the SSN, which is a number --%>
+                                <td>
+                                    <input value="<%= rs.getInt("phd_student_id") %>" 
+                                        name="PHD ID" size="10">
+                                </td>
+        
+                                <%-- Get the ID --%>
+                                <td>
+                                    <input value="<%= rs.getString("phd_student_type") %>" 
+                                        name="PHD TYPE" size="10">
+                                </td>
+        
+                                <%-- Button --%>
+                                <td>
+                                    <input type="submit" value="Update">
+                                </td>
+                            </form>
+                            <form action="students.jsp" method="get">
+                                <input type="hidden" value="phd_delete" name="phd_action">
+                                <input type="hidden" 
+                                    value="<%= rs.getInt("phd_student_id") %>" name="PHD ID">
+                                <%-- Button --%>
+                                <td>
+                                    <input type="submit" value="Delete">
+                                </td>
+                            </form>
+                        </tr>
+                <%
+                        }
+                %>
+                
+                <%-- -------- Close Connection Code -------- --%>
+                <%
+                        // Close the ResultSet
+                        rs.close();
+
+                        // Close the Statement
+                        phd_statement.close();
+
+                        // Close the Connection
+                        conn.close();
+                    } catch (SQLException sqle) {
+                        out.println(sqle.getMessage());
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                %>
                 </table>
             </td>
         </tr>
@@ -805,7 +813,8 @@
         <%-- thesis --%>
         <%-- thesis --%>
         <tr>
-            <td valign="top">
+            <td valign="center">
+                Thesis Entry
                 </td>
                 <td>
 
@@ -919,7 +928,7 @@
                                 <input type="hidden" value="thesis_insert" name="thesis_action">
                                 <th><input value="" name="THESIS STUDENT ID" size="10"></th>
                                 <th><input value="" name="THESIS FACULTY NAME" size="10"></th>
-                                <th><input type="submit" value="thesis_insert"></th>
+                                <th><input type="submit" value="Insert"></th>
                             </form>
                         </tr>
 
@@ -949,7 +958,7 @@
         
                                 <%-- Button --%>
                                 <td>
-                                    <input type="submit" value="thesis_update">
+                                    <input type="submit" value="Update">
                                 </td>
                             </form>
                             <form action="students.jsp" method="get">
@@ -958,7 +967,7 @@
                                     value="<%= rs.getInt("thesis_student_id") %>" name="THESIS STUDENT ID">
                                 <%-- Button --%>
                                 <td>
-                                    <input type="submit" value="thesis_delete">
+                                    <input type="submit" value="Delete">
                                 </td>
                             </form>
                         </tr>
