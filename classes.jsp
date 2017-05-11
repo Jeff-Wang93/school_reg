@@ -1151,10 +1151,11 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO enrolled_student VALUES (?, ?)");
+                            "INSERT INTO enrolled_student VALUES (?, ?, ?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
+                        pstmt.setString(3, request.getParameter("enrolled quarter"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1174,10 +1175,12 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE enrolled_student SET classes_id = ? WHERE student_id = ?");
+                            "UPDATE enrolled_student SET classes_id = ?, enrolled_quarter = ?" +
+                            "WHERE student_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("student ID")));
+                        pstmt.setString(2, request.getParameter("enrolled quarter"));
+                        pstmt.setInt(3, Integer.parseInt(request.getParameter("student ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1203,7 +1206,7 @@
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
-                         conn.commit();
+                        conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -1224,6 +1227,7 @@
                     <tr>
                         <th>Student ID</th>
                         <th>Classes ID</th>
+                        <th>Quarter   </th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -1231,6 +1235,7 @@
                             <input type="hidden" value="enrolled_insert" name="enrolled_action">
                             <th><input value="" name="student ID" size="10"></th>
                             <th><input value="" name="classes ID" size="10"></th>
+                            <th><input value="" name="enrolled quarter" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -1256,6 +1261,12 @@
                                 <input value="<%= rs.getInt("classes_id") %>" 
                                     name="classes ID" size="10">
                             </td>
+
+                             <td>
+                                <input value="<%= rs.getString("enrolled_quarter") %>" 
+                                    name="enrolled quarter" size="10">
+                            </td>
+
     
                             <%-- Button --%>
                             <td>
@@ -1266,6 +1277,7 @@
                             <input type="hidden" value="enrolled_delete" name="enrolled_action">
                             <input type="hidden" 
                                 value="<%= rs.getInt("student_id") %>" name="student ID">
+
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
@@ -1336,10 +1348,11 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO waitlist_student VALUES (?, ?)");
+                            "INSERT INTO waitlist_student VALUES (?, ?, ?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
+                        pstmt.setString(3, request.getParameter("wait quarter"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1359,10 +1372,12 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE waitlist_student SET classes_id = ? WHERE student_id = ?");
+                            "UPDATE waitlist_student SET classes_id = ?, waitlist_quarter = ?" +
+                            "WHERE student_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("student ID")));
+                        pstmt.setString(3, request.getParameter("wait quarter"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1416,6 +1431,7 @@
                             <input type="hidden" value="waitlist_insert" name="waitlist_action">
                             <th><input value="" name="student ID" size="10"></th>
                             <th><input value="" name="classes ID" size="10"></th>
+                            <th><input value="" name="wait quarter" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -1441,7 +1457,12 @@
                                 <input value="<%= rs.getInt("classes_id") %>" 
                                     name="classes ID" size="10">
                             </td>
-    
+
+                             <td>
+                                <input value="<%= rs.getString("waitlist_quarter") %>" 
+                                    name="wait quarter" size="10">
+                            </td>
+
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">

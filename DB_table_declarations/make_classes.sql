@@ -57,21 +57,24 @@ CREATE TABLE public.lab_info
 DROP TABLE IF EXISTS enrolled_student CASCADE;
 CREATE TABLE public.enrolled_student
 (
-    student_id INTEGER REFERENCES student (student_id),
-    classes_id INTEGER REFERENCES classes (classes_id)
+    student_id          INTEGER REFERENCES student (student_id),
+    classes_id          INTEGER REFERENCES classes (classes_id),
+    enrolled_quarter    VARCHAR(20) 
 );
 
 DROP TABLE IF EXISTS waitlist_student CASCADE;
 CREATE TABLE public.waitlist_student
 (
-    student_id INTEGER REFERENCES student (student_id),
-    classes_id INTEGER REFERENCES classes (classes_id)
+    student_id          INTEGER REFERENCES student (student_id),
+    classes_id          INTEGER REFERENCES classes (classes_id),
+    waitlist_quarter    VARCHAR(20) 
 );
 
 DROP TABLE IF EXISTS previous_class CASCADE;
 CREATE TABLE public.previous_class
 (
-    student_id INTEGER REFERENCES student (student_id),
-    classes_id INTEGER REFERENCES classes (classes_id),
-    grade      VARCHAR(20) NOT NULL
+    student_id          INTEGER REFERENCES student (student_id),
+    classes_id          INTEGER REFERENCES classes (classes_id),
+    grade               VARCHAR(20) NOT NULL,
+    previous_quarter    VARCHAR(20)
 );
