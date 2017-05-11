@@ -14,6 +14,7 @@ with (
 DROP TABLE IF EXISTS degree_course CASCADE;
 CREATE TABLE public.degree_course
 (
-    degree_id INTEGER REFERENCES degree (degree_id),
-    course_id INTEGER REFERENCES course (course_id)
+    degree_id   INTEGER REFERENCES degree (degree_id),
+    course_id   INTEGER REFERENCES course (course_id),
+    identifier  INTEGER NOT NULL
 );

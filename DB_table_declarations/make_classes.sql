@@ -67,3 +67,11 @@ CREATE TABLE public.waitlist_student
     student_id INTEGER REFERENCES student (student_id),
     classes_id INTEGER REFERENCES classes (classes_id)
 );
+
+DROP TABLE IF EXISTS previous_class CASCADE;
+CREATE TABLE public.previous_class
+(
+    student_id INTEGER REFERENCES student (student_id),
+    classes_id INTEGER REFERENCES classes (classes_id),
+    grade      VARCHAR(20) NOT NULL
+);
