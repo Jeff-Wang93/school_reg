@@ -60,3 +60,10 @@ CREATE TABLE public.enrolled_student
     student_id INTEGER REFERENCES student (student_id),
     classes_id INTEGER REFERENCES classes (classes_id)
 );
+
+DROP TABLE IF EXISTS waitlist_student CASCADE;
+CREATE TABLE public.waitlist_student
+(
+    student_id INTEGER REFERENCES student (student_id),
+    classes_id INTEGER REFERENCES classes (classes_id)
+);

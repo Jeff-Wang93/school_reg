@@ -345,13 +345,13 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="lecture.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lecture_insert" name="lecture_action">
                             <th><input value="" name="lecture ID" size="10"></th>
                             <th><input value="" name="lecture TIME"  size="10"></th>
                             <th><input value="" name="lecture DATE"  size="10"></th>
-                            <th><input value="" name="lecture LOCATION"  size="10"></th>
-                            <th><input value="" name="lecture MANDATORY"  size="12"></th>
+                            <th><input value="" name="lecture LOCATION"  size="20"></th>
+                            <th><input value="" name="lecture MANDATORY"  size="20"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -366,7 +366,7 @@
             %>
 
                     <tr>
-                        <form action="lecture.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lecture_update" name="lecture_action">
 
                             <td>
@@ -386,12 +386,12 @@
 
                             <td>
                                 <input value="<%= rs.getString("lecture_info_location") %>" 
-                                    name="lecture LOCATION" size="10">
+                                    name="lecture LOCATION" size="20">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("lecture_info_mandatory") %>" 
-                                    name="lecture MANDATORY" size="12">
+                                    name="lecture MANDATORY" size="20">
                             </td>
 
                             <td>
@@ -401,16 +401,16 @@
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="lecture_Update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="lecture.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lecture_delete" name="lecture_action">
                             <input type="hidden" 
                                 value="<%= rs.getInt("lecture_info_id") %>" name="lecture ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="lecture_Delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
@@ -569,13 +569,13 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="discussion.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="discussion_insert" name="discussion_action">
                             <th><input value="" name="discussion ID" size="10"></th>
                             <th><input value="" name="discussion TIME"  size="10"></th>
                             <th><input value="" name="discussion DATE"  size="10"></th>
-                            <th><input value="" name="discussion LOCATION"  size="10"></th>
-                            <th><input value="" name="discussion MANDATORY"  size="12"></th>
+                            <th><input value="" name="discussion LOCATION"  size="20"></th>
+                            <th><input value="" name="discussion MANDATORY"  size="20"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -590,7 +590,7 @@
             %>
 
                     <tr>
-                        <form action="discussion.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="discussion_update" name="discussion_action">
 
                             <td>
@@ -610,12 +610,12 @@
 
                             <td>
                                 <input value="<%= rs.getString("discussion_info_location") %>" 
-                                    name="discussion LOCATION" size="10">
+                                    name="discussion LOCATION" size="20">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("discussion_info_mandatory") %>" 
-                                    name="discussion MANDATORY" size="12">
+                                    name="discussion MANDATORY" size="20">
                             </td>
 
                             <td>
@@ -625,16 +625,16 @@
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="discussion_Update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="discussion.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="discussion_delete" name="discussion_action">
                             <input type="hidden" 
                                 value="<%= rs.getInt("discussion_info_id") %>" name="discussion ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="discussion_Delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
@@ -793,13 +793,13 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="review.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="review_insert" name="review_action">
                             <th><input value="" name="review ID" size="10"></th>
                             <th><input value="" name="review TIME"  size="10"></th>
                             <th><input value="" name="review DATE"  size="10"></th>
-                            <th><input value="" name="review LOCATION"  size="10"></th>
-                            <th><input value="" name="review MANDATORY"  size="12"></th>
+                            <th><input value="" name="review LOCATION"  size="20"></th>
+                            <th><input value="" name="review MANDATORY"  size="20"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -814,7 +814,7 @@
             %>
 
                     <tr>
-                        <form action="review.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="review_update" name="review_action">
 
                             <td>
@@ -834,12 +834,12 @@
 
                             <td>
                                 <input value="<%= rs.getString("review_info_location") %>" 
-                                    name="review LOCATION" size="10">
+                                    name="review LOCATION" size="20">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("review_info_mandatory") %>" 
-                                    name="review MANDATORY" size="12">
+                                    name="review MANDATORY" size="20">
                             </td>
 
                             <td>
@@ -849,16 +849,16 @@
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="review_Update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="review.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="review_delete" name="review_action">
                             <input type="hidden" 
                                 value="<%= rs.getInt("review_info_id") %>" name="review ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="review_Delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
@@ -1018,13 +1018,13 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="lab.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lab_insert" name="lab_action">
                             <th><input value="" name="lab ID" size="10"></th>
                             <th><input value="" name="lab TIME"  size="10"></th>
                             <th><input value="" name="lab DATE"  size="10"></th>
-                            <th><input value="" name="lab LOCATION"  size="10"></th>
-                            <th><input value="" name="lab MANDATORY"  size="12"></th>
+                            <th><input value="" name="lab LOCATION"  size="20"></th>
+                            <th><input value="" name="lab MANDATORY"  size="20"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -1039,7 +1039,7 @@
             %>
 
                     <tr>
-                        <form action="lab.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lab_update" name="lab_action">
 
                             <td>
@@ -1059,12 +1059,12 @@
 
                             <td>
                                 <input value="<%= rs.getString("lab_info_location") %>" 
-                                    name="lab LOCATION" size="10">
+                                    name="lab LOCATION" size="20">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("lab_info_mandatory") %>" 
-                                    name="lab MANDATORY" size="12">
+                                    name="lab MANDATORY" size="20">
                             </td>
 
                             <td>
@@ -1074,16 +1074,16 @@
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="lab_Update">
+                                <input type="submit" value="Update">
                             </td>
                         </form>
-                        <form action="lab.jsp" method="get">
+                        <form action="classes.jsp" method="get">
                             <input type="hidden" value="lab_delete" name="lab_action">
                             <input type="hidden" 
                                 value="<%= rs.getInt("lab_info_id") %>" name="lab ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="lab_Delete">
+                                <input type="submit" value="Delete">
                             </td>
                         </form>
                     </tr>
