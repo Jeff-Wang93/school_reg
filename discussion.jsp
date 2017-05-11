@@ -29,9 +29,9 @@
 
             <%-- -------- INSERT Code -------- --%>
             <%
-                    String action = request.getParameter("action");
+                    String discussion_action = request.getParameter("discussion_action");
                     // Check if an insertion is requested
-                    if (action != null && action.equals("insert")) {
+                    if (discussion_action != null && discussion_action.equals("discussion_insert")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -39,13 +39,14 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO discussion_info VALUES (?,?,?,?,?)");
+                            "INSERT INTO discussion_info VALUES (?,?,?,?,?,?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("discussion ID")));
                         pstmt.setString(2, request.getParameter("discussion TIME"));
-                        pstmt.setString(3, request.getParameter("discussion LOCATION"));
-                        pstmt.setString(4, request.getParameter("discussion MANDATORY"));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("CLASS ID")));
+                        pstmt.setString(3, request.getParameter("discussion DATE"));
+                        pstmt.setString(4, request.getParameter("discussion LOCATION"));
+                        pstmt.setString(5, request.getParameter("discussion MANDATORY"));
+                        pstmt.setInt(6, Integer.parseInt(request.getParameter("CLASS ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -57,7 +58,7 @@
             <%-- -------- UPDATE Code -------- --%>
             <%
                     // Check if an update is requested
-                    if (action != null && action.equals("update")) {
+                    if (discussion_action != null && discussion_action.equals("discussion_update")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -66,14 +67,16 @@
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE discussion_info SET discussion_info_time = ?," +
+                            "discussion_info_date = ?," + 
                             "discussion_info_location = ?, discussion_info_mandatory = ?," +
-                            "discussion_info_classes_id = ? WHERE discussion_info_id = ?");
+                            "classes_id = ? WHERE discussion_info_id = ?");
 
                         pstmt.setString(1, request.getParameter("discussion TIME"));
-                        pstmt.setString(2, request.getParameter("discussion LOCATION"));
-                        pstmt.setString(3, request.getParameter("discussion MANDATORY"));
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("CLASS ID")));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("discussion ID")));
+                        pstmt.setString(2, request.getParameter("discussion DATE"));
+                        pstmt.setString(3, request.getParameter("discussion LOCATION"));
+                        pstmt.setString(4, request.getParameter("discussion MANDATORY"));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("CLASS ID")));
+                        pstmt.setInt(6, Integer.parseInt(request.getParameter("discussion ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -85,7 +88,7 @@
             <%-- -------- DELETE Code -------- --%>
             <%
                     // Check if a delete is requested
-                    if (action != null && action.equals("delete")) {
+                    if (discussion_action != null && discussion_action.equals("discussion_delete")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -107,11 +110,11 @@
             <%-- -------- SELECT Statement Code -------- --%>
             <%
                     // Create the statement
-                    Statement statement = conn.createStatement();
+                    Statement discussion_statement = conn.createStatement();
 
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
-                    ResultSet rs = statement.executeQuery
+                    ResultSet rs = discussion_statement.executeQuery
                         ("SELECT * FROM discussion_info");
             %>
 
@@ -120,6 +123,7 @@
                     <tr>
                         <th>discussion ID</th>
                         <th>discussion Time</th>
+                        <th>discussion Date</th>
                         <th>discussion Location</th>
                         <th>discussion Mandatory</th>
                         <th>Class ID</th>
@@ -127,11 +131,12 @@
                     </tr>
                     <tr>
                         <form action="discussion.jsp" method="get">
-                            <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="discussion ID" size="20"></th>
-                            <th><input value="" name="discussion TIME"  size="20"></th>
-                            <th><input value="" name="discussion LOCATION"  size="20"></th>
-                            <th><input value="" name="discussion MANDATORY"  size="20"></th>
+                            <input type="hidden" value="discussion_insert" name="discussion_action">
+                            <th><input value="" name="discussion ID" size="10"></th>
+                            <th><input value="" name="discussion TIME"  size="10"></th>
+                            <th><input value="" name="discussion DATE"  size="10"></th>
+                            <th><input value="" name="discussion LOCATION"  size="10"></th>
+                            <th><input value="" name="discussion MANDATORY"  size="12"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -147,45 +152,50 @@
 
                     <tr>
                         <form action="discussion.jsp" method="get">
-                            <input type="hidden" value="update" name="action">
+                            <input type="hidden" value="discussion_update" name="discussion_action">
 
                             <td>
-                                <input value="<%= rs.getString("discussion_info_id") %>" 
-                                    name="discussion ID" size="20">
+                                <input value="<%= rs.getInt("discussion_info_id") %>" 
+                                    name="discussion ID" size="10">
                             </td>
     
                             <td>
                                 <input value="<%= rs.getString("discussion_info_time") %>" 
-                                    name="discussion TIME" size="20">
+                                    name="discussion TIME" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("discussion_info_date") %>" 
+                                    name="discussion DATE" size="10">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("discussion_info_location") %>" 
-                                    name="discussion LOCATION" size="20">
+                                    name="discussion LOCATION" size="10">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("discussion_info_mandatory") %>" 
-                                    name="discussion MANDATORY" size="20">
+                                    name="discussion MANDATORY" size="12">
                             </td>
 
                             <td>
-                                <input value="<%= rs.getString("discussion_info_classes_id") %>" 
+                                <input value="<%= rs.getInt("classes_id") %>" 
                                     name="CLASS ID" size="10">
                             </td>
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="Update">
+                                <input type="submit" value="discussion_Update">
                             </td>
                         </form>
                         <form action="discussion.jsp" method="get">
-                            <input type="hidden" value="delete" name="action">
+                            <input type="hidden" value="discussion_delete" name="discussion_action">
                             <input type="hidden" 
-                                value="<%= rs.getString("discussion_info_id") %>" name="discussion ID">
+                                value="<%= rs.getInt("discussion_info_id") %>" name="discussion ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="Delete">
+                                <input type="submit" value="discussion_Delete">
                             </td>
                         </form>
                     </tr>
@@ -199,7 +209,7 @@
                     rs.close();
     
                     // Close the Statement
-                    statement.close();
+                    discussion_statement.close();
     
                     // Close the Connection
                     conn.close();

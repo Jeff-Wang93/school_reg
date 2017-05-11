@@ -29,9 +29,9 @@
 
             <%-- -------- INSERT Code -------- --%>
             <%
-                    String review_action = request.getParameter("review_action");
+                    String classes_action = request.getParameter("classes_action");
                     // Check if an insertion is requested
-                    if (review_action != null && review_action.equals("review_insert")) {
+                    if (classes_action != null && classes_action.equals("classes_insert")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -39,14 +39,13 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO review_info VALUES (?,?,?,?,?,?)");
+                            "INSERT INTO classes VALUES (?,?,?,?,?)");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("review ID")));
-                        pstmt.setString(2, request.getParameter("review TIME"));
-                        pstmt.setString(3, request.getParameter("review DATE"));
-                        pstmt.setString(4, request.getParameter("review LOCATION"));
-                        pstmt.setString(5, request.getParameter("review MANDATORY"));
-                        pstmt.setInt(6, Integer.parseInt(request.getParameter("CLASS ID")));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
+                        pstmt.setInt(2, Integer.parseInt(request.getParameter("classes LIMIT")));
+                        pstmt.setString(3, request.getParameter("classes QUARTER"));
+                        pstmt.setString(4, request.getParameter("classes YEAR"));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("course ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -58,7 +57,7 @@
             <%-- -------- UPDATE Code -------- --%>
             <%
                     // Check if an update is requested
-                    if (review_action != null && review_action.equals("review_update")) {
+                    if (classes_action != null && classes_action.equals("classes_update")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -66,21 +65,19 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE review_info SET review_info_time = ?," +
-                            "review_info_date = ?," + 
-                            "review_info_location = ?, review_info_mandatory = ?," +
-                            "classes_id = ? WHERE review_info_id = ?");
+                            "UPDATE classes SET classes_enrollment_limit = ?," +
+                            "classes_quarter = ?," + 
+                            "classes_year = ?, course_id = ? WHERE classes_id = ?");
 
-                        pstmt.setString(1, request.getParameter("review TIME"));
-                        pstmt.setString(2, request.getParameter("review DATE"));
-                        pstmt.setString(3, request.getParameter("review LOCATION"));
-                        pstmt.setString(4, request.getParameter("review MANDATORY"));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("CLASS ID")));
-                        pstmt.setInt(6, Integer.parseInt(request.getParameter("review ID")));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("classes LIMIT")));
+                        pstmt.setString(2, request.getParameter("classes QUARTER"));
+                        pstmt.setString(3, request.getParameter("classes YEAR"));
+                        pstmt.setInt(4, Integer.parseInt(request.getParameter("course ID")));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("classes ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
-                         conn.commit();
+                        conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -88,7 +85,7 @@
             <%-- -------- DELETE Code -------- --%>
             <%
                     // Check if a delete is requested
-                    if (review_action != null && review_action.equals("review_delete")) {
+                    if (classes_action != null && classes_action.equals("classes_delete")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -96,13 +93,13 @@
                         // Create the prepared statement and use it to
                         // DELETE the student FROM the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM review_info WHERE review_info_id = ?");
+                            "DELETE FROM classes WHERE classes_id = ?");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("review ID")));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
-                         conn.commit();
+                        conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -110,34 +107,32 @@
             <%-- -------- SELECT Statement Code -------- --%>
             <%
                     // Create the statement
-                    Statement review_statement = conn.createStatement();
+                    Statement classes_statement = conn.createStatement();
 
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
-                    ResultSet rs = review_statement.executeQuery
-                        ("SELECT * FROM review_info");
+                    ResultSet rs = classes_statement.executeQuery
+                        ("SELECT * FROM classes");
             %>
 
             <!-- Add an HTML table header row to format the results -->
                 <table border="1">
                     <tr>
-                        <th>review ID</th>
-                        <th>review Time</th>
-                        <th>review Date</th>
-                        <th>review Location</th>
-                        <th>review Mandatory</th>
-                        <th>Class ID</th>
+                        <th>classes ID</th>
+                        <th>classes Enrollment Limit</th>
+                        <th>classes Quarter</th>
+                        <th>classes Year</th>
+                        <th>course ID</th>
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <form action="review.jsp" method="get">
-                            <input type="hidden" value="review_insert" name="review_action">
-                            <th><input value="" name="review ID" size="10"></th>
-                            <th><input value="" name="review TIME"  size="10"></th>
-                            <th><input value="" name="review DATE"  size="10"></th>
-                            <th><input value="" name="review LOCATION"  size="10"></th>
-                            <th><input value="" name="review MANDATORY"  size="12"></th>
-                            <th><input value="" name="CLASS ID"  size="10"></th>
+                        <form action="classes.jsp" method="get">
+                            <input type="hidden" value="classes_insert" name="classes_action">
+                            <th><input value="" name="classes ID" size="10"></th>
+                            <th><input value="" name="classes LIMIT"  size="20"></th>
+                            <th><input value="" name="classes QUARTER"  size="10"></th>
+                            <th><input value="" name="classes YEAR"  size="10"></th>
+                            <th><input value="" name="course  ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -151,51 +146,47 @@
             %>
 
                     <tr>
-                        <form action="review.jsp" method="get">
-                            <input type="hidden" value="review_update" name="review_action">
-
-                            <td>
-                                <input value="<%= rs.getInt("review_info_id") %>" 
-                                    name="review ID" size="10">
-                            </td>
-    
-                            <td>
-                                <input value="<%= rs.getString("review_info_time") %>" 
-                                    name="review TIME" size="10">
-                            </td>
-
-                            <td>
-                                <input value="<%= rs.getString("review_info_date") %>" 
-                                    name="review DATE" size="10">
-                            </td>
-
-                            <td>
-                                <input value="<%= rs.getString("review_info_location") %>" 
-                                    name="review LOCATION" size="10">
-                            </td>
-
-                            <td>
-                                <input value="<%= rs.getString("review_info_mandatory") %>" 
-                                    name="review MANDATORY" size="12">
-                            </td>
+                        <form action="classes.jsp" method="get">
+                            <input type="hidden" value="classes_update" name="classes_action">
 
                             <td>
                                 <input value="<%= rs.getInt("classes_id") %>" 
-                                    name="CLASS ID" size="10">
+                                    name="classes ID" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getInt("classes_enrollment_limit") %>" 
+                                    name="classes LIMIT" size="20">
+                            </td>
+
+    
+                            <td>
+                                <input value="<%= rs.getString("classes_quarter") %>" 
+                                    name="classes QUARTER" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("classes_year") %>" 
+                                    name="classes YEAR" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getInt("course_id") %>" 
+                                    name="course ID" size="10">
                             </td>
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="review_Update">
+                                <input type="submit" value="classes_Update">
                             </td>
                         </form>
-                        <form action="review.jsp" method="get">
-                            <input type="hidden" value="review_delete" name="review_action">
+                        <form action="classes.jsp" method="get">
+                            <input type="hidden" value="classes_delete" name="classes_action">
                             <input type="hidden" 
-                                value="<%= rs.getInt("review_info_id") %>" name="review ID">
+                                value="<%= rs.getInt("classes_id") %>" name="classes ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="review_Delete">
+                                <input type="submit" value="classes_Delete">
                             </td>
                         </form>
                     </tr>
@@ -209,7 +200,7 @@
                     rs.close();
     
                     // Close the Statement
-                    review_statement.close();
+                    classes_statement.close();
     
                     // Close the Connection
                     conn.close();

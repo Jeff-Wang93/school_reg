@@ -29,9 +29,9 @@
 
             <%-- -------- INSERT Code -------- --%>
             <%
-                    String action = request.getParameter("action");
+                    String lecture_action = request.getParameter("lecture_action");
                     // Check if an insertion is requested
-                    if (action != null && action.equals("insert")) {
+                    if (lecture_action != null && lecture_action.equals("lecture_insert")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -39,13 +39,14 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO lecture_info VALUES (?,?,?,?,?)");
+                            "INSERT INTO lecture_info VALUES (?,?,?,?,?,?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("lecture ID")));
                         pstmt.setString(2, request.getParameter("lecture TIME"));
-                        pstmt.setString(3, request.getParameter("lecture LOCATION"));
-                        pstmt.setString(4, request.getParameter("lecture MANDATORY"));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("CLASS ID")));
+                        pstmt.setString(3, request.getParameter("lecture DATE"));
+                        pstmt.setString(4, request.getParameter("lecture LOCATION"));
+                        pstmt.setString(5, request.getParameter("lecture MANDATORY"));
+                        pstmt.setInt(6, Integer.parseInt(request.getParameter("CLASS ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -57,7 +58,7 @@
             <%-- -------- UPDATE Code -------- --%>
             <%
                     // Check if an update is requested
-                    if (action != null && action.equals("update")) {
+                    if (lecture_action != null && lecture_action.equals("lecture_update")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -66,14 +67,16 @@
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE lecture_info SET lecture_info_time = ?," +
+                            "lecture_info_date = ?," + 
                             "lecture_info_location = ?, lecture_info_mandatory = ?," +
-                            "lecture_info_classes_id = ? WHERE lecture_info_id = ?");
+                            "classes_id = ? WHERE lecture_info_id = ?");
 
                         pstmt.setString(1, request.getParameter("lecture TIME"));
-                        pstmt.setString(2, request.getParameter("lecture LOCATION"));
-                        pstmt.setString(3, request.getParameter("lecture MANDATORY"));
-                        pstmt.setInt(4, Integer.parseInt(request.getParameter("CLASS ID")));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("lecture ID")));
+                        pstmt.setString(2, request.getParameter("lecture DATE"));
+                        pstmt.setString(3, request.getParameter("lecture LOCATION"));
+                        pstmt.setString(4, request.getParameter("lecture MANDATORY"));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("CLASS ID")));
+                        pstmt.setInt(6, Integer.parseInt(request.getParameter("lecture ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -85,7 +88,7 @@
             <%-- -------- DELETE Code -------- --%>
             <%
                     // Check if a delete is requested
-                    if (action != null && action.equals("delete")) {
+                    if (lecture_action != null && lecture_action.equals("lecture_delete")) {
 
                         // Begin transaction
                         conn.setAutoCommit(false);
@@ -107,11 +110,11 @@
             <%-- -------- SELECT Statement Code -------- --%>
             <%
                     // Create the statement
-                    Statement statement = conn.createStatement();
+                    Statement lecture_statement = conn.createStatement();
 
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
-                    ResultSet rs = statement.executeQuery
+                    ResultSet rs = lecture_statement.executeQuery
                         ("SELECT * FROM lecture_info");
             %>
 
@@ -120,6 +123,7 @@
                     <tr>
                         <th>lecture ID</th>
                         <th>lecture Time</th>
+                        <th>lecture Date</th>
                         <th>lecture Location</th>
                         <th>lecture Mandatory</th>
                         <th>Class ID</th>
@@ -127,11 +131,12 @@
                     </tr>
                     <tr>
                         <form action="lecture.jsp" method="get">
-                            <input type="hidden" value="insert" name="action">
-                            <th><input value="" name="lecture ID" size="20"></th>
-                            <th><input value="" name="lecture TIME"  size="20"></th>
-                            <th><input value="" name="lecture LOCATION"  size="20"></th>
-                            <th><input value="" name="lecture MANDATORY"  size="20"></th>
+                            <input type="hidden" value="lecture_insert" name="lecture_action">
+                            <th><input value="" name="lecture ID" size="10"></th>
+                            <th><input value="" name="lecture TIME"  size="10"></th>
+                            <th><input value="" name="lecture DATE"  size="10"></th>
+                            <th><input value="" name="lecture LOCATION"  size="10"></th>
+                            <th><input value="" name="lecture MANDATORY"  size="12"></th>
                             <th><input value="" name="CLASS ID"  size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -147,45 +152,50 @@
 
                     <tr>
                         <form action="lecture.jsp" method="get">
-                            <input type="hidden" value="update" name="action">
+                            <input type="hidden" value="lecture_update" name="lecture_action">
 
                             <td>
-                                <input value="<%= rs.getString("lecture_info_id") %>" 
-                                    name="lecture ID" size="20">
+                                <input value="<%= rs.getInt("lecture_info_id") %>" 
+                                    name="lecture ID" size="10">
                             </td>
     
                             <td>
                                 <input value="<%= rs.getString("lecture_info_time") %>" 
-                                    name="lecture TIME" size="20">
+                                    name="lecture TIME" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getString("lecture_info_date") %>" 
+                                    name="lecture DATE" size="10">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("lecture_info_location") %>" 
-                                    name="lecture LOCATION" size="20">
+                                    name="lecture LOCATION" size="10">
                             </td>
 
                             <td>
                                 <input value="<%= rs.getString("lecture_info_mandatory") %>" 
-                                    name="lecture MANDATORY" size="20">
+                                    name="lecture MANDATORY" size="12">
                             </td>
 
                             <td>
-                                <input value="<%= rs.getString("lecture_info_classes_id") %>" 
+                                <input value="<%= rs.getInt("classes_id") %>" 
                                     name="CLASS ID" size="10">
                             </td>
 
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="Update">
+                                <input type="submit" value="lecture_Update">
                             </td>
                         </form>
                         <form action="lecture.jsp" method="get">
-                            <input type="hidden" value="delete" name="action">
+                            <input type="hidden" value="lecture_delete" name="lecture_action">
                             <input type="hidden" 
-                                value="<%= rs.getString("lecture_info_id") %>" name="lecture ID">
+                                value="<%= rs.getInt("lecture_info_id") %>" name="lecture ID">
                             <%-- Button --%>
                             <td>
-                                <input type="submit" value="Delete">
+                                <input type="submit" value="lecture_Delete">
                             </td>
                         </form>
                     </tr>
@@ -199,7 +209,7 @@
                     rs.close();
     
                     // Close the Statement
-                    statement.close();
+                    lecture_statement.close();
     
                     // Close the Connection
                     conn.close();

@@ -66,16 +66,16 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE course SET course_id = ?, course_units = ?," + 
+                            "UPDATE course SET course_units = ?," + 
                             "course_grade_type = ?, course_number = ?, course_lab = ?," +
                             "course_department_id = ? WHERE course_id = ?");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("COURSE ID")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("COURSE UNITS")));
-                        pstmt.setString(3, request.getParameter("COURSE GRADE TYPE"));
-                        pstmt.setString(4, request.getParameter("COURSE NUMBER"));
-                        pstmt.setString(5, request.getParameter("COURSE LAB"));
-                        pstmt.setInt(6, Integer.parseInt(request.getParameter("COURSE DEPARTMENT ID")));
+                        pstmt.setInt(1, Integer.parseInt(request.getParameter("COURSE UNITS")));
+                        pstmt.setString(2, request.getParameter("COURSE GRADE TYPE"));
+                        pstmt.setString(3, request.getParameter("COURSE NUMBER"));
+                        pstmt.setString(4, request.getParameter("COURSE LAB"));
+                        pstmt.setInt(5, Integer.parseInt(request.getParameter("COURSE DEPARTMENT ID")));
+                        pstmt.setInt(6, Integer.parseInt(request.getParameter("COURSE ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -95,7 +95,7 @@
                         // Create the prepared statement and use it to
                         // DELETE the student FROM the Student table.
                          PreparedStatement pstmt = conn.prepareStatement(
-                            "DELETE FROM course WHERE COURSE_ID = ?");
+                            "DELETE FROM course WHERE course_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("COURSE ID")));
                         int rowCount = pstmt.executeUpdate();
@@ -153,37 +153,31 @@
                         <form action="course.jsp" method="get">
                             <input type="hidden" value="update" name="action">
 
-                            <%-- Get the COURSE ID, which is a varchar(20) --%>
                             <td>
                                 <input value="<%= rs.getString("course_id") %>" 
                                     name="COURSE ID" size="10">
                             </td>
     
-                            <%-- Get the --%>
                             <td>
                                 <input value="<%= rs.getString("course_units") %>" 
                                     name="COURSE UNITS" size="10">
                             </td>
 
-                            <%-- Get the --%>
                             <td>
                                 <input value="<%= rs.getString("course_grade_type") %>" 
                                     name="COURSE GRADE TYPE" size="10">
                             </td>
 
-                            <%-- Get the --%>
                             <td>
                                 <input value="<%= rs.getString("course_number") %>" 
                                     name="COURSE NUMBER" size="10">
                             </td>
     
-                            <%-- Get the --%>
                             <td>
                                 <input value="<%= rs.getString("course_lab") %>" 
                                     name="COURSE LAB" size="10">
                             </td>
     
-                            <%-- Get the --%>
                             <td>
                                 <input value="<%= rs.getString("course_department_id") %>" 
                                     name="COURSE DEPARTMENT ID" size="10">
@@ -197,7 +191,7 @@
                         <form action="course.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("course_id") %>" name="COURSE ID">
+                                value="<%= rs.getInt("course_id") %>" name="COURSE ID">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">

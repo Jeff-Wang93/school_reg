@@ -1,2 +1,1 @@
-1. John Smith; A99999999
-2. Jane Doe; A11111111 (erase this line if working alone)
+1. Jeffrey Wang; A12000875
