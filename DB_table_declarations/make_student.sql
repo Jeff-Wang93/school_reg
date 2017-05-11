@@ -48,8 +48,8 @@ DROP TABLE IF EXISTS probation CASCADE;
 CREATE TABLE public.probation
 (
     probation_student_id    INTEGER REFERENCES student (student_id),
-    probation_start         DATE NOT NULL,
-    probation_end           DATE NOT NULL,
+    probation_start         VARCHAR(20) NOT NULL,
+    probation_end           VARCHAR(20) NOT NULL,
     probation_description   VARCHAR(40) NOT NULL
 );
 
@@ -57,8 +57,8 @@ DROP TABLE IF EXISTS period_enroll CASCADE;
 CREATE TABLE public.period_enroll
 (
     period_enroll_student_id    INTEGER REFERENCES student (student_id),
-    period_enroll_start         DATE NOT NULL,
-    period_enroll_end           DATE NOT NULL,
+    period_enroll_start         VARCHAR(20) NOT NULL,
+    period_enroll_end           VARCHAR(20) NOT NULL,
     period_enroll_description   VARCHAR(40) NOT NULL
 );
 
