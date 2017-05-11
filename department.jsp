@@ -62,10 +62,9 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE department SET department_id = ?, department_title = ?");
-
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("DEPARTMENT ID")));
-                        pstmt.setString(2, request.getParameter("DEPARTMENT TITLE"));
+                            "UPDATE department SET department_title = ? where department_id = ?"); 
+                        pstmt.setString(1, request.getParameter("DEPARTMENT TITLE"));
+                        pstmt.setInt(2, Integer.parseInt(request.getParameter("DEPARTMENT ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -137,7 +136,7 @@
 
                             <%-- Get the DEPARTMENT ID, which is a INTEGER --%>
                             <td>
-                                <input value="<%= rs.getString("department_id") %>" 
+                                <input value="<%= rs.getInt("department_id") %>" 
                                     name="DEPARTMENT ID" size="10">
                             </td>
     
@@ -155,7 +154,7 @@
                         <form action="department.jsp" method="get">
                             <input type="hidden" value="delete" name="action">
                             <input type="hidden" 
-                                value="<%= rs.getString("department_id") %>" name="DEPARTMENT ID">
+                                value="<%= rs.getInt("department_id") %>" name="DEPARTMENT ID">
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Delete">
