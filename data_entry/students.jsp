@@ -844,19 +844,29 @@
 
                             // Begin transaction
                             conn.setAutoCommit(false);
+
+                            // parse the string with all faculty names
+                            String faculty_names = request.getParameter("THESIS FACULTY NAME");
+                            String delim = "[,]";
+                            String [] committee = faculty_names.split(delim);
                             
-                            // Create the prepared statement and use it to
-                            // INSERT the student attributes INTO the Student table.
-                            PreparedStatement pstmt = conn.prepareStatement(
-                                "INSERT INTO thesis VALUES (?,?)");
+                            // ensure at least 3 professors are added
+                            if (committee.length >= 3) {
+                                // Create the prepared statement and use it to
+                                // INSERT the student attributes INTO the Student table.
+                                for(int i = 0; i < committee.length; i++) {
+                                    PreparedStatement pstmt = conn.prepareStatement(
+                                        "INSERT INTO thesis VALUES (?,?)");
 
-                            pstmt.setInt(1, Integer.parseInt(request.getParameter("THESIS STUDENT ID")));
-                            pstmt.setString(2, request.getParameter("THESIS FACULTY NAME"));
-                            int rowCount = pstmt.executeUpdate();
+                                    pstmt.setInt(1, Integer.parseInt(request.getParameter("THESIS STUDENT ID")));
+                                    pstmt.setString(2, committee[i]);
+                                    int rowCount = pstmt.executeUpdate();
 
-                            // Commit transaction
-                            conn.commit();
-                            conn.setAutoCommit(true);
+                                    // Commit transaction
+                                    conn.commit();
+                                    conn.setAutoCommit(false);
+                                }
+                            }
                         }
                 %>
 
@@ -871,10 +881,13 @@
                             // Create the prepared statement and use it to
                             // UPDATE the student attributes in the Student table.
                             PreparedStatement pstmt = conn.prepareStatement(
-                                "UPDATE thesis SET thesis_faculty_type = ? WHERE thesis_id= ?");
+                                "UPDATE thesis SET thesis_faculty_name = ? WHERE " +       
+                                "thesis_student_id = ? AND thesis_faculty_name = ?");
 
-                            pstmt.setString(1, request.getParameter("THESIS FACULTY NAME"));
-                            pstmt.setInt(2, Integer.parseInt(request.getParameter("THESIS STUDENT ID")));
+                            pstmt.setString(1, request.getParameter("UPDATE FACULTY NAME"));
+                            pstmt.setInt(2, Integer.parseInt(
+                                request.getParameter("THESIS STUDENT ID")));
+                            pstmt.setString(3, request.getParameter("THESIS FACULTY NAME"));
                             int rowCount = pstmt.executeUpdate();
 
                             // Commit transaction
@@ -890,18 +903,21 @@
 
                             // Begin transaction
                             conn.setAutoCommit(false);
-                            
+
                             // Create the prepared statement and use it to
                             // DELETE the student FROM the Student table.
+                            
                             PreparedStatement pstmt = conn.prepareStatement(
-                                "DELETE FROM thesis WHERE thesis_student_id = ?");
+                                "DELETE FROM thesis WHERE thesis_faculty_name = ? AND " +
+                                " thesis_student_id = ?");
 
+                            pstmt.setString(1, request.getParameter("THESIS FACULTY NAME"));
                             pstmt.setInt(
-                                1, Integer.parseInt(request.getParameter("THESIS STUDENT ID")));
+                                2, Integer.parseInt(request.getParameter("THESIS STUDENT ID")));
                             int rowCount = pstmt.executeUpdate();
 
                             // Commit transaction
-                             conn.commit();
+                            conn.commit();
                             conn.setAutoCommit(true);
                         }
                 %>
@@ -921,7 +937,9 @@
                     <table border="1">
                         <tr>
                             <th>Student ID</th>
-                            <th>Faculty Name</th>
+                            <th>Faculty Names</th>
+                            <th></th>
+                            <th>Update Faculty Names</th>
                         </tr>
                         <tr>
                             <form action="students.jsp" method="get">
@@ -955,6 +973,10 @@
                                     <input value="<%= rs.getString("thesis_faculty_name") %>" 
                                         name="THESIS FACULTY NAME" size="10">
                                 </td>
+
+                                <td>
+                                    <th><input value="" name="UPDATE FACULTY NAME" size="10"></th>
+                                </td>
         
                                 <%-- Button --%>
                                 <td>
@@ -964,7 +986,12 @@
                             <form action="students.jsp" method="get">
                                 <input type="hidden" value="thesis_delete" name="thesis_action">
                                 <input type="hidden" 
-                                    value="<%= rs.getInt("thesis_student_id") %>" name="THESIS STUDENT ID">
+                                    value="<%= rs.getInt("thesis_student_id") %>" 
+                                    name="THESIS STUDENT ID">
+                                <input type="hidden" 
+                                    value="<%= rs.getString("thesis_faculty_name") %>" 
+                                    name="THESIS FACULTY NAME">
+
                                 <%-- Button --%>
                                 <td>
                                     <input type="submit" value="Delete">

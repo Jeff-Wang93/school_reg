@@ -2,7 +2,7 @@
 CREATE TABLE public.student
 (
     student_ssn         integer primary key,
-    student_id          integer NOT NULL,
+    student_id          integer UNIQUE NOT NULL,
     student_first_name  character varying(20) NOT NULL,
     student_middle_name character varying(20),
     student_last_name   character varying(20) NOT NULL,
@@ -76,17 +76,6 @@ with (
   OIDS=FALSE
 );
 
-DROP TABLE IF EXISTS thesis CASCADE;
-CREATE TABLE public.thesis 
-(
-    thesis_id             INTEGER PRIMARY KEY,
-    thesis_student_ssn    INTEGER REFERENCES student (student_ssn),
-    thesis_faculty_name   VARCHAR(20) REFERENCES faculty (faculty_name)
-)
-with (
-  OIDS=FALSE
-)
-
 DROP TABLE IF EXISTS classes CASCADE;
 CREATE TABLE public.classes
 (
@@ -94,11 +83,9 @@ CREATE TABLE public.classes
     classes_enrollment_limit  INTEGER NOT NULL,
     classes_mandatory         VARCHAR(20) NOT NULL,
     classes_quarter           VARCHAR(20) NOT NULL,
-    classes_year              VARCHAR(20) NOT NULL,
-)
-with (
-    OIDS=FALSE
-)
+    classes_year              VARCHAR(20) NOT NULL
+);
+
 DROP TABLE IF EXISTS course CASCADE;
 CREATE TABLE public.course
 (
@@ -161,7 +148,7 @@ CREATE TABLE public.phd_student
 DROP TABLE IF EXISTS thesis CASCADE;
 CREATE TABLE public.thesis 
 (
-    thesis_student_id     INTEGER REFERENCES student (student_id) PRIMARY KEY,
+    thesis_student_id     INTEGER REFERENCES phd_student (phd_student_id),
     thesis_faculty_name   VARCHAR(20) REFERENCES faculty (faculty_name)
 );
 
