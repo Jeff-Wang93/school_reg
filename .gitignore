@@ -13,3 +13,6 @@ webapps/docs/**
 webapps/examples/**
 webapps/host-manager/**
 webapps/manager/**
+
+#ignore SWP files
+*.swp
