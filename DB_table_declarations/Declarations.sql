@@ -231,6 +231,7 @@ CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
+    units               INTEGER
 );
 
 DROP TABLE IF EXISTS waitlist_student CASCADE;
@@ -238,7 +239,7 @@ CREATE TABLE public.waitlist_student
 (
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
-    waitlist_quarter    VARCHAR(20) 
+    units               INTEGER
 );
 
 DROP TABLE IF EXISTS previous_class CASCADE;

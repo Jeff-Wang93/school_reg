@@ -77,6 +77,40 @@
                 <% } %>
             </TABLE>
 
+            
+            <%-- Get all current classes by student --%>
+            <%
+                PreparedStatement pstmt2 = conn.prepareStatement(
+                    "SELECT * from classes WHERE classes_id IN (SELECT classes_id " +
+                    "FROM enrolled_student WHERE student_id IN (SELECT student_id " +
+                    "FROM student WHERE student_ssn = ?))"
+                );
+                pstmt2.setInt(1, chosen_student);
+                ResultSet display_class = pstmt2.executeQuery();
+            %>
+            
+            <%-- format the results --%>
+            <TABLE BORDER="1">
+                <TR>
+                    <TH>Class ID</TH>
+                    <TH>Enrollment Limit</TH>
+                    <TH>Quarter</TH>
+                    <TH>Year</TH>
+                    <TH>Course ID</TH>
+                </TR>
+
+                <% while(display_class.next()) { %>
+                <TR>
+                    <TD> <%= display_class.getInt(1) %></TD>
+                    <TD> <%= display_class.getInt(2) %></TD>
+                    <TD> <%= display_class.getString(3) %></TD>
+                    <TD> <%= display_class.getString(4) %></TD>
+                    <TD> <%= display_class.getInt(5) %></TD>
+                </TR>
+                <% } %>
+            </TABLE>
+
+
             <%
                 // Close the Connection
                 conn.close();
