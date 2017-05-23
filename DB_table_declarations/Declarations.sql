@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS course CASCADE;
 CREATE TABLE public.course
 (
     course_id             integer primary key,
-    course_units          integer NOT NULL,
+    course_units          VARCHAR (20) NOT NULL,
     course_grade_type     character varying(10) NOT NULL,
-    course_number         character varying(10) NOT NULL,
+    course_title          character varying(10) NOT NULL UNIQUE,
     course_lab            character varying(10) NOT NULL,
     course_department_id  integer REFERENCES department (department_id)
 )
@@ -36,16 +36,13 @@ WITH (
 DROP TABLE IF EXISTS classes CASCADE;
 CREATE TABLE public.classes
 (
-    classes_id                INTEGER PRIMARY KEY,
-    classes_title             VARCHAR(20) NOT NULL,
+    classes_id                INTEGER     PRIMARY KEY,
+    classes_title             VARCHAR(20) REFERENCES course (course_title),
     classes_enrollment_limit  INTEGER NOT NULL,
     classes_quarter           VARCHAR(20) NOT NULL,
     classes_year              VARCHAR(20) NOT NULL,
-    classes_instructor_name   varchar(20) REFERENCES faculty (faculty_name),
-    classes_course_id         integer REFERENCES course (course_id)
-)
-with (
-	OIDS=FALSE
+    classes_instructor        VARCHAR(20) REFERENCES faculty (faculty_name),
+    classes_course_id         INTEGER     REFERENCES course (course_id)
 );
 
 DROP TABLE IF EXISTS degree CASCADE;
@@ -61,37 +58,12 @@ with (
   OIDS=FALSE
 );
 
-DROP TABLE IF EXISTS classes CASCADE;
-CREATE TABLE public.classes
-(
-    classes_id                INTEGER PRIMARY KEY,
-    classes_enrollment_limit  INTEGER NOT NULL,
-    classes_mandatory         VARCHAR(20) NOT NULL,
-    classes_quarter           VARCHAR(20) NOT NULL,
-    classes_year              VARCHAR(20) NOT NULL
-);
-
-DROP TABLE IF EXISTS course CASCADE;
-CREATE TABLE public.course
-(
-    course_id             integer primary key,
-    course_units          integer NOT NULL,
-    course_grade_type     character varying(10) NOT NULL,
-    course_number         character varying(10) NOT NULL,
-    course_lab            character varying(10) NOT NULL,
-    course_department_id  integer REFERENCES department (department_id)
-)
-WITH (
-  OIDS=FALSE
-);
-
 DROP TABLE IF EXISTS course_prereq CASCADE;
 CREATE TABLE public.course_prereq
 (
     course_id INTEGER REFERENCES course (course_id),
     prereq_id INTEGER REFERENCES course (course_id)
 );
--- all tables regarding student
 
 DROP TABLE IF EXISTS student CASCADE;
 CREATE TABLE public.student
@@ -101,7 +73,7 @@ CREATE TABLE public.student
     student_first_name  character varying(20) NOT NULL,
     student_middle_name character varying(20),
     student_last_name   character varying(20) NOT NULL,
-    student_residency   character varying(10) NOT NULL,
+    student_residency   character varying(10),
     student_gpa	        float
 )
 WITH (
@@ -171,16 +143,6 @@ CREATE TABLE public.class_history
     class_history_grade           VARCHAR(20) NOT NULL
 );
 -- create all classes related tables
-
-DROP TABLE IF EXISTS classes CASCADE;
-CREATE TABLE public.classes
-(
-    classes_id                INTEGER PRIMARY KEY,
-    classes_enrollment_limit  INTEGER NOT NULL,
-    classes_quarter           VARCHAR(20) NOT NULL,
-    classes_year              VARCHAR(20) NOT NULL,
-    course_id                 INTEGER REFERENCES course (course_id)
-);
 
 DROP TABLE IF EXISTS lecture_info CASCADE;
 CREATE TABLE public.lecture_info

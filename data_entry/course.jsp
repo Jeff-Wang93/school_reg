@@ -42,7 +42,7 @@
                             "INSERT INTO course VALUES (?, ?, ?, ?, ?, ?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("COURSE ID")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("COURSE UNITS")));
+                        pstmt.setString(2, request.getParameter("COURSE UNITS"));
                         pstmt.setString(3, request.getParameter("COURSE GRADE TYPE"));
                         pstmt.setString(4, request.getParameter("COURSE NUMBER"));
                         pstmt.setString(5, request.getParameter("COURSE LAB"));
@@ -70,7 +70,7 @@
                             "course_grade_type = ?, course_number = ?, course_lab = ?," +
                             "course_department_id = ? WHERE course_id = ?");
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("COURSE UNITS")));
+                        pstmt.setString(1, request.getParameter("COURSE UNITS"));
                         pstmt.setString(2, request.getParameter("COURSE GRADE TYPE"));
                         pstmt.setString(3, request.getParameter("COURSE NUMBER"));
                         pstmt.setString(4, request.getParameter("COURSE LAB"));
@@ -154,7 +154,7 @@
                             <input type="hidden" value="update" name="action">
 
                             <td>
-                                <input value="<%= rs.getString("course_id") %>" 
+                                <input value="<%= rs.getInt("course_id") %>" 
                                     name="COURSE ID" size="10">
                             </td>
     
@@ -169,7 +169,7 @@
                             </td>
 
                             <td>
-                                <input value="<%= rs.getString("course_number") %>" 
+                                <input value="<%= rs.getString("course_title") %>" 
                                     name="COURSE NUMBER" size="10">
                             </td>
     
@@ -179,7 +179,7 @@
                             </td>
     
                             <td>
-                                <input value="<%= rs.getString("course_department_id") %>" 
+                                <input value="<%= rs.getInt("course_department_id") %>" 
                                     name="COURSE DEPARTMENT ID" size="10">
                             </td>
 

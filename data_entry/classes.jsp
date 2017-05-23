@@ -39,13 +39,15 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO classes VALUES (?, ?, ?, ?, ?)");
+                            "INSERT INTO classes VALUES (?, ?, ?, ?, ?, ?, ?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("classes LIMIT")));
-                        pstmt.setString(3, request.getParameter("classes QUARTER"));
-                        pstmt.setString(4, request.getParameter("classes YEAR"));
-                        pstmt.setInt(5, Integer.parseInt(request.getParameter("course ID")));
+                        pstmt.setString(2, request.getParameter("classes TITLE"));
+                        pstmt.setInt(3, Integer.parseInt(request.getParameter("classes LIMIT")));
+                        pstmt.setString(4, request.getParameter("classes QUARTER"));
+                        pstmt.setString(5, request.getParameter("classes YEAR"));
+                        pstmt.setString(6, request.getParameter("classes INSTRUCTOR"));
+                        pstmt.setInt(7, Integer.parseInt(request.getParameter("course ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -66,13 +68,16 @@
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
                             "UPDATE classes SET classes_enrollment_limit =?," +
-                            "classes_quarter = ?, classes_year = ?, course_id = ?" +
+                            "classes_quarter = ?, classes_year = ?, classes_course_id = ?" +
+                            "classes_title = ?, classes_instructor = ?" +
                             "where classes_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes LIMIT")));
                         pstmt.setString(2, request.getParameter("classes QUARTER"));
                         pstmt.setString(3, request.getParameter("classes YEAR"));
                         pstmt.setInt(4, Integer.parseInt(request.getParameter("course ID")));
+                        pstmt.setString(5, request.getParameter("classes TITLE"));
+                        pstmt.setString(6, request.getParameter("classes INSTRUCTOR"));
                         pstmt.setInt(5, Integer.parseInt(request.getParameter("classes ID")));
                         int rowCount = pstmt.executeUpdate();
 
@@ -119,9 +124,11 @@
                 <table border="1">
                     <tr>
                         <th>classes ID</th>
+                        <th>classes title</th>
                         <th>classes enrollment limit</th>
                         <th>classes quarter</th>
                         <th>classes year</th>
+                        <th>classes instructor</th>
                         <th>course id</th>
                         <th>Action</th>
                     </tr>
@@ -129,9 +136,11 @@
                         <form action="classes.jsp" method="get">
                             <input type="hidden" value="insert" name="action">
                             <th><input value="" name="classes ID"  size="10"></th>
+                            <th><input value="" name="classes TITLE" size="10"></th>
                             <th><input value="" name="classes LIMIT"  size="20"></th>
                             <th><input value="" name="classes QUARTER"  size="10"></th>
                             <th><input value="" name="classes YEAR"  size="10"></th>
+                            <th><input value="" name="classes INSTRUCTOR"  size="10"></th>
                             <th><input value="" name="course ID" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
@@ -155,6 +164,11 @@
                             </td>
 
                             <td>
+                                <input value="<%= rs.getString("classes_title") %>" 
+                                    name="classes TITLE" size="10">
+                            </td>
+
+                            <td>
                                 <input value="<%= rs.getInt("classes_enrollment_limit") %>" 
                                     name="classes LIMIT" size="20">
                             </td>
@@ -170,7 +184,12 @@
                             </td>
 
                             <td>
-                                <input value="<%= rs.getInt("course_id") %>" 
+                                <input value="<%= rs.getString("classes_instructor") %>" 
+                                    name="classes INSTRUCTOR" size="10">
+                            </td>
+
+                            <td>
+                                <input value="<%= rs.getInt("classes_course_id") %>" 
                                     name="course ID" size="10">
                             </td>
 
@@ -1155,7 +1174,7 @@
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setString(3, request.getParameter("enrolled quarter"));
+                        pstmt.setString(3, request.getParameter("enrolled units"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1175,11 +1194,11 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE enrolled_student SET classes_id = ?, enrolled_quarter = ?" +
+                            "UPDATE enrolled_student SET classes_id = ?, units = ?" +
                             "WHERE student_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setString(2, request.getParameter("enrolled quarter"));
+                        pstmt.setString(2, request.getParameter("enrolled units"));
                         pstmt.setInt(3, Integer.parseInt(request.getParameter("student ID")));
                         int rowCount = pstmt.executeUpdate();
 
@@ -1227,7 +1246,7 @@
                     <tr>
                         <th>Student ID</th>
                         <th>Classes ID</th>
-                        <th>Quarter   </th>
+                        <th>Units</th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -1263,7 +1282,7 @@
                             </td>
 
                              <td>
-                                <input value="<%= rs.getString("enrolled_quarter") %>" 
+                                <input value="<%= rs.getString("units") %>" 
                                     name="enrolled quarter" size="10">
                             </td>
 
@@ -1352,7 +1371,7 @@
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setString(3, request.getParameter("wait quarter"));
+                        pstmt.setString(3, request.getParameter("wait units"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1372,12 +1391,12 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE waitlist_student SET classes_id = ?, waitlist_quarter = ?" +
+                            "UPDATE waitlist_student SET classes_id = ?, units = ?" +
                             "WHERE student_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("student ID")));
-                        pstmt.setString(3, request.getParameter("wait quarter"));
+                        pstmt.setString(3, request.getParameter("wait units"));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1424,6 +1443,7 @@
                     <tr>
                         <th>Student ID</th>
                         <th>Classes ID</th>
+                        <th>Units</th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -1459,8 +1479,8 @@
                             </td>
 
                              <td>
-                                <input value="<%= rs.getString("waitlist_quarter") %>" 
-                                    name="wait quarter" size="10">
+                                <input value="<%= rs.getString("units") %>" 
+                                    name="wait units" size="10">
                             </td>
 
                             <%-- Button --%>
