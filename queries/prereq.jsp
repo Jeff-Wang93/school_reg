@@ -3,9 +3,9 @@
 <body>
     <table border="1">
         <tr>
-            <td valign="center">
+            <td valign="top">
                 <%-- -------- Include menu HTML code -------- --%>
-                Current Student Query
+                <jsp:include page="qmenu.html"/>
             </td>
             <td>
 
@@ -27,15 +27,35 @@
 
             %>
             
-
+            
             <% 
                 Statement curr_student = conn.createStatement();
-
+                
                 // Grab all students of the current quarter
                 ResultSet rs = curr_student.executeQuery
-                    ("SELECT student_ssn, student_first_name, student_middle_name, " +
-                     "student_last_name FROM student WHERE student_id IN " +
+                    ("SELECT student_ssn FROM student WHERE student_id IN " +
                      "(SELECT student_id FROM enrolled_student)");
+            %>
+            
+            <%-- HTML select code --%>
+            <form action="prereq.jsp">
+                <select name="choose_student">
+                    <% while(rs.next()) { %>
+                        <option><%= rs.getInt(1)%></option>
+                    <% } %>
+                </select>
+                <input type="submit" value="Submit">
+            </form>
+
+            <%-- Get all info about chosen student --%>
+            <%  
+                int chosen_student = Integer.parseInt(request.getParameter("choose_student")); 
+                PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT student_ssn, student_first_name, student_middle_name, " +
+                    "student_last_name FROM student WHERE student_ssn = ?"
+                );
+                pstmt.setInt(1, chosen_student);
+                ResultSet display_student = pstmt.executeQuery();
             %>
             
             <%-- format the results --%>
@@ -47,17 +67,15 @@
                     <TH>Last Name</TH>
                 </TR>
 
-                <% while(rs.next()) { %>
+                <% while(display_student.next()) { %>
                 <TR>
-                    <TD> <%= rs.getInt(1) %></TD>
-                    <TD> <%= rs.getString(2) %></TD>
-                    <TD> <%= rs.getString(3) %></TD>
-                    <TD> <%= rs.getString(4) %></TD>
+                    <TD> <%= display_student.getInt(1) %></TD>
+                    <TD> <%= display_student.getString(2) %></TD>
+                    <TD> <%= display_student.getString(3) %></TD>
+                    <TD> <%= display_student.getString(4) %></TD>
                 </TR>
                 <% } %>
             </TABLE>
-
-
 
             <%
                 // Close the Connection
