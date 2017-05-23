@@ -27,65 +27,41 @@
 
             %>
             
-            <%-- -------- INSERT Code -------- --%>
-            <%
-                    String pro_action = request.getParameter("pro_action");
-                    // Check if an insertion is requested
-                    if (pro_action != null && pro_action.equals("pro_insert")) {
 
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "SELECT student_first_name, student_middle_name, " +
-                            "student_last_name FROM students WHERE student_ssn = ?");
+            <% 
+                Statement curr_student = conn.createStatement();
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("student SSN")));
-                        
-                        ResultSet rs = pstmt.executeQuery();
-                    }
+                // Grab all students of the current quarter
+                ResultSet rs = curr_student.executeQuery
+                    ("SELECT student_ssn, student_first_name, student_middle_name, " +
+                     "student_last_name FROM student WHERE student_id IN " +
+                     "(SELECT student_id FROM enrolled_student)");
             %>
+            
+            <%-- format the results --%>
+            <TABLE BORDER="1">
+                <TR>
+                    <TH>SSN</TH>
+                    <TH>First Name</TH>
+                    <TH>Middle Name</TH>
+                    <TH>Last Name</TH>
+                </TR>
 
-            <!-- Add an HTML table header row to format the results -->
-            <table border="1">
-                <tr>
-                    <th>Student SSN</th>
-                    <th>Student First Name</th>
-                    <th>Student Middle Name</th>
-                    <th>Student Last Name</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <form action="prereq.jsp" method="get">
-                        <input type="hidden" value="pro_insert" name="pro_action">
-                        <th><input value="" name="student SSN" size="10"></th>
-                        <th><input type="submit" value="Insert"></th>
-                    </form>
-                </tr>
+                <% while(rs.next()) { %>
+                <TR>
+                    <TD> <%= rs.getInt(1) %></TD>
+                    <TD> <%= rs.getString(2) %></TD>
+                    <TD> <%= rs.getString(3) %></TD>
+                    <TD> <%= rs.getString(4) %></TD>
+                </TR>
+                <% } %>
+            </TABLE>
 
-                <%-- Iteration Code --%>
-                <%
-                    while( rs.next() ) {
-                %>
-                
-                <tr>
-                    <form action="prereq.jsp" method="get">
-                        <input type="hidden" value="req_update" name = "req_action">
 
-                        <td> 
-                            <input value="<%= rs.getString("student_ssn") %>"
-                                   size="10">
-                        </td>
-                </tr>
 
-                <%
-                    }
-                %>
-
-            <%-- -------- Close Connection Code -------- --%>
             <%
-                    // Close the ResultSet
-                    //rs.close();
-    
-                    // Close the Connection
-                    conn.close();
+                // Close the Connection
+                conn.close();
                 } catch (SQLException sqle) {
                     out.println(sqle.getMessage());
                 } catch (Exception e) {

@@ -1,19 +1,4 @@
-﻿DROP TABLE IF EXISTS student CASCADE;
-CREATE TABLE public.student
-(
-    student_ssn         integer primary key,
-    student_id          integer UNIQUE NOT NULL,
-    student_first_name  character varying(20) NOT NULL,
-    student_middle_name character varying(20),
-    student_last_name   character varying(20) NOT NULL,
-    student_residency   character varying(10) NOT NULL,
-    student_gpa	        float NOT NULL
-)
-WITH (
-  OIDS=FALSE
-);
-
-DROP TABLE IF EXISTS faculty CASCADE;
+﻿DROP TABLE IF EXISTS faculty CASCADE;
 CREATE TABLE public.faculty
 (
     faculty_name      character varying(20) NOT NULL,
@@ -246,7 +231,6 @@ CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
-    enrolled_quarter    VARCHAR(20) 
 );
 
 DROP TABLE IF EXISTS waitlist_student CASCADE;
