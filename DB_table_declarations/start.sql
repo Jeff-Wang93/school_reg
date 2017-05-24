@@ -16,8 +16,8 @@ INSERT INTO department VALUES (2, 'ECE');
 -- make sample courses
 INSERT INTO course VALUES (1, 4  , 'Grade', 'CSE132B', 'FALSE', 1);
 INSERT INTO course VALUES (2, 4  , 'Grade', 'CSE132A', 'FALSE', 1);
-INSERT INTO course VALUES (3, 4  , 'Grade', 'CSE135' , 'FALSE', 1);
-INSERT INTO course VALUES (4, 1-4, 'Grade', 'ECE141' , 'FALSE', 2);
+INSERT INTO course VALUES (3, 4  , 'Both' , 'CSE135' , 'FALSE', 1);
+INSERT INTO course VALUES (4, '1,4', 'S/U'  , 'ECE141' , 'TRUE' , 2);
 
 -- make sample classes
 INSERT INTO classes VALUES (1, 'CSE132B', 20, 'SP17', '2017', 'Alan' , 1);

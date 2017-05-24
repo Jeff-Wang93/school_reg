@@ -27,7 +27,6 @@
 
             %>
             
-            
             <% 
                 Statement curr_student = conn.createStatement();
                 

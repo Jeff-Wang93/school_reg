@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS course CASCADE;
 CREATE TABLE public.course
 (
     course_id             integer primary key,
-    course_units          VARCHAR (20) NOT NULL,
+    course_units          VARCHAR(20) NOT NULL,
     course_grade_type     character varying(10) NOT NULL,
     course_title          character varying(10) NOT NULL UNIQUE,
     course_lab            character varying(10) NOT NULL,
@@ -33,6 +33,8 @@ WITH (
   OIDS=FALSE
 );
 
+-- GRADE OPTIONS = Grade, S/U, Both
+-- UNIT OPTIONS  = Static number(4) or range (1-4)
 DROP TABLE IF EXISTS classes CASCADE;
 CREATE TABLE public.classes
 (
@@ -174,7 +176,7 @@ CREATE TABLE public.review_info
     review_info_date        VARCHAR(20),
     review_info_location    VARCHAR(20) NOT NULL,
     review_info_mandatory   VARCHAR(20) NOT NULL,
-    classes_id              INTEGER REFERENCES classes(classes_id)
+    classes_id              INTEGER REFERENCES classes (classes_id)
 );
 
 DROP TABLE IF EXISTS lab_info CASCADE;
@@ -185,7 +187,7 @@ CREATE TABLE public.lab_info
     lab_info_date        VARCHAR(20),
     lab_info_location    VARCHAR(20) NOT NULL,
     lab_info_mandatory   VARCHAR(20) NOT NULL,
-    classes_id           INTEGER REFERENCES classes(classes_id)
+    classes_id           INTEGER REFERENCES classes (classes_id)
 );
 
 DROP TABLE IF EXISTS enrolled_student CASCADE;
@@ -193,7 +195,7 @@ CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
-    units               INTEGER
+    units               VARCHAR(20)
 );
 
 DROP TABLE IF EXISTS waitlist_student CASCADE;

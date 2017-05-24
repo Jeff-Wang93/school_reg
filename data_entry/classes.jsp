@@ -1166,20 +1166,80 @@
 
                         // Begin transaction
                         conn.setAutoCommit(false);
+
+                        // Determine if there are variable number of units
+                        PreparedStatement check_unit = conn.prepareStatement(
+                            "SELECT course_units FROM course WHERE course_id in ( " +
+                            "SELECT classes_course_id FROM classes WHERE classes_id = ?)"
+                        );
                         
-                        // Create the prepared statement and use it to
-                        // INSERT the student attributes INTO the Student table.
-                        PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO enrolled_student VALUES (?, ?, ?)");
+                        // Using class ID, check if the COURSE allows variable
+                        // units
+                        check_unit.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
+                        ResultSet variable_units = check_unit.executeQuery();
+                        String delim             = "[,]";
+                        variable_units.next();
+                        String course_units      = variable_units.getString(1);
+                        String [] course_unit    = course_units.split(delim);
+                        // If the course allows variable units
+                        if (course_unit.length > 1) {
 
-                        pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
-                        pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
-                        pstmt.setString(3, request.getParameter("enrolled units"));
-                        int rowCount = pstmt.executeUpdate();
+                            String beginning = course_unit[0];
+                            String ending    = course_unit[1];
+                            
+                            int begin = Integer.parseInt(beginning);
+                            int end   = Integer.parseInt(ending);
+                            int enter = Integer.parseInt(request.getParameter("enrolled units"));
+                            // ensure units are within the allowed range
+                            if (enter >= begin && enter <= end) {
+                            // Create the prepared statement and use it to
+                            // INSERT the student attributes INTO the Student table.
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "INSERT INTO enrolled_student VALUES (?, ?, ?)");
 
-                        // Commit transaction
-                        conn.commit();
-                        conn.setAutoCommit(true);
+                            pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
+                            pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
+                            pstmt.setString(3, request.getParameter("enrolled units"));
+                            int rowCount = pstmt.executeUpdate();
+
+                            // Commit transaction
+                            conn.commit();
+                            conn.setAutoCommit(true);
+                            }
+
+                            else {
+                                // Error because unit entered is outside of
+                                // range
+                                out.println("Entered units is outside of range");
+                            }
+                        }
+
+                        else {
+                            // Make sure the units enter matched the set units
+                            // convert for comparison. String comparisons didnt
+                            // work here
+                            int entered = Integer.parseInt(request.getParameter("enrolled units"));
+                            int unit    = Integer.parseInt(course_units);
+                            if(entered == unit) {
+                            // Create the prepared statement and use it to
+                            // INSERT the student attributes INTO the Student table.
+                            PreparedStatement pstmt = conn.prepareStatement(
+                                "INSERT INTO enrolled_student VALUES (?, ?, ?)");
+
+                            pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
+                            pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
+                            pstmt.setString(3, request.getParameter("enrolled units"));
+                            int rowCount = pstmt.executeUpdate();
+
+                            // Commit transaction
+                            conn.commit();
+                            conn.setAutoCommit(true);
+                            }
+
+                            else {
+                                out.println("This class does not support a range of units");
+                            }
+                        }
                     }
             %>
 
@@ -1254,7 +1314,7 @@
                             <input type="hidden" value="enrolled_insert" name="enrolled_action">
                             <th><input value="" name="student ID" size="10"></th>
                             <th><input value="" name="classes ID" size="10"></th>
-                            <th><input value="" name="enrolled quarter" size="10"></th>
+                            <th><input value="" name="enrolled units" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -1283,7 +1343,7 @@
 
                              <td>
                                 <input value="<%= rs.getString("units") %>" 
-                                    name="enrolled quarter" size="10">
+                                    name="enrolled units" size="10">
                             </td>
 
     
