@@ -26,11 +26,11 @@ INSERT INTO classes VALUES (3, 'CSE135' , 20, 'SP17', '2017', 'Nick' , 3);
 INSERT INTO classes VALUES (4, 'ECE141' , 20, 'SP17', '2017', 'Vicky', 4);
 
 -- make sample enrolled students
-INSERT INTO enrolled_student VALUES (1, 1, 4);
-INSERT INTO enrolled_student VALUES (1, 3, 4);
-INSERT INTO enrolled_student VALUES (1, 4, 4);
-INSERT INTO enrolled_student VALUES (2, 1, 4);
-INSERT INTO enrolled_student VALUES (2, 3, 4);
-INSERT INTO enrolled_student VALUES (3, 3, 4);
-INSERT INTO enrolled_student VALUES (3, 4, 4);
+INSERT INTO enrolled_student VALUES (1, 1, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (1, 3, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (1, 4, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (2, 1, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (2, 3, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (3, 3, 4, 'Grade');
+INSERT INTO enrolled_student VALUES (3, 4, 4, 'Grade');
 

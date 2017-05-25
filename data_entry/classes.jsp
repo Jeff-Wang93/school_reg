@@ -1167,9 +1167,44 @@
                         // Begin transaction
                         conn.setAutoCommit(false);
 
+                        // Determine the grade type for the classes (from
+                        // course)
+                        PreparedStatement check_grade_type = conn.prepareStatement(
+                            "SELECT course_grade_type FROM course WHERE course_id IN (" +
+                            "SELECT classes_course_id FROM classes WHERE classes_id = ?)"
+                        );
+
+                        check_grade_type.setInt(1, Integer.parseInt(
+                                request.getParameter("classes ID")));
+
+                        ResultSet grade_type = check_grade_type.executeQuery();
+                        grade_type.next();
+                        String g_type        = grade_type.getString(1);
+
+                        // error check to make sure entered grade type matches
+                        // course grade type offered
+                        boolean correct = true;
+
+                        String entered_gt = request.getParameter("grade type");
+                        if (g_type.equals("Grade") && !entered_gt.equals("Grade")) {
+                            out.println("This class must be taken for a grade");
+                            correct = false;
+                        }
+
+                        else if (g_type.equals("S/U") && !entered_gt.equals("S/U")) {
+                            out.println("This class must be taken as S/U");
+                            correct = false;
+                        }
+
+                        else if (entered_gt.equals("Grade") || !entered_gt.equals("S/U")) {
+                            out.println("Invalid grade type entered");
+                            correct = false;
+                        }
+
+                        if (correct) {
                         // Determine if there are variable number of units
                         PreparedStatement check_unit = conn.prepareStatement(
-                            "SELECT course_units FROM course WHERE course_id in ( " +
+                            "SELECT course_units FROM course WHERE course_id IN ( " +
                             "SELECT classes_course_id FROM classes WHERE classes_id = ?)"
                         );
                         
@@ -1195,11 +1230,12 @@
                             // Create the prepared statement and use it to
                             // INSERT the student attributes INTO the Student table.
                             PreparedStatement pstmt = conn.prepareStatement(
-                                "INSERT INTO enrolled_student VALUES (?, ?, ?)");
+                                "INSERT INTO enrolled_student VALUES (?, ?, ?, ?)");
 
                             pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                             pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
                             pstmt.setString(3, request.getParameter("enrolled units"));
+                            pstmt.setString(4, request.getParameter("grade type"));
                             int rowCount = pstmt.executeUpdate();
 
                             // Commit transaction
@@ -1224,11 +1260,12 @@
                             // Create the prepared statement and use it to
                             // INSERT the student attributes INTO the Student table.
                             PreparedStatement pstmt = conn.prepareStatement(
-                                "INSERT INTO enrolled_student VALUES (?, ?, ?)");
+                                "INSERT INTO enrolled_student VALUES (?, ?, ?, ?)");
 
                             pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                             pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
                             pstmt.setString(3, request.getParameter("enrolled units"));
+                            pstmt.setString(4, request.getParameter("grade type"));
                             int rowCount = pstmt.executeUpdate();
 
                             // Commit transaction
@@ -1239,6 +1276,7 @@
                             else {
                                 out.println("This class does not support a range of units");
                             }
+                        }
                         }
                     }
             %>
@@ -1254,12 +1292,13 @@
                         // Create the prepared statement and use it to
                         // UPDATE the student attributes in the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "UPDATE enrolled_student SET classes_id = ?, units = ?" +
-                            "WHERE student_id = ?");
+                            "UPDATE enrolled_student SET classes_id = ?, units = ?," +
+                            "grade_type = ? WHERE student_id = ?");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("classes ID")));
                         pstmt.setString(2, request.getParameter("enrolled units"));
-                        pstmt.setInt(3, Integer.parseInt(request.getParameter("student ID")));
+                        pstmt.setString(3, request.getParameter("grade type"));
+                        pstmt.setInt(4, Integer.parseInt(request.getParameter("student ID")));
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
@@ -1307,6 +1346,7 @@
                         <th>Student ID</th>
                         <th>Classes ID</th>
                         <th>Units</th>
+                        <th>Grade Type</th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -1315,6 +1355,7 @@
                             <th><input value="" name="student ID" size="10"></th>
                             <th><input value="" name="classes ID" size="10"></th>
                             <th><input value="" name="enrolled units" size="10"></th>
+                            <th><input value="" name="grade type" size="10"></th>
                             <th><input type="submit" value="Insert"></th>
                         </form>
                     </tr>
@@ -1346,7 +1387,12 @@
                                     name="enrolled units" size="10">
                             </td>
 
-    
+                            <td>
+                                <input value="<%= rs.getString("grade_type") %>" 
+                                    name="grade_type" size="10">
+                            </td>
+
+ 
                             <%-- Button --%>
                             <td>
                                 <input type="submit" value="Update">

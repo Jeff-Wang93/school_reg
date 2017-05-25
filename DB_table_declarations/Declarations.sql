@@ -19,6 +19,7 @@ WITH (
   OIDS=FALSE
  );
 
+-- GRADE OPTIONS = Grade, S/U, Both
 DROP TABLE IF EXISTS course CASCADE;
 CREATE TABLE public.course
 (
@@ -33,7 +34,6 @@ WITH (
   OIDS=FALSE
 );
 
--- GRADE OPTIONS = Grade, S/U, Both
 -- UNIT OPTIONS  = Static number(4) or range (1-4)
 DROP TABLE IF EXISTS classes CASCADE;
 CREATE TABLE public.classes
@@ -195,7 +195,8 @@ CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
-    units               VARCHAR(20)
+    units               VARCHAR(20),
+    grade_type          VARCHAR(20)
 );
 
 DROP TABLE IF EXISTS waitlist_student CASCADE;
@@ -212,8 +213,11 @@ CREATE TABLE public.previous_class
     student_id          INTEGER REFERENCES student (student_id),
     classes_id          INTEGER REFERENCES classes (classes_id),
     grade               VARCHAR(20) NOT NULL,
-    previous_quarter    VARCHAR(20)
+    quarter             VARCHAR(20),
+    units               VARCHAR(20),
+    grade_type          VARCHAR(20)
 );
+
 DROP TABLE IF EXISTS degree CASCADE;
 CREATE TABLE public.degree
 (
