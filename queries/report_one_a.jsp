@@ -37,7 +37,7 @@
             %>
             
             <%-- HTML select code --%>
-            <form action="report_one.jsp">
+            <form action="report_one_a.jsp">
                 <select name="choose_student">
                     <% while(rs.next()) { %>
                         <option><%= rs.getInt(1)%></option>
@@ -80,12 +80,13 @@
             <%-- Get all current classes by student --%>
             <%
                 PreparedStatement pstmt2 = conn.prepareStatement(
-                    "SELECT * from classes WHERE classes_id IN (SELECT classes_id " +
+                    "SELECT * FROM classes WHERE classes_id IN (SELECT classes_id " +
                     "FROM enrolled_student WHERE student_id IN (SELECT student_id " +
                     "FROM student WHERE student_ssn = ?))"
                 );
                 pstmt2.setInt(1, chosen_student);
                 ResultSet display_class = pstmt2.executeQuery();
+
             %>
             
             <%-- format the results --%>
@@ -98,8 +99,12 @@
                     <TH>Year</TH>
                     <TH>Instructor</TH>
                     <TH>Course ID</TH>
+                    <TH>Units</TH>
+                    <TH>Grade Type</TH>
                 </TR>
 
+                <%-- display class only has information for the first 7 columns --%>
+                <%-- As seen above, I still have 2 more columns: units and grade type --%>
                 <% while(display_class.next()) { %>
                 <TR>
                     <TD> <%= display_class.getInt(1) %></TD>
