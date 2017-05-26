@@ -38,18 +38,20 @@ INSERT INTO classes VALUES (9, 'ECE141' , 20, 'WI14', '2014', 'Nick' , 4);
 -- make sample enrolled students
 INSERT INTO enrolled_student VALUES (1, 1, 4, 'Grade');
 INSERT INTO enrolled_student VALUES (1, 3, 4, 'Grade');
-INSERT INTO enrolled_student VALUES (1, 4, 3, 'Grade');
+INSERT INTO enrolled_student VALUES (1, 4, 3, 'S/U');
+
 INSERT INTO enrolled_student VALUES (2, 1, 4, 'Grade');
 INSERT INTO enrolled_student VALUES (2, 3, 4, 'Grade');
+
 INSERT INTO enrolled_student VALUES (3, 3, 4, 'Grade');
-INSERT INTO enrolled_student VALUES (3, 4, 2, 'Grade');
+INSERT INTO enrolled_student VALUES (3, 4, 2, 'S/U');
 
 -- make sample previous courses for students
 INSERT INTO previous_class VALUES (1, 6, 'C', 'WI17', '2017', '4', 'Grade');
 INSERT INTO previous_class VALUES (1, 5, 'B', 'WI17', '2017', '4', 'Grade');
 INSERT INTO previous_class VALUES (1, 7, 'A', 'WI17', '2017', '4', 'Grade');
-INSERT INTO previous_class VALUES (1, 9, 'D', 'WI14', '2014', '4', 'Grade');
+INSERT INTO previous_class VALUES (1, 9, 'D', 'WI14', '2014', '4', 'S/U');
 
 INSERT INTO previous_class VALUES (4, 8, 'A', 'WI17', '2017', '4', 'Grade');
-INSERT INTO previous_class VALUES (4, 9, 'A', 'WI14', '2014', '4', 'Grade');
+INSERT INTO previous_class VALUES (4, 9, 'A', 'WI14', '2014', '4', 'S/U');
 INSERT INTO previous_class VALUES (4, 5, 'A', 'WI17', '2017', '4', 'Grade');

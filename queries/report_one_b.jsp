@@ -27,6 +27,8 @@
 
             %>
             
+            <b>All students taking current course</b>
+
             <% 
                 Statement classes = conn.createStatement();
                 

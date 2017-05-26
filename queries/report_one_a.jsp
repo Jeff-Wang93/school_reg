@@ -27,6 +27,8 @@
 
             %>
             
+            <b>Current classes of student</b>
+
             <% 
                 Statement curr_student = conn.createStatement();
                 
@@ -79,14 +81,6 @@
             
             <%-- Get all current classes by student --%>
             <%
-                PreparedStatement pstmt2 = conn.prepareStatement(
-                    "SELECT * FROM classes WHERE classes_id IN (SELECT classes_id " +
-                    "FROM enrolled_student WHERE student_id IN (SELECT student_id " +
-                    "FROM student WHERE student_ssn = ?))"
-                );
-                pstmt2.setInt(1, chosen_student);
-                //ResultSet display_class = pstmt2.executeQuery();
-                
                 PreparedStatement pstmt3 = conn.prepareStatement(
                     "SELECT x.*, y.units, y.grade_type " +
                     "FROM classes x, " +
