@@ -84,7 +84,23 @@
                 );
 
                 pstmt2.setString(1, chosen_class);
-                ResultSet display_student = pstmt2.executeQuery();
+                //ResultSet display_student = pstmt2.executeQuery();
+
+                PreparedStatement pstmt3 = conn.prepareStatement(
+                    "SELECT s.*, y.units, y.grade_type " + 
+                    "FROM student s, " + 
+                        "SELECT student_id, units, grade_type " +
+                        "FROM   enrolled_student " + 
+                        "WHERE  classes_id IN ( " + 
+                            "SELECT classes_id " +
+                            "FROM   classes" + 
+                            "WHERE  classes_title = ?) AS y " + 
+                    "WHERE s.student_id = y.student_id"
+                );
+                pstmt3.setString(1, chosen_class);
+                //pstmt3.setString(2, chosen_class);
+                ResultSet display_student = pstmt3.executeQuery();
+
             %>
             
             <TABLE BORDER="1">
@@ -96,6 +112,8 @@
                     <TH>Student Last Name</TH>
                     <TH>Student Residency</TH>
                     <TH>Student GPA</TH>
+                    <TH>Units</TH>
+                    <TH>Grade Type</TH>
                 </TR>
 
                 <% while(display_student.next()) { %>
@@ -107,6 +125,8 @@
                     <TD> <%= display_student.getString(5) %></TD>
                     <TD> <%= display_student.getString(6) %></TD>
                     <TD> <%= display_student.getFloat(7) %></TD>
+                    <TD> <%= display_student.getString(8) %></TD>
+                    <TD> <%= display_student.getString(9) %></TD>
                 </TR>
                 <% } %>
             </TABLE>

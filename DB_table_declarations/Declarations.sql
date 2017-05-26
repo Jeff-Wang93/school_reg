@@ -42,7 +42,7 @@ CREATE TABLE public.classes
     classes_title             VARCHAR(20) REFERENCES course (course_title),
     classes_enrollment_limit  INTEGER NOT NULL,
     classes_quarter           VARCHAR(20) NOT NULL,
-    classes_year              VARCHAR(20) NOT NULL,
+    classes_year              INTEGER     NOT NULL,
     classes_instructor        VARCHAR(20) REFERENCES faculty (faculty_name),
     classes_course_id         INTEGER     REFERENCES course (course_id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE public.student
     student_first_name  character varying(20) NOT NULL,
     student_middle_name character varying(20),
     student_last_name   character varying(20) NOT NULL,
-    student_residency   character varying(10),
+    student_residency   character varying(20),
     student_gpa	        float
 )
 WITH (
@@ -214,6 +214,7 @@ CREATE TABLE public.previous_class
     classes_id          INTEGER REFERENCES classes (classes_id),
     grade               VARCHAR(20) NOT NULL,
     quarter             VARCHAR(20),
+    year                VARCHAR(20),
     units               VARCHAR(20),
     grade_type          VARCHAR(20)
 );
