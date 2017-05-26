@@ -32,7 +32,7 @@
                 
                 // Grab all the classes
                 ResultSet rs = classes.executeQuery(
-                    "SELECT classes_title FROM classes"
+                    "SELECT DISTINCT classes_title FROM classes"
                 );
             %>
             

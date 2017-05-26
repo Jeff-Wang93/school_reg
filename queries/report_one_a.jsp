@@ -85,8 +85,21 @@
                     "FROM student WHERE student_ssn = ?))"
                 );
                 pstmt2.setInt(1, chosen_student);
-                ResultSet display_class = pstmt2.executeQuery();
-
+                //ResultSet display_class = pstmt2.executeQuery();
+                
+                PreparedStatement pstmt3 = conn.prepareStatement(
+                    "SELECT x.*, y.units, y.grade_type " +
+                    "FROM classes x, " +
+                        "(SELECT classes_id, units, grade_type " + 
+                        "FROM   enrolled_student " + 
+                        "WHERE  student_id IN " +
+                            "(SELECT student_id " +
+                            " FROM student " +
+                            " WHERE student_ssn = ?)) AS y " + 
+                    "WHERE x.classes_id = y.classes_id"
+                );
+                pstmt3.setInt(1, chosen_student);
+                ResultSet display_class = pstmt3.executeQuery();
             %>
             
             <%-- format the results --%>
@@ -114,6 +127,8 @@
                     <TD> <%= display_class.getString(5) %></TD>
                     <TD> <%= display_class.getString(6) %></TD>
                     <TD> <%= display_class.getInt(7) %></TD>
+                    <TD> <%= display_class.getString(8) %></TD>
+                    <TD> <%= display_class.getString(9) %></TD>
                 </TR>
                 <% } %>
             </TABLE>
