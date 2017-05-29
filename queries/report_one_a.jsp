@@ -84,13 +84,16 @@
                 PreparedStatement pstmt3 = conn.prepareStatement(
                     "SELECT x.*, y.units, y.grade_type " +
                     "FROM classes x, " +
-                        "(SELECT classes_id, units, grade_type " + 
-                        "FROM   enrolled_student " + 
-                        "WHERE  student_id IN " +
-                            "(SELECT student_id " +
-                            " FROM student " +
-                            " WHERE student_ssn = ?)) AS y " + 
-                    "WHERE x.classes_id = y.classes_id"
+                        "(SELECT a.course_id, b.units, b.grade_type " + 
+                        "FROM current_quarter a, " +
+                            "(SELECT section_id, units, grade_type " +
+                            "FROM enrolled_student " + 
+                            "WHERE student_id IN " +
+                                "(SELECT student_id " +
+                                "FROM student " + 
+                                "WHERE student_ssn = ?)) as b " +
+                        "WHERE a.section_number = b.section_id ) as y " +
+                    "WHERE x.classes_course_id = y.course_id "
                 );
                 pstmt3.setInt(1, chosen_student);
                 ResultSet display_class = pstmt3.executeQuery();
@@ -101,11 +104,10 @@
                 <TR>
                     <TH>Class ID</TH>
                     <TH>Class Title</TH>
-                    <TH>Enrollment Limit</TH>
                     <TH>Quarter</TH>
-                    <TH>Year</TH>
-                    <TH>Instructor</TH>
                     <TH>Course ID</TH>
+                    <TH>Course Currently Offered?</TH>
+                    <TH>Course Next Offering</TH>
                     <TH>Units</TH>
                     <TH>Grade Type</TH>
                 </TR>
@@ -116,13 +118,12 @@
                 <TR>
                     <TD> <%= display_class.getInt(1) %></TD>
                     <TD> <%= display_class.getString(2) %></TD>
-                    <TD> <%= display_class.getInt(3) %></TD>
-                    <TD> <%= display_class.getString(4) %></TD>
+                    <TD> <%= display_class.getString(3) %></TD>
+                    <TD> <%= display_class.getInt(4) %></TD>
                     <TD> <%= display_class.getString(5) %></TD>
                     <TD> <%= display_class.getString(6) %></TD>
-                    <TD> <%= display_class.getInt(7) %></TD>
+                    <TD> <%= display_class.getString(7) %></TD>
                     <TD> <%= display_class.getString(8) %></TD>
-                    <TD> <%= display_class.getString(9) %></TD>
                 </TR>
                 <% } %>
             </TABLE>

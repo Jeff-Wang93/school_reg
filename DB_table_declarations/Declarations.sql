@@ -208,7 +208,7 @@ DROP TABLE IF EXISTS enrolled_student CASCADE;
 CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
-    classes_id          INTEGER REFERENCES current_quarter (section_number),
+    section_id          INTEGER REFERENCES current_quarter (section_number),
     units               varchar(150),
     grade_type          varchar(150)
 );

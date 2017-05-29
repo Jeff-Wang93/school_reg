@@ -96,9 +96,8 @@ INSERT INTO classes VALUES (2, 'Intro to Theory', 'wi2015, wi2016', 2, 'TRUE', '
 INSERT INTO classes VALUES (3, 'Probabilistic Reasoning', 'fa2014, fa2015,wi2015, fa2016', 4, 'FALSE', 'sp2018');
 INSERT INTO classes VALUES (4, 'Machine Learning', 'wi2016, wi2015, fa2015', 5, 'FALSE', 'fa2018');
 INSERT INTO classes VALUES (5, 'Data Mining and Predictive Analytics', 'fa2015, wi2016', 6, 'TRUE', 'wi2018');
-INSERT INTO classes VALUES (6, 'Databases', 'fa2015', 8, 'FALSE', 'sp2018');
+INSERT INTO classes VALUES (6, 'Databases', 'fa2015', 7, 'FALSE', 'sp2018');
 INSERT INTO classes VALUES (7, 'Operating Systems', 'sp2015, wi2016', 8, 'TRUE', 'fa2017');
-
 
 INSERT INTO classes VALUES (8, 'Computational Methods', 'sp2015, sp2016', 10, 'FALSE', 'sp2018');
 INSERT INTO classes VALUES (9, 'Probability and Statistics', 'fa2014, wi2015, wi2016, wi2017', 11, 'TRUE', 'fa2018');
