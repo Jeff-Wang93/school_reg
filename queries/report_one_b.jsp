@@ -34,7 +34,7 @@
                 
                 // Grab all the classes
                 ResultSet rs = classes.executeQuery(
-                    "SELECT DISTINCT classes_title FROM classes"
+                    "SELECT classes_title FROM classes"
                 );
             %>
             
@@ -52,7 +52,7 @@
             <%  
                 String chosen_class = request.getParameter("choose_class");
                 PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT classes_course_id, classes_quarter, classes_year " +
+                    "SELECT classes_course_id, classes_quarter " +
                     "FROM classes WHERE classes_title = ?"
                 );
                 pstmt.setString(1, chosen_class);
@@ -63,15 +63,13 @@
             <TABLE BORDER="1">
                 <TR>
                     <TH>Course ID</TH>
-                    <TH>Quarter</TH>
-                    <TH>Year</TH>
+                    <TH>Quarter and Year</TH>
                 </TR>
 
                 <% while(display_class.next()) { %>
                 <TR>
                     <TD> <%= display_class.getInt(1) %></TD>
                     <TD> <%= display_class.getString(2) %></TD>
-                    <TD> <%= display_class.getString(3) %></TD>
                 </TR>
                 <% } %>
             </TABLE>
@@ -80,15 +78,18 @@
                  units and grade options --%>
             <%
                 PreparedStatement pstmt3 = conn.prepareStatement(
-                    "SELECT s.*, y.units, y.grade_type " + 
+                    "SELECT s.*, y.units, y.grade_type " +
                     "FROM student s, " + 
                         "(SELECT student_id, units, grade_type " +
-                        "FROM   enrolled_student " + 
-                        "WHERE  classes_id IN ( " + 
-                            "SELECT classes_id " +
-                            "FROM   classes " + 
-                            "WHERE  classes_title = ?)) AS y " + 
-                    "WHERE s.student_id = y.student_id"
+                        "FROM enrolled_student " +
+                        "WHERE section_id IN " +
+                            "(SELECT section_number " +
+                            "FROM current_quarter " + 
+                            "WHERE course_id IN " +
+                                "(SELECT classes_course_id " +
+                                "FROM classes " +
+                                "WHERE classes_title = ?))) AS y " +
+                    "WHERE s.student_id = y.student_id " 
                 );
                 pstmt3.setString(1, chosen_class);
                 ResultSet display_student = pstmt3.executeQuery();
