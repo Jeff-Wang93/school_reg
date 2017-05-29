@@ -233,11 +233,27 @@ CREATE TABLE public.previous_class
     grade_type          varchar(150)
 );
 
+DROP TABLE IF EXISTS ms_concentration CASCADE;
+CREATE TABLE public.ms_concentration
+(
+    concentration_id    INTEGER PRIMARY KEY,
+    degree_id           INTEGER REFERENCES degree (degree_id),
+    units_req           INTEGER,
+    min_gpa             FLOAT,
+    concentration_name  VARCHAR(20)
+);
+
 DROP TABLE IF EXISTS degree_course CASCADE;
 CREATE TABLE public.degree_course
 (
-    degree_id   INTEGER REFERENCES degree (degree_id),
+    degree_id   INTEGER REFERENCES ms_concentration (concentration_id),
     course_id   INTEGER REFERENCES course (course_id)
+);
+
+DROP TABLE IF EXISTS tech_elective CASCADE;
+CREATE TABLE public.tech_elective
+(
+    course_id  INTEGER REFERENCES course (course_id)
 );
 
 DROP TABLE IF EXISTS faculty_teaching CASCADE;

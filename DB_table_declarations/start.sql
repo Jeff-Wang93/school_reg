@@ -200,6 +200,24 @@ INSERT INTO faculty_teaching VALUES('Taylor Swift', 14, 7, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 2, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 5, 'sp', '2017');
 
+-- make sample MS concentrations
+INSERT INTO ms_concentration VALUES(1, 4, 4, 3, 'Databases');
+INSERT INTO ms_concentration VALUES(2, 4, 8, 3.1, 'AI');
+INSERT INTO ms_concentration VALUES(3, 4, 4, 3.3, 'Systems');
+
+-- make sample MS concentration req classes
+INSERT INTO degree_course VALUES(1, 7);
+INSERT INTO degree_course VALUES(2, 4);
+INSERT INTO degree_course VALUES(2, 6);
+INSERT INTO degree_course VALUES(3, 8);
+
+-- make sample MS CSE tech electives
+INSERT INTO tech_elective VALUES (4);
+INSERT INTO tech_elective VALUES (8);
+INSERT INTO tech_elective VALUES (2);
+INSERT INTO tech_elective VALUES (10);
+INSERT INTO tech_elective VALUES (9);
+
 -- make sample grade conversion table 
 insert into grade_conversion values('A+', 4.0);
 insert into grade_conversion values('A', 4.0);
