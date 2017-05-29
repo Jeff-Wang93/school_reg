@@ -11,7 +11,7 @@
 
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
-            <%@ page language="java" import="java.sql.*" %>
+            <%@ page language="java" import="java.sql.*" import="java.util.*" %>
     
             <%-- -------- Open Connection Code -------- --%>
             <%
@@ -30,14 +30,16 @@
             <% 
                 Statement student = conn.createStatement();
                 
-                // Grab all the classes
-                // Holy moly this is gross 
+                // Grab all students ever
                 ResultSet rs = student.executeQuery(
-                    "SELECT student_ssn FROM student WHERE student_id IN ( " +
-                    "SELECT student_id FROM enrolled_student)" +
-                    "UNION " +
-                    "SELECT student_ssn FROM student WHERE student_id IN ( " +
-                    "SELECT student_id FROM previous_class)"
+                    "SELECT student_ssn " +
+                    "FROM student " + 
+                    "WHERE student_id IN " +
+                        "(SELECT student_id " + 
+                        " FROM enrolled_student)" +
+                    "OR student_id IN " + 
+                        "(SELECT student_id " + 
+                        " FROM previous_class) " 
                 );
             %>
             
@@ -93,10 +95,10 @@
                 int student_id = ez_id_rs.getInt(1);
 
                 PreparedStatement pstmt2 = conn.prepareStatement(
-                    "SELECT x.*, y.grade, y.units " +
+                    "SELECT x.*, y.quarter, y.grade, y.units " +
                     "FROM classes x, previous_class y " +
-                    "WHERE x.classes_id = y.classes_id AND y.student_id = ? " +
-                    "ORDER BY x.classes_year, x.classes_quarter, x.classes_title"
+                    "WHERE x.classes_course_id = y.course_id AND y.student_id = ? " +
+                    "ORDER BY y.year, y.quarter "
                 );
                 pstmt2.setInt(1, student_id);
                 ResultSet prev_class = pstmt2.executeQuery();
@@ -107,11 +109,11 @@
                 <TR>
                     <TH>Class ID</TH>
                     <TH>Class Title</TH>
-                    <TH>Class Enrollment Limit</TH>
                     <TH>Class Quarter</TH>
-                    <TH>Class Year</TH>
-                    <TH>Class Instructor</TH>
                     <TH>Course ID</TH>
+                    <TH>Class Currently Offered?</TH>
+                    <TH>Class Next Offering</TH>
+                    <TH>Quarter</TH>
                     <TH>Grade</TH>
                     <TH>Units</TH>
                 </TR>
@@ -120,11 +122,11 @@
                 <TR>
                     <TD> <%= prev_class.getInt(1) %></TD>
                     <TD> <%= prev_class.getString(2) %></TD>
-                    <TD> <%= prev_class.getInt(3) %></TD>
+                    <TD> <%= prev_class.getString(3) %></TD>
                     <TD> <%= prev_class.getString(4) %></TD>
-                    <TD> <%= prev_class.getInt(5) %></TD>
+                    <TD> <%= prev_class.getString(5) %></TD>
                     <TD> <%= prev_class.getString(6) %></TD>
-                    <TD> <%= prev_class.getInt(7) %></TD>
+                    <TD> <%= prev_class.getString(7) %></TD>
                     <TD> <%= prev_class.getString(8) %></TD>
                     <TD> <%= prev_class.getString(9) %></TD>
                 </TR>
@@ -132,7 +134,99 @@
             </TABLE>
 
             <%-- Calculate GPA per quarter here --%>
+            <%
+                String curr_quarter1 = "";
+                String curr_quarter2 = "";
+                float  gpa  = 0;
+                int    unit = 0;
+
+                float gpa_total  = 0;
+                int   total_unit = 0;
+
+                List<Float> gpa_quarter   = new ArrayList();
+                List<Float> gpa_arry      = new ArrayList();
+                List<String> quarter      = new ArrayList();
+                List<String> quarter_arry = new ArrayList();
+                List<Integer> unit_total  = new ArrayList();
+
+                // create fresh new result set
+                PreparedStatement pstmt3 = conn.prepareStatement(
+                    "SELECT x.*, y.quarter, y.grade, y.units " +
+                    "FROM classes x, previous_class y " +
+                    "WHERE x.classes_course_id = y.course_id AND y.student_id = ? " +
+                    "ORDER BY y.year, y.quarter "
+                );
+                pstmt3.setInt(1, student_id);
+                ResultSet prev_class_copy = pstmt3.executeQuery();
+
+                // grab the values out of the resultset and into an arraylist
+                while (prev_class_copy.next()) {
+                    //gpa_quarter.add(Float.parseFloat(prev_class_copy.getString(8)));
+                    quarter.add(prev_class_copy.getString(7));
+                    unit_total.add(Integer.parseInt(prev_class_copy.getString(9)));
+
+                    // grab the actual GPA weights
+                    PreparedStatement pstmt4 = conn.prepareStatement(
+                        "SELECT number_grade " + 
+                        "FROM grade_conversion " + 
+                        "WHERE letter_grade = ? " 
+                    );
+                    pstmt4.setString(1, prev_class_copy.getString(8));
+                    ResultSet gpa_weight = pstmt4.executeQuery();
+                    gpa_weight.next();
+                    gpa_quarter.add(gpa_weight.getFloat(1));
+                }
+
+                // the two arraylist should always be the same size
+                for (int i = 0; i < gpa_quarter.size(); i++) {
+                    gpa  += gpa_quarter.get(i) * unit_total.get(i);
+                    unit += unit_total.get(i);
+                    curr_quarter1 = quarter.get(i);
+                
+                    // if the quarter changes
+                    if (!curr_quarter1.equals(curr_quarter2)) {
+                        curr_quarter2 = curr_quarter1;
+                        gpa_total += gpa;
+                        total_unit += unit;
+                        
+                        gpa_arry.add(gpa/unit);
+                        quarter_arry.add(curr_quarter2);
+                        //reset variables
+                        gpa = 0;
+                        unit = 0;
+                    }
+                }
+
+                gpa_total = gpa_total/total_unit;
+            %>
             
+            <p></p>
+
+            <%-- format gpa results --%>
+            <TABLE BORDER="1">
+                <TR>
+                    <TH>Quarter</TH>
+                    <TH>GPA</TH>
+                </TR>
+                
+                <% for(int i = 0; i < gpa_arry.size(); i++) { %>
+                <TR>
+                    <TD> <%=gpa_arry.get(i) %></TD>
+                    <TD> <%=quarter_arry.get(i) %></TD>
+                </TR>
+                <% } %>
+            </TABLE>
+
+            <p></p>
+
+            <b>
+                Total GPA:
+                <%
+                    out.println(gpa_total);
+                %>
+            </b>
+
+
             <%
                 // Close the Connection
                 conn.close();
