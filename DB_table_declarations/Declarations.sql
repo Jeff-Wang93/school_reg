@@ -1,8 +1,8 @@
 ﻿DROP TABLE IF EXISTS faculty CASCADE;
 CREATE TABLE public.faculty
 (
-    faculty_name      character varying(20) NOT NULL,
-    faculty_title     character varying(20) NOT NULL,
+    faculty_name      character varying(50) NOT NULL,
+    faculty_title     character varying(50) NOT NULL,
     CONSTRAINT faculty_pkey PRIMARY KEY (faculty_name)
 )
 WITH (
@@ -44,12 +44,27 @@ CREATE TABLE public.classes
     classes_next              VARCHAR(20)
 );
 
+DROP TABLE IF EXISTS current_quarter CASCADE;
+CREATE TABLE public.current_quarter
+(
+    section_number INTEGER PRIMARY KEY,
+    course_id      INTEGER REFERENCES course (course_id),
+    quarter        VARCHAR(20),
+    year           VARCHAR(20),
+    lec_days       VARCHAR(20),
+    lec_time       VARCHAR(20),
+    dis_days       VARCHAR(20),
+    dis_time       VARCHAR(20)
+);
+
 DROP TABLE IF EXISTS degree CASCADE;
 CREATE TABLE public.degree
 (
     degree_id                 INTEGER PRIMARY KEY,
     degree_lower_div_req      INTEGER NOT NULL,
     degree_upper_div_req      INTEGER NOT NULL,
+    degree_tech_req           INTEGER NOT NULL,
+    degree_grad_units         INTEGER NOT NULL,
     degree_department_id      INTEGER REFERENCES department (department_id),
     degree_type               varchar(150),
     degree_name               varchar(150)
@@ -193,7 +208,7 @@ DROP TABLE IF EXISTS enrolled_student CASCADE;
 CREATE TABLE public.enrolled_student
 (
     student_id          INTEGER REFERENCES student (student_id),
-    classes_id          INTEGER REFERENCES classes (classes_id),
+    classes_id          INTEGER REFERENCES current_quarter (section_number),
     units               varchar(150),
     grade_type          varchar(150)
 );
@@ -223,6 +238,16 @@ CREATE TABLE public.degree_course
 (
     degree_id   INTEGER REFERENCES degree (degree_id),
     course_id   INTEGER REFERENCES course (course_id)
+);
+
+DROP TABLE IF EXISTS faculty_teaching CASCADE;
+CREATE TABLE public.faculty_teaching
+(
+    faculty_name VARCHAR(50) REFERENCES faculty (faculty_name),
+    course_id    INTEGER REFERENCES course (course_id),
+    section      INTEGER REFERENCES current_quarter (section_number), 
+    quarter      VARCHAR(20),
+    year         VARCHAR(20)
 );
 
 DROP TABLE IF EXISTS grade_conversion CASCADE;
