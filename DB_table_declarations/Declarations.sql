@@ -246,7 +246,7 @@ CREATE TABLE public.ms_concentration
 DROP TABLE IF EXISTS degree_course CASCADE;
 CREATE TABLE public.degree_course
 (
-    degree_id   INTEGER REFERENCES ms_concentration (concentration_id),
+    concentration_id   INTEGER REFERENCES ms_concentration (concentration_id),
     course_id   INTEGER REFERENCES course (course_id)
 );
 

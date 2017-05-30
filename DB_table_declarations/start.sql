@@ -206,7 +206,7 @@ INSERT INTO ms_concentration VALUES(3, 4, 4, 3.3, 'Systems');
 
 -- make sample MS concentration req classes
 INSERT INTO degree_course VALUES(1, 7);
-INSERT INTO degree_course VALUES(2, 4);
+INSERT INTO degree_course VALUES(2, 5);
 INSERT INTO degree_course VALUES(2, 6);
 INSERT INTO degree_course VALUES(3, 8);
 
