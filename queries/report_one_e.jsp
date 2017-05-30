@@ -192,11 +192,30 @@
                         gpa += unit.get(j) * gpa_w.get(j); 
                     }
 
-                    out.println(total_unit);
-                    out.println(gpa);
                     // calculate cumulative GPA
                     gpa = gpa / total_unit;
-                    out.println(gpa);
+
+                    // if unit == 0, then GPA = NaN
+                    if(total_unit == 0) {
+                        // do nothing. we know for sure the conditions arent
+                        // met
+                    }
+
+                    else {
+                        // does the calculated GPA meet the requirement?
+                        boolean good_gpa = false;
+                        if(gpa >= gpa_req.get(i))
+                            good_gpa = true;
+
+                        // does the calculated UNIT meet the requirement
+                        boolean good_unit = false;
+                        if(total_unit >= units_req.get(i))
+                            good_unit = true;
+
+                        // if both requirements are met, output
+                        if(good_gpa && good_unit)
+                            out.println(con_name.get(i));
+                    }
 
                     // dont forget to clear the variables and arraylists
                     unit.clear();
