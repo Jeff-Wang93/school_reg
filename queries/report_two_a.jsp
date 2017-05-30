@@ -124,9 +124,15 @@
                     String time = rs2.getString(6);
                     String [] enroll_time = time.split(delim);
 
+                    String [] enroll_dis_days;
+                    String [] enroll_dis_time; 
+
                     // parse the string containing dicussion days and times
-                    String [] enroll_dis_days = rs2.getString(7).split(delim);
-                    String [] enroll_dis_time = rs2.getString(8).split(delim);
+                    if(rs2.getString(7) != null)
+                        enroll_dis_days = rs2.getString(7).split(delim);
+
+                    if(rs2.getString(8) != null)
+                        enroll_dis_time = rs2.getString(8).split(delim);
 
                     // check every class that is not compatible
                     pstmt3.setInt(1, rs2.getInt(1));
@@ -142,9 +148,20 @@
                         time = rs3.getString(6);
                         String [] other_time = time.split(delim);
 
+                        // grab the day and time of NON ENROLLED discussion
+                        String [] other_dis_day;
+                        String [] other_dis_time; 
+
+                        if(rs3.getString(7) != null)
+                            other_dis_day = rs3.getString(7).split(delim);
+                        
+                        if(rs3.getString(8) != null)
+                            other_dis_time = rs3.getString(8).split(delim);
+
                         // nested for loop to check every ENROLLED day with
                         // every NON ENROLLED day
                         boolean has_conflict = false;
+
                         for(int i = 0; i < enroll_days.length; i++) {
                             for (int j = 0; j < other_days.length; j++) {
                                 // if the days match
