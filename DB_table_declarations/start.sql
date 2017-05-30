@@ -148,7 +148,7 @@ INSERT INTO current_quarter VALUES(4, 13, 'sp', '2017', 'M,W,F', '12:00,pm' );
 INSERT INTO current_quarter VALUES(5, 8, 'sp', '2017', 'M,W,F', '12:00,pm');
 INSERT INTO current_quarter VALUES(6, 2, 'sp', '2017',  'T,Th', '2:00,pm', 'F', '6:00,pm');
 INSERT INTO current_quarter VALUES(7, 14, 'sp', '2017', 'T,Th', '3:00,pm');
-INSERT INTO current_quarter VALUES(8, 11, 'sp', '2017', 'T,Th', '5:00,pm');
+INSERT INTO current_quarter VALUES(8, 11, 'sp', '2017', 'T,Th', '3:00,pm');
 INSERT INTO current_quarter VALUES(9, 8, 'sp', '2017', 'T,Th', '5:00,pm');
 INSERT INTO current_quarter VALUES(10, 1, 'sp', '2017', 'T,Th', '5:00,pm', 'W', '7:00,pm');
 

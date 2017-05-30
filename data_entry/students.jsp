@@ -867,6 +867,9 @@
                                     conn.setAutoCommit(false);
                                 }
                             }
+                            else {
+                                out.println("Please enter at least 3 professors");
+                            }
                         }
                 %>
 
