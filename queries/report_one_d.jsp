@@ -52,7 +52,7 @@
                 ResultSet rs2 = curr_degree.executeQuery(
                     "SELECT degree_name " +
                     "FROM degree " +
-                    "WHERE degree_type = 'Bachelors of Science'"
+                    "WHERE degree_type = 'BS'"
                 );
             %>
 
@@ -89,7 +89,7 @@
                 PreparedStatement pstmt2 = conn.prepareStatement(
                     "SELECT degree_name, degree_type " +
                     "FROM degree " +
-                    "WHERE degree_name = ?"
+                    "WHERE degree_name = ? AND degree_type = 'BS'"
                 );
                 pstmt2.setString(1, chosen_degree);
                 ResultSet display_degree = pstmt2.executeQuery();
@@ -97,19 +97,103 @@
                 // get number of units needed to graduate
                 // calculate the total number of units needed to graduate with degree
                 PreparedStatement pstmt3 = conn.prepareStatement(
-                    "SELECT degree_lower_div_req, degree_upper_div_req " +
+                    "SELECT degree_lower_div_req, degree_upper_div_req ,degree_tech_req, degree_department_id " +
                     "FROM degree " +
-                    "WHERE degree_name = ?"
+                    "WHERE degree_name = ? AND degree_type = 'BS'"
                 );
                 pstmt3.setString(1, chosen_degree);
                 ResultSet units_left = pstmt3.executeQuery();
                
                 int total_units = 0;
+                int lower_req = 0, upper_req = 0, tech_req = 0;
+                int department_id = 0;
 
-                while(units_left.next()) 
-                    total_units = units_left.getInt(1) + units_left.getInt(2);
+                while(units_left.next()) {
+                    lower_req = units_left.getInt(1);
+                    upper_req = units_left.getInt(2);
+                    tech_req  = units_left.getInt(3);
+                    department_id = units_left.getInt(4);
+                }
+                    
+                total_units = lower_req + upper_req + tech_req;
 
-                // calculate the number of units a student has taken 
+                // get the number of units the chosen student has taken 
+                PreparedStatement pstmt4 = conn.prepareStatement(
+                    "SELECT SUM(units::integer) " + 
+                    "FROM previous_class " +
+                    "WHERE student_id IN " +
+                        "(SELECT student_id " + 
+                        " FROM student " +
+                        " WHERE student_ssn = ?) "
+                );
+                pstmt4.setInt(1, chosen_student);
+                ResultSet student_units = pstmt4.executeQuery();
+                student_units.next();
+                int student_unit = student_units.getInt(1);
+
+                // get the number of units the chosen students needs in each
+                // category
+                
+                // Calculate lower division first IN MAJOR
+                PreparedStatement pstmt5 = conn.prepareStatement(
+                    "SELECT SUM(units::integer) " + 
+                    "FROM previous_class " + 
+                    "WHERE student_id IN " +
+                        "(SELECT student_id " +
+                        " FROM student " + 
+                        " WHERE student_ssn = ?) " +
+                    "AND course_id IN " + 
+                        "(SELECT course_id " + 
+                        " FROM lower_division) " +
+                    "AND course_id IN " + 
+                        "(SELECT course_id " + 
+                        " FROM course " + 
+                        " WHERE course_department_id = ?) "
+                );
+                pstmt5.setInt(1, chosen_student);
+                pstmt5.setInt(2, department_id);
+                ResultSet student_lower = pstmt5.executeQuery();
+                student_lower.next();
+                int student_low = student_lower.getInt(1);
+
+                // calculate upper division IN MAJOR
+                PreparedStatement pstmt6 = conn.prepareStatement(
+                    "SELECT SUM(units::integer) " + 
+                    "FROM previous_class " + 
+                    "WHERE student_id IN " +
+                        "(SELECT student_id " +
+                        " FROM student " + 
+                        " WHERE student_ssn = ?) " +
+                    "AND course_id NOT IN " + 
+                        "(SELECT course_id " + 
+                        " FROM lower_division) " +
+                    "AND course_id IN " +
+                        "(SELECT course_id " +
+                        " FROM course " + 
+                        " WHERE course_department_id = ?) "
+                );
+                pstmt6.setInt(1, chosen_student);
+                pstmt6.setInt(2, department_id);
+                ResultSet student_upper = pstmt6.executeQuery();
+                student_upper.next();
+                int student_up = student_upper.getInt(1);
+
+                // calculate tech elective units
+                PreparedStatement pstmt7 = conn.prepareStatement(
+                    "SELECT SUM(units::integer) " + 
+                    "FROM previous_class " + 
+                    "WHERE student_id IN " +
+                        "(SELECT student_id " +
+                        " FROM student " + 
+                        " WHERE student_ssn = ?) " +
+                    "AND course_id IN " + 
+                        "(SELECT course_id " + 
+                        " FROM tech_elective) " 
+                );
+                pstmt7.setInt(1, chosen_student);
+                ResultSet student_tech = pstmt7.executeQuery();
+                student_tech.next();
+                int student_tec = student_tech.getInt(1);
             %>
             
             <TABLE BORDER="1">
@@ -134,17 +218,28 @@
                 <TR>
                     <TH>Degree Name</TH>
                     <TH>Degree Type</TH>
+                    <TH>Units Total</TH>
+                    <TH>Units Taken</TH>
+                    <TH>Units Needed</TH>
+                    <TH>Lower Div Needed</TH>
+                    <TH>Upper Div Needed</TH>
+                    <TH>Tech Needed</TH>
                 </TR>
 
                 <% while(display_degree.next()) { %>
                 <TR>
                     <TD> <%= display_degree.getString(1) %></TD>
                     <TD> <%= display_degree.getString(2) %></TD>
+                    <TD> <%= total_units %></TD>
+                    <TD> <%= student_unit %></TD>
+                    <TD> <%= total_units - student_unit %></TD>
+                    <TD> <%= lower_req - student_low%></TD>
+                    <TD> <%= upper_req - student_up%></TD>
+                    <TD> <%= tech_req -  student_tec%></TD>
                 </TR>
                 <% } %>
     
             </TABLE>
-
 
             <%
                 // Close the Connection

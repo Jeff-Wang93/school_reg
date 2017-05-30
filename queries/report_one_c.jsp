@@ -211,8 +211,8 @@
                 
                 <% for(int i = 0; i < gpa_arry.size(); i++) { %>
                 <TR>
-                    <TD> <%=gpa_arry.get(i) %></TD>
                     <TD> <%=quarter_arry.get(i) %></TD>
+                    <TD> <%=gpa_arry.get(i) %></TD>
                 </TR>
                 <% } %>
             </TABLE>

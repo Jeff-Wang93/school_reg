@@ -256,6 +256,12 @@ CREATE TABLE public.tech_elective
     course_id  INTEGER REFERENCES course (course_id)
 );
 
+DROP TABLE IF EXISTS lower_division CASCADE;
+CREATE TABLE public.lower_division
+(
+    course_id INTEGER REFERENCES course (course_id)
+);
+
 DROP TABLE IF EXISTS faculty_teaching CASCADE;
 CREATE TABLE public.faculty_teaching
 (

@@ -115,30 +115,30 @@ INSERT INTO previous_class VALUES (5, 1, 'B', 'fa2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (1, 2, 'A-', 'wi2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (5, 2, 'B+', 'wi2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (4, 2, 'C', 'wi2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(16, 4, 'C', 'fa2014', '2014', 4, 'Grade');
-INSERT INTO previous_class VALUES(22, 4, 'B+', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(18, 4, 'D', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(19, 4, 'F', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(17, 5, 'A', 'wi2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(19, 5, 'A', 'wi2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(20, 6, 'B-', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(18, 6, 'B', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(21, 6, 'F', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(17, 7, 'A-', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(22, 8, 'A', 'sp2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(20, 8, 'A', 'sp2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(10, 10, 'B+', 'sp2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(8, 11, 'B-', 'fa2014', '2014', 2, 'Grade');
-INSERT INTO previous_class VALUES(7, 11, 'A-', 'fa2014', '2014', 2, 'Grade');
-INSERT INTO previous_class VALUES(6, 11, 'B', 'wi2015', '2015', 2, 'Grade');
-INSERT INTO previous_class VALUES(10, 11, 'B+', 'wi2015', '2015', 2, 'Grade');
-INSERT INTO previous_class VALUES(11, 12, 'A', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(12, 12, 'A', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(13, 12, 'C-', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(14, 12, 'C+', 'fa2015', '2015', 4, 'Grade');
-INSERT INTO previous_class VALUES(15, 14, 'F', 'sp2015', '2015', 2, 'Grade');
-INSERT INTO previous_class VALUES(12, 14, 'D', 'sp2015', '2015', 2, 'Grade');
-INSERT INTO previous_class VALUES(11, 14, 'A-', 'fa2015', '2015', 2, 'Grade');
+INSERT INTO previous_class VALUES (16, 4, 'C', 'fa2014', '2014', 4, 'Grade');
+INSERT INTO previous_class VALUES (22, 4, 'B+', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (18, 4, 'D', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (19, 4, 'F', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (17, 5, 'A', 'wi2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (19, 5, 'A', 'wi2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (20, 6, 'B-', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (18, 6, 'B', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (21, 6, 'F', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (17, 7, 'A-', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (22, 8, 'A', 'sp2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (20, 8, 'A', 'sp2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (10, 10, 'B+', 'sp2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (8, 11, 'B-', 'fa2014', '2014', 2, 'Grade');
+INSERT INTO previous_class VALUES (7, 11, 'A-', 'fa2014', '2014', 2, 'Grade');
+INSERT INTO previous_class VALUES (6, 11, 'B', 'wi2015', '2015', 2, 'Grade');
+INSERT INTO previous_class VALUES (10, 11, 'B+', 'wi2015', '2015', 2, 'Grade');
+INSERT INTO previous_class VALUES (11, 12, 'A', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (12, 12, 'A', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (13, 12, 'C-', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (14, 12, 'C+', 'fa2015', '2015', 4, 'Grade');
+INSERT INTO previous_class VALUES (15, 14, 'F', 'sp2015', '2015', 2, 'Grade');
+INSERT INTO previous_class VALUES (12, 14, 'D', 'sp2015', '2015', 2, 'Grade');
+INSERT INTO previous_class VALUES (11, 14, 'A-', 'fa2015', '2015', 2, 'Grade');
 
 -- make sample current quarter
 INSERT INTO current_quarter VALUES(1, 11, 'sp', '2017',  'M,W,F', '10:00,am');
@@ -216,6 +216,12 @@ INSERT INTO tech_elective VALUES (8);
 INSERT INTO tech_elective VALUES (2);
 INSERT INTO tech_elective VALUES (10);
 INSERT INTO tech_elective VALUES (9);
+
+-- make sample lower division classes
+INSERT INTO lower_division VALUES (1);
+INSERT INTO lower_division VALUES (9);
+INSERT INTO lower_division VALUES (12);
+INSERT INTO lower_division VALUES (13);
 
 -- make sample grade conversion table 
 insert into grade_conversion values('A+', 4.0);
