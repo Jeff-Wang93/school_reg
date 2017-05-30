@@ -27,7 +27,7 @@
 
             %>
             
-            <b>Current undergrad student</b>
+            <b>Remaining Degree Unit Requirements</b>
 
             <% 
                 Statement curr_student = conn.createStatement();

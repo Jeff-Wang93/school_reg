@@ -27,7 +27,7 @@
 
             %>
             
-            <b>Current undergrad student</b>
+            <b>Help MS student figure out concentrations</b>
 
             <% 
                 Statement curr_student = conn.createStatement();

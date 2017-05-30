@@ -27,7 +27,7 @@
 
             %>
             
-            <b>Current classes of student</b>
+            <b>Class Schedule Helper</b>
 
             <% 
                 Statement curr_student = conn.createStatement();
