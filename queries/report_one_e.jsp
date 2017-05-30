@@ -158,6 +158,8 @@
                 int   total_unit = 0;
                 float gpa        = 0;
 
+                boolean at_least_one = false;
+
                 // iterate through all concentration names and do work
                 for(int i = 0; i < con_name.size(); i++) {
                     // grab all the units
@@ -213,8 +215,10 @@
                             good_unit = true;
 
                         // if both requirements are met, output
-                        if(good_gpa && good_unit)
+                        if(good_gpa && good_unit) {
                             out.println(con_name.get(i));
+                            at_least_one = true;
+                        }
                     }
 
                     // dont forget to clear the variables and arraylists
@@ -223,7 +227,59 @@
                     total_unit = 0;
                     gpa = 0;
                 }
+
+                if(!at_least_one) 
+                    out.println("No concentrations done");
             %>
+            
+            <%-- List courses not yet taken in each concentration and next time it is given --%>
+            <%
+                // get all courses not yet taken
+                PreparedStatement pstmt7 = conn.prepareStatement(
+                    // not in previous but in concentration
+                    "SELECT c.course_title, p.classes_next " +
+                    "FROM course c, classes p " + 
+                    "WHERE c.course_id IN " +
+                        "(SELECT DISTINCT course_id " + 
+                        "FROM previous_class " + 
+                        "WHERE course_id NOT IN " +
+                            "(SELECT course_id " + 
+                            "FROM previous_class " + 
+                            "WHERE student_id IN " + 
+                                "(SELECT student_id " +
+                                "FROM student " + 
+                                "WHERE student_ssn = ?)) " +
+                        "AND c.course_id IN " +
+                            "(SELECT course_id " +
+                            "FROM degree_course " + 
+                            "WHERE concentration_id = ?)) " +
+                        "AND c.course_id = p.classes_course_id "
+
+                );
+            %>
+            
+            <p></p>
+
+            <TABLE BORDER="1">
+                <TR>
+                    <TH>Concentration Name</TH>
+                    <TH>Missing Class</TH>
+                    <TH>Next Offering</TH>
+                </TR>
+                <% for(int l = 0; l < con_name.size(); l++) { 
+                    pstmt7.setInt(1, chosen_student);
+                    pstmt7.setInt(2, con_id.get(l));
+                    ResultSet rs3 = pstmt7.executeQuery();
+
+                    while(rs3.next()) {
+                %>
+                <TR>
+                    <TD><%=con_name.get(l)%></TD>
+                    <TD><%=rs3.getString(1) %></TD>
+                    <TD><%=rs3.getString(2) %></TD>
+                </TR>
+                    <% } %>
+                <% } %>
 
             <%
                 // Close the Connection
