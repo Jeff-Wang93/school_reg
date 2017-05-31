@@ -158,7 +158,8 @@
                                     // if the times equal, that means there's a
                                     // conflict. set it(pos in times) to null
                                     if(times[l].equals(lecture_time.get(temp))) {
-                                        out.println("hello" + times[l] + lecture_time.get(temp));
+                                        out.println("Conflict: " + 
+                                            times[l] + lecture_time.get(temp));
                                         times[l] = null;
                                         end[l]   = null;
                                     }
@@ -188,7 +189,10 @@
                         <%
                         }
                     } //end int m
-                }
+                %>
+                <p></p>
+            <%
+                } //end lecture dates
             %>
                 
             <%
