@@ -144,8 +144,6 @@
                                         "1:00,pm", "2:00,pm", "3:00,pm", "4:00,pm", 
                                         "5:00,pm", "6:00,pm", "7:00,pm", "8:00,pm" };
 
-                    // for each day split in lecture day which holds MWF, TTh,
-                    // etc
                     int temp = 0;
                     for(int j = 0; j < lecture_day.size(); j++) {
                         // split the string into it's individual components
@@ -167,32 +165,32 @@
                             }
                         }
 
-                        // now display the times that work
-                        for(int m = 0; m < times.length; m++) {
-                            if(times[m] != null) {
-                    %>
-                                <TABLE BORDER="1">
-                                    <TR>
-                                        <TH>Day</TH>
-                                        <TH>Begin Time</TH>
-                                        <TH>End Time</TH>
-                                    </TR>
-
-                                    <TR>
-                                        <TD><%= day_split[i] %></TD>
-                                        <TD><%= times[m] %></TD>
-                                        <TD><%= end[m] %></TD>
-                                    </TR>
-                                </TABLE>
-                    <%
-                            }
-                        } //end int m
-                    }//end for lecture_day 
                     temp += 1;
+                    } //end for lecture_day 
+
+                    // now display the times that work
+                    for(int m = 0; m < times.length; m++) {
+                        if(times[m] != null) {
+                        %>
+                            <TABLE BORDER="1">
+                                <TR>
+                                    <TH>Day</TH>
+                                    <TH>Begin Time</TH>
+                                    <TH>End Time</TH>
+                                </TR>
+
+                                <TR>
+                                    <TD><%= day_split[i] %></TD>
+                                    <TD><%= times[m] %></TD>
+                                    <TD><%= end[m] %></TD>
+                                </TR>
+                            </TABLE>
+                        <%
+                        }
+                    } //end int m
                 }
-
             %>
-
+                
             <%
                 // Close the Connection
                 conn.close();
