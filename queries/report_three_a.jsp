@@ -530,8 +530,66 @@
                         <TR>
                     </TABLE>
                 <% } 
+            %>
+            
+            <%
+                // calculate GPA for professor Y of course X
+                
+                // select the courses that professor Y taught
+                PreparedStatement pstmt8 = conn.prepareStatement(
+                "SELECT grade, units " + 
+                "FROM previous_class " + 
+                "WHERE course_id = ? " + 
+                "AND quarter IN " + 
+                    "(SELECT quarter || year " + 
+                    " FROM faculty_teaching " + 
+                    " WHERE faculty_name = ? " + 
+                    " AND course_id = ?) " 
+                );
 
+                // query to get the grade weight
+                PreparedStatement pstmt9 = conn.prepareStatement(
+                    "SELECT number_grade " + 
+                    "FROM grade_conversion " + 
+                    "WHERE letter_grade = ? " 
+                );
 
+                pstmt8.setInt(1, Integer.parseInt(request.getParameter("COURSEID")));
+                pstmt8.setString(2, request.getParameter("PROFESSOR"));
+                pstmt8.setInt(3, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet prof_gpa = pstmt8.executeQuery();
+
+                float gpa = 0;
+                int unit  = 0;
+
+                while(prof_gpa.next()) {
+                    // grab the weight
+                    pstmt9.setString(1, prof_gpa.getString(1));
+                    ResultSet gpa_weight = pstmt9.executeQuery();
+
+                    while(gpa_weight.next()) {
+                        gpa += gpa_weight.getFloat(1) * prof_gpa.getInt(2);
+                    }
+
+                    unit += prof_gpa.getInt(2);
+                }
+
+                %>
+                <p></p>
+                <b>Course GPA by Professor</b>
+                
+                <TABLE BORDER="1">
+                    <TR>
+                        <TH>Professor</TH>
+                        <TH>Course</TH>
+                        <TH>GPA</TH>
+                    </TR>
+
+                    <TR>
+                        <TD><%= request.getParameter("PROFESSOR") %></TD>
+                        <TD><%= request.getParameter("COURSEID")  %></TD>
+                        <TD><%= gpa / unit %></TD>
+                <%
 
             %>
 
