@@ -109,7 +109,7 @@ INSERT INTO classes VALUES (12, 'Freedom, Equality, and the Law', 'sp2015, fa201
 -- make sample student course history
 INSERT INTO previous_class VALUES (1, 1 , 'A-', 'fa2014', '2014', 4, 'Grade');
 INSERT INTO previous_class VALUES (3, 1, 'B+', 'fa2014', '2014', 4, 'Grade');
-INSERT INTO previous_class VALUES (2, 1, 'C-', 'fa2014', '2014', 4, 'Grade');
+INSERT INTO previous_class VALUES (2, 1, 'C-', 'sp2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (4, 1, 'A-', 'fa2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (5, 1, 'B', 'fa2015', '2015', 4, 'Grade');
 INSERT INTO previous_class VALUES (1, 2, 'A-', 'wi2015', '2015', 4, 'Grade');
