@@ -291,7 +291,7 @@
 
                 while(rsA.next()) { %>
                 <p></p>
-                <b>Historical Grade Distribution</b>
+                <b>Historical Grade Distribution for Class and Professor</b>
 
                     <TABLE BORDER="1">
                         <TR>
@@ -408,6 +408,131 @@
                 <% } 
 
     
+            %>
+            
+            <%
+                // given course ID X, produce count of grades given to students 
+                PreparedStatement pstmt7 = conn.prepareStatement( 
+                    "SELECT COUNT(grade) " + 
+                    "FROM previous_class " + 
+                    "WHERE (grade = ? OR grade = ? OR grade = ?) " +
+                    "AND course_id = ? "
+                );
+
+                // get A grades
+                pstmt7.setString(1, "A");
+                pstmt7.setString(2, "A+");
+                pstmt7.setString(3, "A-");
+                pstmt7.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet A = pstmt7.executeQuery();
+
+                while(A.next()) { %>
+                <p></p>
+                <b>Course Grade Distribution</b>
+
+                    <TABLE BORDER="1">
+                        <TR>
+                            <TH>Course ID</TH>
+                            <TH>Number of A Grades</TH>
+                        </TR>
+
+                        <TR>
+                            <TD> <%= request.getParameter("COURSEID") %></%D>
+                            <TD> <%= A.getInt(1) %></%D>
+                        <TR>
+                    </TABLE>
+                <% } 
+
+                // get B grades
+                pstmt7.setString(1, "B");
+                pstmt7.setString(2, "B+");
+                pstmt7.setString(3, "B-");
+                pstmt7.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet B = pstmt7.executeQuery();
+                
+                while(B.next()) { %>
+
+                    <TABLE BORDER="1">
+                        <TR>
+                            <TH>Course ID</TH>
+                            <TH>Number of B Grades</TH>
+                        </TR>
+
+                        <TR>
+                            <TD> <%= request.getParameter("COURSEID") %></%D>
+                            <TD> <%= B.getInt(1) %></%D>
+                        <TR>
+                    </TABLE>
+                <% } 
+
+                // get C grades
+                pstmt7.setString(1, "C");
+                pstmt7.setString(2, "C+");
+                pstmt7.setString(3, "C-");
+                pstmt7.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet C = pstmt7.executeQuery();
+
+                while(C.next()) { %>
+
+                    <TABLE BORDER="1">
+                        <TR>
+                            <TH>Course ID</TH>
+                            <TH>Number of C Grades</TH>
+                        </TR>
+
+                        <TR>
+                            <TD> <%= request.getParameter("COURSEID") %></%D>
+                            <TD> <%= C.getInt(1) %></%D>
+                        <TR>
+                    </TABLE>
+                <% } 
+
+                // get D grades
+                pstmt7.setString(1, "D");
+                pstmt7.setString(2, "D+");
+                pstmt7.setString(3, "D-");
+                pstmt7.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet D = pstmt7.executeQuery();
+
+                while(D.next()) { %>
+
+                    <TABLE BORDER="1">
+                        <TR>
+                            <TH>Course ID</TH>
+                            <TH>Number of D Grades</TH>
+                        </TR>
+
+                        <TR>
+                            <TD> <%= request.getParameter("COURSEID") %></%D>
+                            <TD> <%= D.getInt(1) %></%D>
+                        <TR>
+                    </TABLE>
+                <% } 
+
+                // get F grades
+                pstmt7.setString(1, "F");
+                pstmt7.setString(2, "F+");
+                pstmt7.setString(3, "F-");
+                pstmt7.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
+                ResultSet F = pstmt7.executeQuery();
+
+                while(F.next()) { %>
+
+                    <TABLE BORDER="1">
+                        <TR>
+                            <TH>Course ID</TH>
+                            <TH>Number of Other Grades</TH>
+                        </TR>
+
+                        <TR>
+                            <TD> <%= request.getParameter("COURSEID") %></%D>
+                            <TD> <%= F.getInt(1) %></%D>
+                        <TR>
+                    </TABLE>
+                <% } 
+
+
+
             %>
 
             <%
