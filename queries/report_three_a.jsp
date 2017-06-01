@@ -64,7 +64,8 @@
                         // quarter and facutly member
                         "SELECT course_id " +
                         "FROM faculty_teaching " +
-                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " 
+                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " +
+                        "AND course_id = ? "
                 );
 
                 PreparedStatement pstmt2 = conn.prepareStatement( 
@@ -78,7 +79,8 @@
                         // quarter and facutly member
                         "SELECT course_id " +
                         "FROM faculty_teaching " +
-                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " 
+                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) "  +
+                        "AND course_id = ? "
                 );
 
                 PreparedStatement pstmt3 = conn.prepareStatement( 
@@ -92,7 +94,8 @@
                         // quarter and facutly member
                         "SELECT course_id " +
                         "FROM faculty_teaching " +
-                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " 
+                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " +
+                        "AND course_id = ? "
                 );
                     
                 PreparedStatement pstmt4 = conn.prepareStatement( 
@@ -104,11 +107,12 @@
                         // quarter and facutly member
                         "SELECT course_id " +
                         "FROM faculty_teaching " +
-                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) "
+                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " +
+                        "AND course_id = ? "
                 );
 
                 PreparedStatement pstmt5 = conn.prepareStatement( 
-                    // get d grades
+                    // get other grades
                     "SELECT COUNT(grade) " +
                     "FROM previous_class " + 
                     "WHERE quarter = ? AND " +
@@ -121,7 +125,8 @@
                         // quarter and facutly member
                         "SELECT course_id " +
                         "FROM faculty_teaching " +
-                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) "
+                        "WHERE quarter = ? AND year = ? AND faculty_name = ?) " +
+                        "AND course_id = ? "
                 );
 
 
@@ -130,30 +135,35 @@
                 pstmt1.setString(2, quarter);
                 pstmt1.setString(3, year);
                 pstmt1.setString(4, request.getParameter("PROFESSOR"));
+                pstmt1.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
                 
                 // for b grade query
                 pstmt2.setString(1, quarter_year);
                 pstmt2.setString(2, quarter);
                 pstmt2.setString(3, year);
                 pstmt2.setString(4, request.getParameter("PROFESSOR"));
+                pstmt2.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
 
                 // for c grade query
                 pstmt3.setString(1, quarter_year);
                 pstmt3.setString(2, quarter);
                 pstmt3.setString(3, year);
                 pstmt3.setString(4, request.getParameter("PROFESSOR"));
+                pstmt3.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
 
                 // for d grade query
                 pstmt4.setString(1, quarter_year);
                 pstmt4.setString(2, quarter);
                 pstmt4.setString(3, year);
                 pstmt4.setString(4, request.getParameter("PROFESSOR"));
+                pstmt4.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
             
                 // for "other" grade query
                 pstmt5.setString(1, quarter_year);
                 pstmt5.setString(2, quarter);
                 pstmt5.setString(3, year);
                 pstmt5.setString(4, request.getParameter("PROFESSOR"));
+                pstmt5.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
 
                 ResultSet rs1 = pstmt1.executeQuery();
                 ResultSet rs2 = pstmt2.executeQuery();
@@ -257,28 +267,26 @@
                 // find the grade distribution for professor Y over the 
                 // years
                 PreparedStatement pstmt6 = conn.prepareStatement(
-                    "SELECT COUNT(grade) " +
+
+                    // given course ID, find when the professor taught it
+                    "SELECT COUNT(grade) " + 
                     "FROM previous_class " + 
                     "WHERE (grade = ? OR grade = ? OR grade = ?) " +
-                    "AND course_id IN ( "+
-                        // get all courses taught by given faculty
-                        "SELECT course_id " + 
-                        "FROM faculty_teaching " +
-                        "WHERE faculty_name = ?) " +
-                    "AND quarter IN ( " +
-                        // get all quarters taught by given faculty
-                        // string concat in PSQL = ||
-                        "SELECT quarter || year " + 
+                    "AND course_id = ? " + 
+                    "AND quarter IN " + 
+                        "(SELECT quarter || year " + 
                         "FROM faculty_teaching " + 
-                        "WHERE faculty_name = ?) " 
+                        "WHERE faculty_name = ? " + 
+                        "AND course_id = ?) " 
                 );
 
                 // get A grades
                 pstmt6.setString(1, "A");
                 pstmt6.setString(2, "A+");
                 pstmt6.setString(3, "A-");
-                pstmt6.setString(4, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
                 pstmt6.setString(5, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(6, Integer.parseInt(request.getParameter("COURSEID")));
                 ResultSet rsA = pstmt6.executeQuery();
 
                 while(rsA.next()) { %>
@@ -303,8 +311,9 @@
                 pstmt6.setString(1, "B");
                 pstmt6.setString(2, "B+");
                 pstmt6.setString(3, "B-");
-                pstmt6.setString(4, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
                 pstmt6.setString(5, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(6, Integer.parseInt(request.getParameter("COURSEID")));
                 ResultSet rsB = pstmt6.executeQuery();
 
                 while(rsB.next()) { %>
@@ -327,8 +336,9 @@
                 pstmt6.setString(1, "C");
                 pstmt6.setString(2, "C+");
                 pstmt6.setString(3, "C-");
-                pstmt6.setString(4, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
                 pstmt6.setString(5, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(6, Integer.parseInt(request.getParameter("COURSEID")));
                 ResultSet rsC = pstmt6.executeQuery();
 
                 while(rsC.next()) { %>
@@ -351,9 +361,11 @@
                 pstmt6.setString(1, "D");
                 pstmt6.setString(2, "D+");
                 pstmt6.setString(3, "D-");
-                pstmt6.setString(4, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
                 pstmt6.setString(5, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(6, Integer.parseInt(request.getParameter("COURSEID")));
                 ResultSet rsD = pstmt6.executeQuery();
+
 
                 while(rsD.next()) { %>
 
@@ -372,11 +384,13 @@
 
                 // get OTHER grades
                 pstmt6.setString(1, "F");
-                pstmt6.setString(2, "F");
-                pstmt6.setString(3, "F");
-                pstmt6.setString(4, request.getParameter("PROFESSOR"));
+                pstmt6.setString(2, "F+");
+                pstmt6.setString(3, "F-");
+                pstmt6.setInt(4, Integer.parseInt(request.getParameter("COURSEID")));
                 pstmt6.setString(5, request.getParameter("PROFESSOR"));
+                pstmt6.setInt(6, Integer.parseInt(request.getParameter("COURSEID")));
                 ResultSet rsF = pstmt6.executeQuery();
+
 
                 while(rsF.next()) { %>
 
