@@ -153,16 +153,16 @@ INSERT INTO current_quarter VALUES(9, 8, 'sp', '2017', 'T,Th', '5:00,pm', DEFAUL
 INSERT INTO current_quarter VALUES(10, 1, 'sp', '2017', 'T,Th', '5:00,pm', 'W', '7:00,pm', 5);
 
 -- make sample enrollment limits
-INSERT INTO current_enrollment VALUES(1, 0, 2);
-INSERT INTO current_enrollment VALUES(2, 0, 5);
-INSERT INTO current_enrollment VALUES(3, 0, 5);
-INSERT INTO current_enrollment VALUES(4, 0, 2);
-INSERT INTO current_enrollment VALUES(5, 0, 3);
-INSERT INTO current_enrollment VALUES(6, 0, 3);
-INSERT INTO current_enrollment VALUES(7, 0, 3);
-INSERT INTO current_enrollment VALUES(8, 0, 1);
-INSERT INTO current_enrollment VALUES(9, 0, 2);
-INSERT INTO current_enrollment VALUES(10, 0, 5);
+INSERT INTO current_enrollment VALUES(1, 2, 2);
+INSERT INTO current_enrollment VALUES(2, 2, 5);
+INSERT INTO current_enrollment VALUES(3, 3, 5);
+INSERT INTO current_enrollment VALUES(4, 2, 2);
+INSERT INTO current_enrollment VALUES(5, 2, 3);
+INSERT INTO current_enrollment VALUES(6, 1, 3);
+INSERT INTO current_enrollment VALUES(7, 2, 3);
+INSERT INTO current_enrollment VALUES(8, 1, 1);
+INSERT INTO current_enrollment VALUES(9, 2, 2);
+INSERT INTO current_enrollment VALUES(10, 3, 5);
 
 -- make sample lecture times
 INSERT INTO lecture_info VALUES('10:00,am', 'M', 1);
