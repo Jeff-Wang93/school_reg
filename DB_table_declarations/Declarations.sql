@@ -58,6 +58,14 @@ CREATE TABLE public.current_quarter
     enrollment_limit INTEGER
 );
 
+DROP TABLE IF EXISTS current_enrollment CASCADE;
+CREATE TABLE public.current_enrollment
+(
+    section_id      INTEGER REFERENCES current_quarter (section_number),
+    enrollment      INTEGER,
+    limit           INTEGER
+);
+
 DROP TABLE IF EXISTS degree CASCADE;
 CREATE TABLE public.degree
 (
