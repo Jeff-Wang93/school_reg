@@ -141,16 +141,68 @@ INSERT INTO previous_class VALUES (12, 14, 'D', 'sp2015', '2015', 2, 'Grade');
 INSERT INTO previous_class VALUES (11, 14, 'A-', 'fa2015', '2015', 2, 'Grade');
 
 -- make sample current quarter
-INSERT INTO current_quarter VALUES(1, 11, 'sp', '2017',  'M,W,F', '10:00,am');
-INSERT INTO current_quarter VALUES(2, 8, 'sp', '2017', 'M,W,F', '10:00,am');
-INSERT INTO current_quarter VALUES(3, 6, 'sp', '2017', 'M,W,F', '12:00,pm' );
-INSERT INTO current_quarter VALUES(4, 13, 'sp', '2017', 'M,W,F', '12:00,pm' );
-INSERT INTO current_quarter VALUES(5, 8, 'sp', '2017', 'M,W,F', '12:00,pm');
-INSERT INTO current_quarter VALUES(6, 2, 'sp', '2017',  'T,Th', '2:00,pm', 'F', '6:00,pm');
-INSERT INTO current_quarter VALUES(7, 14, 'sp', '2017', 'T,Th', '3:00,pm');
-INSERT INTO current_quarter VALUES(8, 11, 'sp', '2017', 'T,Th', '3:00,pm');
-INSERT INTO current_quarter VALUES(9, 8, 'sp', '2017', 'T,Th', '5:00,pm');
-INSERT INTO current_quarter VALUES(10, 1, 'sp', '2017', 'T,Th', '5:00,pm', 'W', '7:00,pm');
+INSERT INTO current_quarter VALUES(1, 11, 'sp', '2017',  'M,W,F', '10:00,am', DEFAULT, DEFAULT, 2);
+INSERT INTO current_quarter VALUES(2, 8, 'sp', '2017', 'M,W,F', '10:00,am', DEFAULT, DEFAULT, 5);
+INSERT INTO current_quarter VALUES(3, 6, 'sp', '2017', 'M,W,F', '12:00,pm', DEFAULT, DEFAULT, 5 );
+INSERT INTO current_quarter VALUES(4, 13, 'sp', '2017', 'M,W,F', '12:00,pm', DEFAULT, DEFAULT, 2 );
+INSERT INTO current_quarter VALUES(5, 8, 'sp', '2017', 'M,W,F', '12:00,pm', DEFAULT, DEFAULT, 3);
+INSERT INTO current_quarter VALUES(6, 2, 'sp', '2017',  'T,Th', '2:00,pm', 'F', '6:00,pm', 3);
+INSERT INTO current_quarter VALUES(7, 14, 'sp', '2017', 'T,Th', '3:00,pm', DEFAULT, DEFAULT, 3);
+INSERT INTO current_quarter VALUES(8, 11, 'sp', '2017', 'T,Th', '3:00,pm', DEFAULT, DEFAULT, 1);
+INSERT INTO current_quarter VALUES(9, 8, 'sp', '2017', 'T,Th', '5:00,pm', DEFAULT, DEFAULT, 2);
+INSERT INTO current_quarter VALUES(10, 1, 'sp', '2017', 'T,Th', '5:00,pm', 'W', '7:00,pm', 5);
+
+-- make sample lecture times
+INSERT INTO lecture_info VALUES('10:00,am', 'M', 1);
+INSERT INTO lecture_info VALUES('10:00,am', 'W', 1);
+INSERT INTO lecture_info VALUES('10:00,am', 'F', 1);
+INSERT INTO lecture_info VALUES('10:00,am', 'M', 2);
+INSERT INTO lecture_info VALUES('10:00,am', 'W', 2);
+INSERT INTO lecture_info VALUES('10:00,am', 'F', 2);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', 3);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', 3);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', 3);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', 4);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', 4);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', 4);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', 5);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', 5);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', 5);
+INSERT INTO lecture_info VALUES('2:00,pm', 'T', 6);
+INSERT INTO lecture_info VALUES('2:00,pm', 'Th', 6);
+INSERT INTO lecture_info VALUES('3:00,pm', 'T', 7);
+INSERT INTO lecture_info VALUES('3:00,pm', 'Th', 7);
+INSERT INTO lecture_info VALUES('3:00,pm', 'T', 8);
+INSERT INTO lecture_info VALUES('3:00,pm', 'Th', 8);
+INSERT INTO lecture_info VALUES('5:00,pm', 'T', 9);
+INSERT INTO lecture_info VALUES('5:00,pm', 'Th', 9);
+INSERT INTO lecture_info VALUES('5:00,pm', 'T', 10);
+INSERT INTO lecture_info VALUES('5:00,pm', 'Th', 10);
+
+-- make sample discussion times
+INSERT INTO discussion_info VALUES('10:00,am', 'T', DEFAULT, 1);
+INSERT INTO discussion_info VALUES('10:00,am', 'Th', DEFAULT, 1);
+INSERT INTO discussion_info VALUES('11:00,am', 'T', DEFAULT, 2);
+INSERT INTO discussion_info VALUES('11:00,am', 'Th', DEFAULT, 2);
+INSERT INTO discussion_info VALUES('1:00,pm', 'W', DEFAULT, 4);
+INSERT INTO discussion_info VALUES('1:00,pm', 'F', DEFAULT, 4);
+INSERT INTO discussion_info VALUES('12:00,pm', 'T', DEFAULT, 5);
+INSERT INTO discussion_info VALUES('12:00,pm', 'Th', DEFAULT, 5);
+INSERT INTO discussion_info VALUES('6:00,pm', 'F', DEFAULT, 6);
+INSERT INTO discussion_info VALUES('1:00,pm', 'Th', DEFAULT, 7);
+INSERT INTO discussion_info VALUES('3:00,pm', 'M', DEFAULT, 8);
+INSERT INTO discussion_info VALUES('9:00,am', 'M', DEFAULT, 9);
+INSERT INTO discussion_info VALUES('9:00,am', 'F', DEFAULT, 9);
+INSERT INTO discussion_info VALUES('7:00,pm', 'W', DEFAULT, 10);
+
+-- make sample lab times
+INSERT INTO lab_info VALUES('6:00,pm', 'F', DEFAULT, 1);
+INSERT INTO lab_info VALUES('5:00,pm', 'F', DEFAULT, 8);
+INSERT INTO lab_info VALUES('3:00,pm', 'T', DEFAULT, 10);
+INSERT INTO lab_info VALUES('3:00,pm', 'Th', DEFAULT, 10);
+
+-- make sample review sessions
+
 
 -- make sample enrolled students
 INSERT INTO enrolled_student VALUES(16, 2, 'Grade', 4);
@@ -206,7 +258,7 @@ INSERT INTO ms_concentration VALUES(3, 4, 4, 3.3, 'Systems');
 
 -- make sample MS concentration req classes
 INSERT INTO degree_course VALUES(1, 7);
-INSERT INTO degree_course VALUES(2, 5);
+INSERT INTO degree_course VALUES(2, 4);
 INSERT INTO degree_course VALUES(2, 6);
 INSERT INTO degree_course VALUES(3, 8);
 

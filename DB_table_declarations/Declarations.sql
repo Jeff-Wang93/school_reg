@@ -54,7 +54,8 @@ CREATE TABLE public.current_quarter
     lec_days       VARCHAR(20),
     lec_time       VARCHAR(20),
     dis_days       VARCHAR(20),
-    dis_time       VARCHAR(20)
+    dis_time       VARCHAR(20),
+    enrollment_limit INTEGER
 );
 
 DROP TABLE IF EXISTS degree CASCADE;
@@ -163,45 +164,46 @@ CREATE TABLE public.class_history
 DROP TABLE IF EXISTS lecture_info CASCADE;
 CREATE TABLE public.lecture_info
 (
-    lecture_info_id         INTEGER PRIMARY KEY,
     lecture_info_time       varchar(150) NOT NULL,
+    lecture_info_day        varchar(150),
     lecture_info_date       varchar(150),
-    lecture_info_location   varchar(150) NOT NULL,
-    lecture_info_mandatory  varchar(150) NOT NULL,
-    classes_id              INTEGER REFERENCES classes (classes_id)
+    section_id              INTEGER REFERENCES current_quarter (section_number)
 );
 
 DROP TABLE IF EXISTS discussion_info CASCADE;
 CREATE TABLE public.discussion_info
 (
-    discussion_info_id          INTEGER PRIMARY KEY,
     discussion_info_time        varchar(150) NOT NULL,
+    discussion_info_day         varchar(150),
     discussion_info_date        varchar(150),
-    discussion_info_location    varchar(150) NOT NULL,
-    discussion_info_mandatory   varchar(150) NOT NULL,
-    classes_id                  INTEGER REFERENCES classes (classes_id)
+    section_id                  INTEGER REFERENCES current_quarter (section_number)
 );
 
 DROP TABLE IF EXISTS review_info CASCADE;
 CREATE TABLE public.review_info
 (
-    review_info_id          INTEGER PRIMARY KEY,
     review_info_time        varchar(150) NOT NULL,
+    review_info_day         varchar(150),
     review_info_date        varchar(150),
-    review_info_location    varchar(150) NOT NULL,
-    review_info_mandatory   varchar(150) NOT NULL,
-    classes_id              INTEGER REFERENCES classes (classes_id)
+    section_id              INTEGER REFERENCES current_quarter (section_number)
 );
 
 DROP TABLE IF EXISTS lab_info CASCADE;
 CREATE TABLE public.lab_info
 (
-    lab_info_id          INTEGER PRIMARY KEY,
     lab_info_time        varchar(150) NOT NULL,
+    lab_info_day         varchar(150),
     lab_info_date        varchar(150),
-    lab_info_location    varchar(150) NOT NULL,
-    lab_info_mandatory   varchar(150) NOT NULL,
-    classes_id           INTEGER REFERENCES classes (classes_id)
+    section_id           INTEGER REFERENCES current_quarter (section_number)
+);
+
+DROP TABLE IF EXISTS final_info CASCADE;
+CREATE TABLE public.final_info
+(
+    final_info_time     VARCHAR(150) NOT NULL,
+    final_info_day      VARCHAR(150),
+    final_info_date     VARCHAR(150), 
+    section_id          INTEGER REFERENCES current_quarter (section_number)
 );
 
 DROP TABLE IF EXISTS enrolled_student CASCADE;
