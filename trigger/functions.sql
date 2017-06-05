@@ -225,3 +225,18 @@ $BODY$
     END;
 $BODY$
 LANGUAGE plpgsql;
+
+-- check to see if a professor has conflicts between his/her assigned classes
+CREATE OR REPLACE FUNCTION assign_prof() RETURNS trigger AS
+$BODY$
+    BEGIN
+        -- check to see if there's a conflict in lectures
+
+        -- check to see if there's a conflict in discussion
+
+        -- checl to see if there's a conflict in labs
+    END;
+$BODY$
+LANGUAGE plpgsql;
+
+
