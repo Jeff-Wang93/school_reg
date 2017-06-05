@@ -39,7 +39,7 @@
                 </tr>
 
                 <tr>
-                    <form action="part4_2.jsp">
+                    <form action="enrollment_limit.jsp">
                         <th><input value ="" name="student id" size="10"></th>
                         <th><input value ="" name="section id" size="10"></th>
                         <th><input value ="" name="units" size="10"></th>
