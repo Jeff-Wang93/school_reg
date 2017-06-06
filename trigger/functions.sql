@@ -230,11 +230,57 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION assign_prof() RETURNS trigger AS
 $BODY$
     BEGIN
-        -- check to see if there's a conflict in lectures
+        -- get the classes a teacher already teaches and store that as a view
+        DROP TABLE IF EXISTS busy_time;
+        CREATE TEMP TABLE busy_time AS
+        SELECT lecture_info_time, lecture_info_day
+        FROM lecture_info 
+        WHERE section_id IN (SELECT section 
+                             FROM faculty_teaching 
+                             WHERE faculty_name = new.faculty_name)
+        UNION 
+        SELECT discussion_info_time, discussion_info_day
+        FROM discussion_info
+        WHERE section_id IN (SELECT section 
+                             FROM faculty_teaching 
+                             WHERE faculty_name = new.faculty_name)
+        UNION 
+        SELECT lab_info_time, lab_info_day
+        FROM lab_info
+        WHERE section_id IN (SELECT section 
+                             FROM faculty_teaching 
+                             WHERE faculty_name = new.faculty_name);
 
-        -- check to see if there's a conflict in discussion
 
-        -- checl to see if there's a conflict in labs
+        -- get the information from the class the teacher wants to teach
+        DROP TABLE IF EXISTS desired_time;
+        CREATE TEMP TABLE desired_time AS
+        SELECT lecture_info_time, lecture_info_day
+        FROM lecture_info
+        WHERE section_id = new.section
+        UNION 
+        SELECT discussion_info_time, discussion_info_day
+        FROM discussion_info
+        WHERE section_id = new.section
+        UNION 
+        SELECT lab_info_time, lab_info_day
+        FROM lab_info
+        WHERE section_id = new.section;
+
+        -- compare the two tables and see if there's any matches
+        IF EXISTS ( SELECT * FROM busy_time INTERSECT SELECT * FROM desired_time )
+            THEN RAISE EXCEPTION 'Professor has time conflict -- ' ;
+            RETURN NULL;
+        ELSE
+            IF pg_trigger_depth() <> 1
+                THEN RETURN new;
+            ELSE
+                INSERT INTO faculty_teaching
+                   VALUES(new.faculty_name, new.course_id, new.section, 
+                          new.quarter, new.year);
+            END IF;
+        END IF;
+        RETURN NULL;
     END;
 $BODY$
 LANGUAGE plpgsql;

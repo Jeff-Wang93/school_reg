@@ -57,7 +57,10 @@
                 int course_id = temp.getInt(1);
 
                 PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO faculty_teaching VALUES (?,?,?,?,?)"
+                    "INSERT INTO faculty_teaching " + 
+                    "(faculty_name, course_id, section, quarter, year) " +
+                    "VALUES " +
+                    "(?,?,?,?,?)"
                 );
                 pstmt.setString(1, request.getParameter("faculty name"));
                 pstmt.setInt(2, course_id);

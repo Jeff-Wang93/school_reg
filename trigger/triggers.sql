@@ -26,3 +26,10 @@ BEFORE INSERT ON enrolled_student
 FOR EACH ROW
 EXECUTE PROCEDURE enroll_insert();
 
+-- Check if professor can teach desired class with given schedule
+DROP TRIGGER IF EXISTS before_faculty_insert ON faculty_teaching;
+CREATE TRIGGER before_faculty_insert
+BEFORE INSERT ON faculty_teaching
+FOR EACH ROW
+EXECUTE PROCEDURE assign_prof();
+
