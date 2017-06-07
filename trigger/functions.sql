@@ -285,4 +285,5 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
+-- function for CPGQ "view"
 

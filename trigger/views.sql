@@ -34,6 +34,9 @@ FROM prof_course p,
          FROM previous_class
          WHERE grade LIKE 'F%'
          GROUP BY quarter, course_id
-) AS g
+        ) AS g
 WHERE p.course_id = g.course_id AND p.quarter = g.quarter
 ORDER BY p.faculty_name, p.quarter, p.course_id;
+
+DROP TABLE IF EXISTS CPG;
+

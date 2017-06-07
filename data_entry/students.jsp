@@ -1066,7 +1066,7 @@
                         // Create the prepared statement and use it to
                         // INSERT the student attributes INTO the Student table.
                         PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO previous_class VALUES (?, ?, ?)");
+                            "INSERT INTO previous_class VALUES (?, ?, ?, ?, ?)");
 
                         pstmt.setInt(1, Integer.parseInt(request.getParameter("student ID")));
                         pstmt.setInt(2, Integer.parseInt(request.getParameter("classes ID")));
@@ -1120,7 +1120,7 @@
                         int rowCount = pstmt.executeUpdate();
 
                         // Commit transaction
-                         conn.commit();
+                        conn.commit();
                         conn.setAutoCommit(true);
                     }
             %>
@@ -1132,8 +1132,10 @@
 
                     // Use the created statement to SELECT
                     // the student attributes FROM the Student table.
-                    ResultSet rs = previous_statement.executeQuery
-                        ("SELECT * FROM previous_class");
+                    ResultSet rs = previous_statement.executeQuery(
+                        "SELECT * FROM previous_class " + 
+                        "GROUP BY quarter, 
+                    );
             %>
 
             <!-- Add an HTML table header row to format the results -->
