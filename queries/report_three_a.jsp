@@ -78,7 +78,39 @@
                     <TR>
                 </TABLE>
             <% } %>
+
+            <%
+                // used for 3.a.iii
+                PreparedStatement faculty_history = conn.prepareStatement(
+                    "SELECT * " + 
+                    "FROM cpg " + 
+                    "WHERE course_id = ? AND faculty_name = ? "
+                );
+
+                faculty_history.setInt(1, Integer.parseInt(request.getParameter("COURSEID")));
+                faculty_history.setString(2, request.getParameter("PROFESSOR"));
+
+                ResultSet faculty_history_rs = faculty_history.executeQuery();
+            %>
             
+            <% while(faculty_history_rs.next()) { %>
+                <TABLE BORDER="1">
+                    <TR>
+                        <TH>Professor</TH>
+                        <TH>Course Id</TH>
+                        <TH>Count</TH>
+                        <TH>Grade</TH>
+                    </TR>
+
+                    <TR>
+                        <TD> <%= faculty_history_rs.getString(1) %></%D>
+                        <TD> <%= faculty_history_rs.getInt(2)    %></%D>
+                        <TD> <%= faculty_history_rs.getInt(3)    %></%D>
+                        <TD> <%= faculty_history_rs.getString(4) %></%D>
+                    <TR>
+                </TABLE>
+            <% } %>
+
             <p>SPLIT: VIEW ABOVE. REGULAR TABLE BELOW</p>
 
             <%

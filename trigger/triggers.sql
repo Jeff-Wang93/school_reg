@@ -46,3 +46,16 @@ AFTER UPDATE ON previous_class
 FOR EACH ROW
     EXECUTE PROCEDURE update_cpgq();
 
+-- Triggers to update CPG table
+DROP TRIGGER IF EXISTS t_insert_cpg ON previous_class;
+CREATE TRIGGER t_insert_cpg
+AFTER INSERT ON previous_class
+FOR EACH ROW
+    EXECUTE PROCEDURE insert_cpg();
+
+DROP TRIGGER IF EXISTS t_update_cpg ON previous_class;
+CREATE TRIGGER t_update_cpg
+AFTER UPDATE ON previous_class
+FOR EACH ROW
+    EXECUTE PROCEDURE update_cpg();
+
