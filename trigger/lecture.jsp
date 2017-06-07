@@ -35,6 +35,7 @@
                     <th>Lecture Time</th>
                     <th>Lecture Day</th>
                     <th>Section ID</th>
+                    <th>Action</th>
                 </tr>
 
                 <tr>
@@ -42,7 +43,7 @@
                         <th><input value ="" name="lecture time" size="10"></th>
                         <th><input value ="" name="lecture day" size="10"></th>
                         <th><input value ="" name="section id" size="10"></th>
-                        <th><input type="submit" value="Submit">
+                        <th><input type="submit" value="Insert">
                     </form>
                 </tr>
             </table>

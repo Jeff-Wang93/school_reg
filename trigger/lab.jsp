@@ -32,8 +32,8 @@
             <b>Check for lab meeting conflicts</b>
             <table border="1">
                 <tr>
-                    <th>lab Time</th>
-                    <th>lab Day</th>
+                    <th>Lab Time</th>
+                    <th>Lab Day</th>
                     <th>Section ID</th>
                 </tr>
 
@@ -42,7 +42,7 @@
                         <th><input value ="" name="lab time" size="10"></th>
                         <th><input value ="" name="lab day" size="10"></th>
                         <th><input value ="" name="section id" size="10"></th>
-                        <th><input type="submit" value="Submit">
+                        <th><input type="submit" value="Insert">
                     </form>
                 </tr>
             </table>

@@ -44,6 +44,8 @@
                 </form>
             </TABLE>
 
+            <p></p>
+
             <%
                 // java block for using the view
                 PreparedStatement faculty_course = conn.prepareStatement(
@@ -78,6 +80,8 @@
                     <TR>
                 </TABLE>
             <% } %>
+            
+            <p></p>
 
             <%
                 // used for 3.a.iii

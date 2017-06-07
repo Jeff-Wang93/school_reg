@@ -165,53 +165,53 @@ INSERT INTO current_enrollment VALUES(9, 2, 2);
 INSERT INTO current_enrollment VALUES(10, 3, 5);
 
 -- make sample lecture times
-INSERT INTO lecture_info VALUES('10:00,am', 'M', DEFAULT, 1);
-INSERT INTO lecture_info VALUES('10:00,am', 'W', DEFAULT, 1);
-INSERT INTO lecture_info VALUES('10:00,am', 'F', DEFAULT, 1);
-INSERT INTO lecture_info VALUES('10:00,am', 'M', DEFAULT, 2);
-INSERT INTO lecture_info VALUES('10:00,am', 'W', DEFAULT, 2);
-INSERT INTO lecture_info VALUES('10:00,am', 'F', DEFAULT, 2);
-INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 3);
-INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 3);
-INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 3);
-INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 4);
-INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 4);
-INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 4);
-INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 5);
-INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 5);
-INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 5);
-INSERT INTO lecture_info VALUES('2:00,pm', 'T', DEFAULT, 6);
-INSERT INTO lecture_info VALUES('2:00,pm', 'Th', DEFAULT, 6);
-INSERT INTO lecture_info VALUES('3:00,pm', 'T', DEFAULT, 7);
-INSERT INTO lecture_info VALUES('3:00,pm', 'Th', DEFAULT, 7);
-INSERT INTO lecture_info VALUES('3:00,pm', 'T', DEFAULT, 8);
-INSERT INTO lecture_info VALUES('3:00,pm', 'Th', DEFAULT, 8);
-INSERT INTO lecture_info VALUES('5:00,pm', 'T', DEFAULT, 9);
-INSERT INTO lecture_info VALUES('5:00,pm', 'Th', DEFAULT, 9);
-INSERT INTO lecture_info VALUES('5:00,pm', 'T', DEFAULT, 10);
-INSERT INTO lecture_info VALUES('5:00,pm', 'Th', DEFAULT, 10);
+INSERT INTO lecture_info VALUES('10:00,am', 'M', DEFAULT, 1, 11);
+INSERT INTO lecture_info VALUES('10:00,am', 'W', DEFAULT, 1, 11);
+INSERT INTO lecture_info VALUES('10:00,am', 'F', DEFAULT, 1, 11);
+INSERT INTO lecture_info VALUES('10:00,am', 'M', DEFAULT, 2, 8);
+INSERT INTO lecture_info VALUES('10:00,am', 'W', DEFAULT, 2, 8);
+INSERT INTO lecture_info VALUES('10:00,am', 'F', DEFAULT, 2, 8);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 3, 6);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 3, 6);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 3, 6);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 4, 13);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 4, 13);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 4, 13);
+INSERT INTO lecture_info VALUES('12:00,pm', 'M', DEFAULT, 5, 8);
+INSERT INTO lecture_info VALUES('12:00,pm', 'W', DEFAULT, 5, 8);
+INSERT INTO lecture_info VALUES('12:00,pm', 'F', DEFAULT, 5, 8);
+INSERT INTO lecture_info VALUES('2:00,pm', 'T', DEFAULT, 6, 2);
+INSERT INTO lecture_info VALUES('2:00,pm', 'Th', DEFAULT, 6, 2);
+INSERT INTO lecture_info VALUES('3:00,pm', 'T', DEFAULT, 7, 14);
+INSERT INTO lecture_info VALUES('3:00,pm', 'Th', DEFAULT, 7, 14);
+INSERT INTO lecture_info VALUES('3:00,pm', 'T', DEFAULT, 8, 11);
+INSERT INTO lecture_info VALUES('3:00,pm', 'Th', DEFAULT, 8, 11);
+INSERT INTO lecture_info VALUES('5:00,pm', 'T', DEFAULT, 9, 8);
+INSERT INTO lecture_info VALUES('5:00,pm', 'Th', DEFAULT, 9, 8);
+INSERT INTO lecture_info VALUES('5:00,pm', 'T', DEFAULT, 10, 1);
+INSERT INTO lecture_info VALUES('5:00,pm', 'Th', DEFAULT, 10, 1);
 
 -- make sample discussion times
-INSERT INTO discussion_info VALUES('10:00,am', 'T', DEFAULT, 1);
-INSERT INTO discussion_info VALUES('10:00,am', 'Th', DEFAULT, 1);
-INSERT INTO discussion_info VALUES('11:00,am', 'T', DEFAULT, 2);
-INSERT INTO discussion_info VALUES('11:00,am', 'Th', DEFAULT, 2);
-INSERT INTO discussion_info VALUES('1:00,pm', 'W', DEFAULT, 4);
-INSERT INTO discussion_info VALUES('1:00,pm', 'F', DEFAULT, 4);
-INSERT INTO discussion_info VALUES('12:00,pm', 'T', DEFAULT, 5);
-INSERT INTO discussion_info VALUES('12:00,pm', 'Th', DEFAULT, 5);
-INSERT INTO discussion_info VALUES('6:00,pm', 'F', DEFAULT, 6);
-INSERT INTO discussion_info VALUES('1:00,pm', 'Th', DEFAULT, 7);
-INSERT INTO discussion_info VALUES('3:00,pm', 'M', DEFAULT, 8);
-INSERT INTO discussion_info VALUES('9:00,am', 'M', DEFAULT, 9);
-INSERT INTO discussion_info VALUES('9:00,am', 'F', DEFAULT, 9);
-INSERT INTO discussion_info VALUES('7:00,pm', 'W', DEFAULT, 10);
+INSERT INTO discussion_info VALUES('10:00,am', 'T', DEFAULT, 1, 11);
+INSERT INTO discussion_info VALUES('10:00,am', 'Th', DEFAULT, 1, 11);
+INSERT INTO discussion_info VALUES('11:00,am', 'T', DEFAULT, 2, 8);
+INSERT INTO discussion_info VALUES('11:00,am', 'Th', DEFAULT, 2, 8);
+INSERT INTO discussion_info VALUES('1:00,pm', 'W', DEFAULT, 4, 13);
+INSERT INTO discussion_info VALUES('1:00,pm', 'F', DEFAULT, 4, 13);
+INSERT INTO discussion_info VALUES('12:00,pm', 'T', DEFAULT, 5, 8);
+INSERT INTO discussion_info VALUES('12:00,pm', 'Th', DEFAULT, 5, 8);
+INSERT INTO discussion_info VALUES('6:00,pm', 'F', DEFAULT, 6, 2);
+INSERT INTO discussion_info VALUES('1:00,pm', 'Th', DEFAULT, 7, 14);
+INSERT INTO discussion_info VALUES('3:00,pm', 'M', DEFAULT, 8, 11);
+INSERT INTO discussion_info VALUES('9:00,am', 'M', DEFAULT, 9, 8);
+INSERT INTO discussion_info VALUES('9:00,am', 'F', DEFAULT, 9, 8);
+INSERT INTO discussion_info VALUES('7:00,pm', 'W', DEFAULT, 10, 1);
 
 -- make sample lab times
-INSERT INTO lab_info VALUES('6:00,pm', 'F', DEFAULT, 1);
-INSERT INTO lab_info VALUES('5:00,pm', 'F', DEFAULT, 8);
-INSERT INTO lab_info VALUES('3:00,pm', 'T', DEFAULT, 10);
-INSERT INTO lab_info VALUES('3:00,pm', 'Th', DEFAULT, 10);
+INSERT INTO lab_info VALUES('6:00,pm', 'F', DEFAULT, 1, 11);
+INSERT INTO lab_info VALUES('5:00,pm', 'F', DEFAULT, 8, 11);
+INSERT INTO lab_info VALUES('3:00,pm', 'T', DEFAULT, 10, 1);
+INSERT INTO lab_info VALUES('3:00,pm', 'Th', DEFAULT, 10, 1);
 
 -- make sample review sessions
 
@@ -262,6 +262,8 @@ INSERT INTO faculty_teaching VALUES('Bjork', 4, DEFAULT, 'fa', '2014');
 INSERT INTO faculty_teaching VALUES('Taylor Swift', 14, 7, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 2, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 5, 'sp', '2017');
+
+INSERT INTO faculty_teaching VALUES('Justin Bieber', 1, DEFAULT,'fa', '2016');
 
 -- make sample MS concentrations
 INSERT INTO ms_concentration VALUES(1, 4, 4, 3, 'Databases');

@@ -3,15 +3,24 @@ CREATE OR REPLACE FUNCTION lecture_insert() RETURNS trigger AS
 $BODY$
     DECLARE
         no_conflict BOOLEAN = FALSE;
+        sec_id INTEGER;
 
     BEGIN
+        DROP TABLE IF EXISTS sec;
+        CREATE TEMP TABLE sec AS
+        SELECT course_id 
+        FROM current_quarter
+        WHERE section_number = new.section_id;
+
+        sec_id = (SELECT * FROM sec LIMIT 1);
+
         -- check to see if there's a conflict in lectures
         if exists(
         SELECT * 
         FROM lecture_info 
         WHERE lecture_info_time   = new.lecture_info_time 
             AND lecture_info_day  = new.lecture_info_day
-            AND section_id        = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lecture Schedule Conflict -- ';
@@ -25,7 +34,7 @@ $BODY$
         FROM discussion_info 
         WHERE discussion_info_time   = new.lecture_info_time 
             AND discussion_info_day  = new.lecture_info_day
-            AND section_id           = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Discussion Schedule Conflict -- ';
@@ -39,7 +48,7 @@ $BODY$
         FROM lab_info 
         WHERE lab_info_time    = new.lecture_info_time 
             AND lab_info_day   = new.lecture_info_day
-            AND section_id     = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lab Schedule Conflict -- ';
@@ -54,7 +63,7 @@ $BODY$
                  ELSE
                  INSERT INTO lecture_info 
                         VALUES (new.lecture_info_time, new.lecture_info_day, 
-                                DEFAULT, new.section_id);
+                                DEFAULT, new.section_id, sec_id);
                  END IF;
         END IF;
         RETURN NULL;
@@ -67,15 +76,24 @@ CREATE OR REPLACE FUNCTION discussion_insert() RETURNS trigger AS
 $BODY$
     DECLARE
         no_conflict BOOLEAN = FALSE;
+        sec_id INTEGER;
 
     BEGIN
+        DROP TABLE IF EXISTS sec;
+        CREATE TEMP TABLE sec AS
+        SELECT course_id 
+        FROM current_quarter
+        WHERE section_number = new.section_id;
+
+        sec_id = (SELECT * FROM sec LIMIT 1);
+
         -- check to see if there's a conflict in lectures
         if exists(
         SELECT * 
         FROM lecture_info 
         WHERE lecture_info_time   = new.discussion_info_time 
             AND lecture_info_day  = new.discussion_info_day
-            AND section_id        = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lecture Schedule Conflict -- ';
@@ -89,7 +107,7 @@ $BODY$
         FROM discussion_info 
         WHERE discussion_info_time   = new.discussion_info_time 
             AND discussion_info_day  = new.discussion_info_day
-            AND section_id           = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Discussion Schedule Conflict -- ';
@@ -103,7 +121,7 @@ $BODY$
         FROM lab_info 
         WHERE lab_info_time    = new.discussion_info_time 
             AND lab_info_day   = new.discussion_info_day
-            AND section_id     = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lab Schedule Conflict -- ';
@@ -118,7 +136,7 @@ $BODY$
                  ELSE
                  INSERT INTO discussion_info 
                         VALUES (new.discussion_info_time, new.discussion_info_day, 
-                                DEFAULT, new.section_id);
+                                DEFAULT, new.section_id, sec_id);
                  END IF;
         END IF;
         RETURN NULL;
@@ -126,20 +144,29 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
--- check lab inserts to find any conflicts between the SAME SECTION
+-- check lab inserts to find any conflicts between the SAME SECTION?
 CREATE OR REPLACE FUNCTION lab_insert() RETURNS trigger AS
 $BODY$
     DECLARE
         no_conflict BOOLEAN = FALSE;
+        sec_id INTEGER;
 
     BEGIN
+        DROP TABLE IF EXISTS sec;
+        CREATE TEMP TABLE sec AS
+        SELECT course_id 
+        FROM current_quarter
+        WHERE section_number = new.section_id;
+
+        sec_id = (SELECT * FROM sec LIMIT 1);
+
         -- check to see if there's a conflict in lectures
         if exists(
         SELECT * 
         FROM lecture_info 
         WHERE lecture_info_time   = new.lab_info_time 
             AND lecture_info_day  = new.lab_info_day
-            AND section_id        = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lecture Schedule Conflict -- ';
@@ -153,7 +180,7 @@ $BODY$
         FROM discussion_info 
         WHERE discussion_info_time   = new.lab_info_time
             AND discussion_info_day  = new.lab_info_day
-            AND section_id           = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Discussion Schedule Conflict -- ';
@@ -167,7 +194,7 @@ $BODY$
         FROM lab_info 
         WHERE lab_info_time    = new.lab_info_time 
             AND lab_info_day   = new.lab_info_day
-            AND section_id     = new.section_id)
+            AND (section_id = new.section_id OR course_id = sec_id))
 
         -- a result was returned. This means there is a conflict
             THEN RAISE EXCEPTION 'Lab Schedule Conflict -- ';
@@ -182,7 +209,7 @@ $BODY$
                  ELSE
                  INSERT INTO lab_info 
                         VALUES (new.lab_info_time, new.lab_info_day, 
-                                DEFAULT, new.section_id);
+                                DEFAULT, new.section_id, sec_id);
                  END IF;
         END IF;
         RETURN NULL;
@@ -229,23 +256,26 @@ LANGUAGE plpgsql;
 -- check to see if a professor has conflicts between his/her assigned classes
 CREATE OR REPLACE FUNCTION assign_prof() RETURNS trigger AS
 $BODY$
+    DECLARE
+        conflict_name VARCHAR(50);
+
     BEGIN
         -- get the classes a teacher already teaches and store that as a view
         DROP TABLE IF EXISTS busy_time;
         CREATE TEMP TABLE busy_time AS
-        SELECT lecture_info_time, lecture_info_day
+        SELECT lecture_info_time, lecture_info_day, 'lecture' as name
         FROM lecture_info 
         WHERE section_id IN (SELECT section 
                              FROM faculty_teaching 
                              WHERE faculty_name = new.faculty_name)
         UNION 
-        SELECT discussion_info_time, discussion_info_day
+        SELECT discussion_info_time, discussion_info_day, 'discussion' as name
         FROM discussion_info
         WHERE section_id IN (SELECT section 
                              FROM faculty_teaching 
                              WHERE faculty_name = new.faculty_name)
         UNION 
-        SELECT lab_info_time, lab_info_day
+        SELECT lab_info_time, lab_info_day, 'lab' as name
         FROM lab_info
         WHERE section_id IN (SELECT section 
                              FROM faculty_teaching 
@@ -255,21 +285,28 @@ $BODY$
         -- get the information from the class the teacher wants to teach
         DROP TABLE IF EXISTS desired_time;
         CREATE TEMP TABLE desired_time AS
-        SELECT lecture_info_time, lecture_info_day
+        SELECT lecture_info_time, lecture_info_day, 'lecture' as name
         FROM lecture_info
         WHERE section_id = new.section
         UNION 
-        SELECT discussion_info_time, discussion_info_day
+        SELECT discussion_info_time, discussion_info_day, 'discussion' as name
         FROM discussion_info
         WHERE section_id = new.section
         UNION 
-        SELECT lab_info_time, lab_info_day
+        SELECT lab_info_time, lab_info_day, 'lab' as name
         FROM lab_info
         WHERE section_id = new.section;
 
+        DROP TABLE IF EXISTS conflict_table;
+        CREATE TEMP TABLE conflict_table AS
+        SELECT * FROM busy_time INTERSECT SELECT * FROM desired_time;
+
         -- compare the two tables and see if there's any matches
         IF EXISTS ( SELECT * FROM busy_time INTERSECT SELECT * FROM desired_time )
-            THEN RAISE EXCEPTION 'Professor has time conflict -- ' ;
+            THEN RAISE EXCEPTION 'Professor has time conflict. Conflict:(Meeting Type: %)(Time: %)(Day: %) -- ', 
+                (SELECT name FROM conflict_table LIMIT 1),
+                (SELECT lecture_info_time FROM conflict_table LIMIT 1),
+                (SELECT lecture_info_day FROM conflict_table LIMIT 1);
             RETURN NULL;
         ELSE
             IF pg_trigger_depth() <> 1

@@ -29,33 +29,52 @@
             %>
 
             <%-- HTML form insert code --%>
-            <b>Check for discussion meeting conflicts</b>
+            <b>Insert Section</b>
             <table border="1">
                 <tr>
-                    <th>Discussion Time</th>
-                    <th>Discussion Day</th>
                     <th>Section ID</th>
+                    <th>Course ID</th>
+                    <th>Enrollment Limit</th>
+                    <th>Action</th>
                 </tr>
 
                 <tr>
-                    <form action="discussion.jsp">
-                        <th><input value ="" name="discussion time" size="10"></th>
-                        <th><input value ="" name="discussion day" size="10"></th>
+                    <form action="insert_section.jsp">
                         <th><input value ="" name="section id" size="10"></th>
+                        <th><input value ="" name="course id" size="10"></th>
+                        <th><input value ="" name="enrollment limit" size="10"></th>
                         <th><input type="submit" value="Insert">
                     </form>
                 </tr>
             </table>
 
             <%
-                PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO discussion_info (discussion_info_time, discussion_info_day, section_id) " +
-                    "VALUES (?,?,?)"
+                PreparedStatement pstmt1 = conn.prepareStatement(
+                    "INSERT INTO current_quarter " + 
+                    "VALUES (?,?,?,?,?,?,?,?,?)"
                 );
-                pstmt.setString(1, request.getParameter("discussion time"));
-                pstmt.setString(2, request.getParameter("discussion day"));
-                pstmt.setInt(3, Integer.parseInt(request.getParameter("section id")));
-                ResultSet rs = pstmt.executeQuery();
+                pstmt1.setInt(1, Integer.parseInt(request.getParameter("section id")));
+                pstmt1.setInt(2, Integer.parseInt(request.getParameter("course id")));
+                pstmt1.setString(3, "sp");
+                pstmt1.setString(4, "2017");
+                pstmt1.setString(5, "DEFAULT");
+                pstmt1.setString(6, "DEFAULT");
+                pstmt1.setString(7, "DEFAULT");
+                pstmt1.setString(8, "DEFAULT");
+                pstmt1.setInt(9, Integer.parseInt(request.getParameter("enrollment limit")));
+                pstmt1.executeUpdate();
+                //rs1.close();
+            %>
+            
+            <%
+                PreparedStatement pstmt2 = conn.prepareStatement(
+                    "INSERT INTO current_enrollment " + 
+                    "VALUES (?, ?, ?)"
+                );
+                pstmt2.setInt(1, Integer.parseInt(request.getParameter("section id")));
+                pstmt2.setInt(2, 0);
+                pstmt2.setInt(3, Integer.parseInt(request.getParameter("enrollment limit")));
+                pstmt2.executeUpdate();
             %>
 
             <%-- -------- Close Connection Code -------- --%>

@@ -175,7 +175,8 @@ CREATE TABLE public.lecture_info
     lecture_info_time       varchar(150) NOT NULL,
     lecture_info_day        varchar(150),
     lecture_info_date       varchar(150),
-    section_id              INTEGER REFERENCES current_quarter (section_number)
+    section_id              INTEGER REFERENCES current_quarter (section_number),
+    course_id      INTEGER REFERENCES course (course_id)
 );
 
 DROP TABLE IF EXISTS discussion_info CASCADE;
@@ -184,7 +185,8 @@ CREATE TABLE public.discussion_info
     discussion_info_time        varchar(150) NOT NULL,
     discussion_info_day         varchar(150),
     discussion_info_date        varchar(150),
-    section_id                  INTEGER REFERENCES current_quarter (section_number)
+    section_id                  INTEGER REFERENCES current_quarter (section_number),
+    course_id      INTEGER REFERENCES course (course_id)
 );
 
 DROP TABLE IF EXISTS review_info CASCADE;
@@ -202,7 +204,8 @@ CREATE TABLE public.lab_info
     lab_info_time        varchar(150) NOT NULL,
     lab_info_day         varchar(150),
     lab_info_date        varchar(150),
-    section_id           INTEGER REFERENCES current_quarter (section_number)
+    section_id           INTEGER REFERENCES current_quarter (section_number),
+    course_id      INTEGER REFERENCES course (course_id)
 );
 
 DROP TABLE IF EXISTS final_info CASCADE;
