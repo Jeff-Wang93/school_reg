@@ -286,4 +286,42 @@ $BODY$
 LANGUAGE plpgsql;
 
 -- function for CPGQ "view"
+-- on previous_class input, update the "view"
+CREATE OR REPLACE FUNCTION update_cpgq() RETURNS trigger AS
+$BODY$
+    BEGIN
+        -- get the professor of the course id and the quarter
+        SELECT faculty_name 
+        FROM faculty_teaching
+        WHERE quarter = substr(new.quarter, 1, 2) 
+                AND year = substr(new.quarter, 3, 4)
+                AND course_id = new.course_id;
 
+        -- If inserted, just add one to the count 
+        IF TG_OP = 'INSERT' 
+           THEN UPDATE CPGQ
+                SET a_count = a_count + 1
+                WHERE course_id = new.course_id 
+                AND quarter = new.quarter
+                AND a_name LIKE new.grade || '%';
+                RETURN NEW;
+
+        ELSE IF TG_OP = 'UPDATE'
+                -- if updated, subtract one from old grade then add to the new
+                THEN UPDATE CPGQ
+                     SET a_count = a_count - 1
+                     WHERE course_id = new.course_id
+                     AND quarter = new.quarter
+                     AND a_name LIKE old.grade || '%';
+                    
+                     UPDATE CPGQ
+                     SET a_count = a_count + 1
+                     WHERE course_id = new.course_id 
+                     AND quarter = new.quarter
+                     AND a_name LIKE new.grade || '%';
+                     RETURN NEW;
+            END IF;
+        END IF;
+    END;
+$BODY$
+LANGUAGE plpgsql;

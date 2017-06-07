@@ -79,7 +79,7 @@
                 // output the data
                 Statement prev_statement = conn.createStatement();
                 ResultSet rs = prev_statement.executeQuery(
-                    "SELECT * FROM previous_class " +
+                    "SELECT * FROM previous_class " 
                 );
             %>
             
@@ -94,7 +94,7 @@
                 </tr>
 
                 <tr>
-                    <form action="prev_class.jsp" method="get">
+                    <form action="prev_class_input.jsp" method="get">
                         <input type="hidden" value="prev_insert" name="action">
                         <th><input value="" name="student id" size="10"></th>
                         <th><input value="" name="course id" size="10"></th>
@@ -106,7 +106,7 @@
 
             <% while(rs.next()) { %>
                 <tr>
-                    <form action="prev_class.jsp" method="get">
+                    <form action="prev_class_input.jsp" method="get">
                         <input type="hidden" value="prev_update" name="action">
                         <td>
                             <input value="<%= rs.getInt("student_id") %>"  

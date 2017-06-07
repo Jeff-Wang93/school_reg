@@ -45,6 +45,43 @@
             </TABLE>
 
             <%
+                // java block for using the view
+                PreparedStatement faculty_course = conn.prepareStatement(
+                    "SELECT * " +
+                    "FROM cpgq " + 
+                    "WHERE course_id = ? AND faculty_name = ? AND quarter = ? "
+                );
+
+                faculty_course.setInt(1, Integer.parseInt(request.getParameter("COURSEID")));
+                faculty_course.setString(2, request.getParameter("PROFESSOR"));
+                faculty_course.setString(3, request.getParameter("QUARTER"));
+
+                ResultSet faculty_course_rs = faculty_course.executeQuery();
+            %>
+            
+            <% while(faculty_course_rs.next()) { %>
+                <TABLE BORDER="1">
+                    <TR>
+                        <TH>Professor</TH>
+                        <TH>Course Id</TH>
+                        <TH>Quarter</TH>
+                        <TH>Count</TH>
+                        <TH>Grade</TH>
+                    </TR>
+
+                    <TR>
+                        <TD> <%= faculty_course_rs.getString(1) %></%D>
+                        <TD> <%= faculty_course_rs.getInt(2)    %></%D>
+                        <TD> <%= faculty_course_rs.getString(3) %></%D>
+                        <TD> <%= faculty_course_rs.getInt(4)    %></%D>
+                        <TD> <%= faculty_course_rs.getString(5) %></%D>
+                    <TR>
+                </TABLE>
+            <% } %>
+            
+            <p>SPLIT: VIEW ABOVE. REGULAR TABLE BELOW</p>
+
+            <%
                 //split the substring of the quarter to work with the faculty
                 //teaching table
                 String quarter = request.getParameter("QUARTER").substring(0,2); //FA
@@ -53,10 +90,10 @@
 
                 // produce count of grades given by professor y at quarter z to
                 // students taking course X
-                PreparedStatement pstmt1 = conn.prepareStatement( 
-                    // get a grades 
+                PreparedStatement pstmt1 = conn.prepareStatement(
+                    // get a grades
                     "SELECT COUNT(grade) " +
-                    "FROM previous_class " + 
+                    "FROM previous_class " +
                     "WHERE quarter = ? " +
                     "AND (grade = 'A' OR grade = 'A+' OR grade ='A-') " +
                     "AND course_id IN ( " +
@@ -68,10 +105,10 @@
                         "AND course_id = ? "
                 );
 
-                PreparedStatement pstmt2 = conn.prepareStatement( 
+                PreparedStatement pstmt2 = conn.prepareStatement(
                     // get b grades
                     "SELECT COUNT(grade) " +
-                    "FROM previous_class " + 
+                    "FROM previous_class " +
                     "WHERE quarter = ? " +
                     "AND (grade = 'B' OR grade = 'B+' OR grade ='B-') " +
                     "AND course_id IN ( " +
@@ -83,10 +120,10 @@
                         "AND course_id = ? "
                 );
 
-                PreparedStatement pstmt3 = conn.prepareStatement( 
+                PreparedStatement pstmt3 = conn.prepareStatement(
                     // get c grades
                     "SELECT COUNT(grade) " +
-                    "FROM previous_class " + 
+                    "FROM previous_class " +
                     "WHERE quarter = ? " +
                     "AND (grade = 'C' OR grade = 'C+' OR grade ='C-') " +
                     "AND course_id IN ( " +
@@ -97,11 +134,11 @@
                         "WHERE quarter = ? AND year = ? AND faculty_name = ?) " +
                         "AND course_id = ? "
                 );
-                    
-                PreparedStatement pstmt4 = conn.prepareStatement( 
+
+                PreparedStatement pstmt4 = conn.prepareStatement(
                     // get d grades
                     "SELECT COUNT(grade) " +
-                    "FROM previous_class " + 
+                    "FROM previous_class " +
                     "WHERE quarter = ? AND grade = 'D' AND course_id IN ( " +
                         // get the course ID from faculty teaching given current
                         // quarter and facutly member
@@ -111,15 +148,15 @@
                         "AND course_id = ? "
                 );
 
-                PreparedStatement pstmt5 = conn.prepareStatement( 
+                PreparedStatement pstmt5 = conn.prepareStatement(
                     // get other grades
                     "SELECT COUNT(grade) " +
-                    "FROM previous_class " + 
+                    "FROM previous_class " +
                     "WHERE quarter = ? AND " +
                     " (grade != 'A' AND grade != 'A+' AND grade != 'A-' " +
-                    "  AND grade != 'B' AND grade != 'B+' AND grade != 'B-' " + 
-                    "  AND grade != 'C' AND grade != 'C+' AND grade != 'C-' " + 
-                    "  AND grade != 'D' AND grade != 'D+' AND grade != 'D-') " + 
+                    "  AND grade != 'B' AND grade != 'B+' AND grade != 'B-' " +
+                    "  AND grade != 'C' AND grade != 'C+' AND grade != 'C-' " +
+                    "  AND grade != 'D' AND grade != 'D+' AND grade != 'D-') " +
                     "AND course_id IN ( " +
                         // get the course ID from faculty teaching given current
                         // quarter and facutly member
@@ -136,7 +173,7 @@
                 pstmt1.setString(3, year);
                 pstmt1.setString(4, request.getParameter("PROFESSOR"));
                 pstmt1.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
-                
+
                 // for b grade query
                 pstmt2.setString(1, quarter_year);
                 pstmt2.setString(2, quarter);
@@ -157,7 +194,7 @@
                 pstmt4.setString(3, year);
                 pstmt4.setString(4, request.getParameter("PROFESSOR"));
                 pstmt4.setInt(5, Integer.parseInt(request.getParameter("COURSEID")));
-            
+
                 // for "other" grade query
                 pstmt5.setString(1, quarter_year);
                 pstmt5.setString(2, quarter);
@@ -241,7 +278,7 @@
                             <TD> <%= rs4.getInt(1) %></%D>
                         <TR>
                     </TABLE>
-                <% } 
+                <% }
 
                 while(rs5.next()) { %>
                     <TABLE BORDER="1">
@@ -259,7 +296,7 @@
                             <TD> <%= rs5.getInt(1) %></%D>
                         <TR>
                     </TABLE>
-                <% } 
+                <% }
 
             %>
             
