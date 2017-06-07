@@ -263,8 +263,6 @@ INSERT INTO faculty_teaching VALUES('Taylor Swift', 14, 7, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 2, 'sp', '2017');
 INSERT INTO faculty_teaching VALUES('Kelly Clarkson', 8, 5, 'sp', '2017');
 
-INSERT INTO faculty_teaching VALUES('Justin Bieber', 1, DEFAULT,'fa', '2016');
-
 -- make sample MS concentrations
 INSERT INTO ms_concentration VALUES(1, 4, 4, 3, 'Databases');
 INSERT INTO ms_concentration VALUES(2, 4, 8, 3.1, 'AI');
