@@ -63,10 +63,10 @@
                         "WHERE student_id = ? AND course_id = ? AND quarter = ?"
                     );
 
-                    pstmt2.setString(1, request.getParameter("grade"));
-                    pstmt2.setInt(2, Integer.parseInt(request.getParameter("student id")));
-                    pstmt2.setInt(3, Integer.parseInt(request.getParameter("course id")));
-                    pstmt2.setString(4, request.getParameter("quarter"));
+                    pstmt2.setString(1, request.getParameter("grade1"));
+                    pstmt2.setInt(2, Integer.parseInt(request.getParameter("student id1")));
+                    pstmt2.setInt(3, Integer.parseInt(request.getParameter("course id1")));
+                    pstmt2.setString(4, request.getParameter("quarter1"));
                     int rowcount = pstmt2.executeUpdate();
 
                     // commit transaction
@@ -110,25 +110,26 @@
                         <input type="hidden" value="prev_update" name="action">
                         <td>
                             <input value="<%= rs.getInt("student_id") %>"  
-                             name="student id" size="10">
+                             name="student id1" size="10">
                         </td>
                         <td>
                             <input value="<%= rs.getInt("course_id") %>"  
-                             name="course id" size="10">
+                             name="course id1" size="10">
                         </td>
                         <td>
                             <input value="<%= rs.getString("quarter") %>"  
-                             name="quarter" size="10">
+                             name="quarter1" size="10">
                         </td>
 
                         <td>
                             <input value="<%= rs.getString("grade") %>" 
-                             name="grade" size="10">
+                             name="grade1" size="10">
                         </td>
 
                         <td>
                             <input type="submit" value="Update">
-                        </td>   
+                        </td>  :
+                    </form>
                 </tr>
             <% } %>
 

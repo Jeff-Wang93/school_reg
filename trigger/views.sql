@@ -38,5 +38,8 @@ FROM prof_course p,
 WHERE p.course_id = g.course_id AND p.quarter = g.quarter
 ORDER BY p.faculty_name, p.quarter, p.course_id;
 
-DROP TABLE IF EXISTS CPG;
+-- each entry is prof name, course_id, quarter, grade
+
+
+--DROP TABLE IF EXISTS CPG;
 

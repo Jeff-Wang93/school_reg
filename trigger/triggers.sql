@@ -33,3 +33,16 @@ BEFORE INSERT ON faculty_teaching
 FOR EACH ROW
 EXECUTE PROCEDURE assign_prof();
 
+-- Triggers to update CPGQ table
+DROP TRIGGER IF EXISTS t_insert_cpgq ON previous_class;
+CREATE TRIGGER t_insert_cpgq
+AFTER INSERT ON previous_class
+FOR EACH ROW
+    EXECUTE PROCEDURE insert_cpgq();
+
+DROP TRIGGER IF EXISTS t_update_cpgq ON previous_class;
+CREATE TRIGGER t_update_cpgq
+AFTER UPDATE ON previous_class
+FOR EACH ROW
+    EXECUTE PROCEDURE update_cpgq();
+

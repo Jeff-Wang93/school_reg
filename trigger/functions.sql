@@ -287,41 +287,103 @@ LANGUAGE plpgsql;
 
 -- function for CPGQ "view"
 -- on previous_class input, update the "view"
+CREATE OR REPLACE FUNCTION insert_cpgq() RETURNS trigger AS
+$BODY$
+    DECLARE
+        prof_name VARCHAR(50);
+
+    BEGIN
+        prof_name = (SELECT faculty_name
+                     FROM faculty_teaching
+                     WHERE quarter = substr(new.quarter, 1, 2) 
+                     AND year = substr(new.quarter, 3, 4)
+                     AND course_id = new.course_id);
+
+        -- if it's a grade we havent seen yet, add it
+        IF NOT EXISTS(SELECT a_count
+                      FROM cpgq
+                      WHERE course_id = new.course_id
+                      AND quarter = new.quarter
+                      AND a_name LIKE substr(new.grade,1,1) || '%' 
+                      AND faculty_name IN (SELECT faculty_name 
+                                           FROM faculty_teaching
+                                           WHERE quarter = substr(new.quarter, 1, 2) 
+                                                 AND year = substr(new.quarter, 3, 4)
+                                                 AND course_id = new.course_id))
+            THEN INSERT INTO cpgq 
+                    VALUES (prof_name, new.course_id, new.quarter, 1, substr(new.grade,1,1));
+        ELSE
+            -- If inserted, just add one to the count if exists
+            UPDATE CPGQ
+            SET a_count = a_count + 1
+            WHERE course_id = new.course_id
+            AND quarter = new.quarter
+            AND a_name LIKE substr(new.grade,1,1) || '%'
+            AND faculty_name IN (SELECT faculty_name 
+                                 FROM faculty_teaching
+                                 WHERE quarter = substr(new.quarter, 1, 2) 
+                                       AND year = substr(new.quarter, 3, 4)
+                                       AND course_id = new.course_id);
+        END IF;
+        RETURN NEW;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION update_cpgq() RETURNS trigger AS
 $BODY$
+    DECLARE
+        prof_name VARCHAR(50);
+
     BEGIN
-        -- get the professor of the course id and the quarter
-        SELECT faculty_name 
-        FROM faculty_teaching
-        WHERE quarter = substr(new.quarter, 1, 2) 
-                AND year = substr(new.quarter, 3, 4)
-                AND course_id = new.course_id;
+        prof_name = (SELECT faculty_name
+                     FROM faculty_teaching
+                     WHERE quarter = substr(new.quarter, 1, 2) 
+                     AND year = substr(new.quarter, 3, 4)
+                     AND course_id = new.course_id);
 
-        -- If inserted, just add one to the count 
-        IF TG_OP = 'INSERT' 
-           THEN UPDATE CPGQ
-                SET a_count = a_count + 1
-                WHERE course_id = new.course_id 
-                AND quarter = new.quarter
-                AND a_name LIKE new.grade || '%';
-                RETURN NEW;
+        -- if the grade doesnt exist, add it in
+        IF NOT EXISTS(SELECT a_name
+                  FROM cpgq
+                  WHERE course_id = new.course_id
+                  AND quarter = new.quarter
+                  AND a_name LIKE substr(new.grade,1,1) || '%'
+                  AND faculty_name IN (SELECT faculty_name 
+                                       FROM faculty_teaching
+                                       WHERE quarter = substr(new.quarter, 1, 2) 
+                                             AND year = substr(new.quarter, 3, 4)
+                                             AND course_id = new.course_id))
+        THEN INSERT INTO cpgq 
+                VALUES (prof_name, new.course_id, new.quarter, 1, substr(new.grade,1,1));
 
-        ELSE IF TG_OP = 'UPDATE'
-                -- if updated, subtract one from old grade then add to the new
-                THEN UPDATE CPGQ
-                     SET a_count = a_count - 1
-                     WHERE course_id = new.course_id
-                     AND quarter = new.quarter
-                     AND a_name LIKE old.grade || '%';
-                    
-                     UPDATE CPGQ
-                     SET a_count = a_count + 1
-                     WHERE course_id = new.course_id 
-                     AND quarter = new.quarter
-                     AND a_name LIKE new.grade || '%';
-                     RETURN NEW;
-            END IF;
+        --if updated, subtract one from old grade then add to the new
+        ELSE
+                        
+            UPDATE CPGQ
+            SET a_count = a_count + 1
+            WHERE course_id = new.course_id
+            AND quarter = new.quarter
+            AND a_name LIKE substr(new.grade,1,1) || '%'
+            AND faculty_name IN (SELECT faculty_name 
+                                 FROM faculty_teaching
+                                 WHERE quarter = substr(new.quarter, 1, 2) 
+                                       AND year = substr(new.quarter, 3, 4)
+                                       AND course_id = new.course_id);
         END IF;
+
+        -- regardless, subtract when updating
+        UPDATE CPGQ
+            SET a_count = a_count - 1
+            WHERE course_id = new.course_id
+            AND quarter = new.quarter
+            AND a_name LIKE substr(old.grade,1,1) || '%'
+            AND faculty_name IN (SELECT faculty_name 
+                                 FROM faculty_teaching
+                                 WHERE quarter = substr(new.quarter, 1, 2) 
+                                       AND year = substr(new.quarter, 3, 4)
+                                       AND course_id = new.course_id);
+
+        RETURN NEW;
     END;
 $BODY$
 LANGUAGE plpgsql;
